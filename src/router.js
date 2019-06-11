@@ -1,6 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from './views/Home.vue';
+import NuevaSolicitud from './views/nuevasolicitud.vue';
+import MisSolicitudes from './views/solicitudes.vue';
+import Documentos from './views/documentos.vue';
+import Asistencia from './views/asistencia.vue';
+import Configuracion from './views/configuracion.vue';
 
 Vue.use(Router)
 
@@ -14,12 +19,29 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/nuevasolicitud',
+      name: 'nuevasolicitud',
+      component: NuevaSolicitud
+    },
+    {
+      path: '/solicitudes',
+      name: 'solicitudes',
+      component: MisSolicitudes
+    },
+    {
+      path: '/documentos',
+      name: 'documentos',
+      component: Documentos
+    },
+    {
+      path: '/asistencia',
+      name: 'asistencia',
+      component: Asistencia
+    },
+    {
+      path: '/configuracion',
+      name: 'configuracion',
+      component: Configuracion
     }
   ]
 })
