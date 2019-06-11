@@ -1,6 +1,6 @@
 <template >
   <div class="documentos">
-<!--se actualiza el documento 1.2  -->  
+<!--se actualiza el documento 1.3  -->  
     <h1 class="subheading grey--text">Documentos</h1>
 
     <v-container fluid class="my-2">
