@@ -20,7 +20,7 @@
 
         <!-- Left menu aka drawer   temporary-->
         <v-navigation-drawer   v-model="drawer"   app class="indigo">
-            <br></br>
+            <br/>
             <!-- datos del promotor-->
              <v-list class="pa-1">
                 <v-list-tile avatar>
