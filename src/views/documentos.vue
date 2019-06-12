@@ -49,7 +49,7 @@
         <v-flex xs12 md7  hidden-sm-and-down>
          <v-card v-bind:height="maxHeightPDF"  >
            <v-card-title></v-card-title>
-           <!--<v-responsive  :aspect-ratio="1/.65">--></v-responsive>
+           <!--<v-responsive  :aspect-ratio="1/.65"></v-responsive>-->
                 <iframe v-bind:src="urlPDF" class="framePDF"></iframe>
          <!-- </v-responsive>-->
            <v-card-text>
@@ -84,10 +84,11 @@
                 visitado: false
                }
         ],
-        inputSearch: "",
-        urlPDF: this.urlPDF = "https://drive.google.com/viewerng/viewer?embedded=true&url=https://sminet.com.mx/docs/0.pdf",
+        inputSearch: '',
+        urlPDF: this.onedrive+"https://sminet.com.mx/docs/0.pdf",
         maxHeightPDF:'',
-        maxHeightResults:''
+        maxHeightResults:'',
+        onedrive:'https://drive.google.com/viewerng/viewer?embedded=true&url='
       }
     },
     mounted() {
@@ -107,13 +108,20 @@
       !this.$v.inputSearch.required &&
         errors.push("Escribe algún valor a buscar");
       return errors;*/
+      return;
     }
   },
     methods:{
 
   verPDF(path, id) {
 
-if(path.startsWith('Motor de'))return;
+if(path.startsWith('Motor de')){
+      this.resultSearching[id].visitado = true;
+      this.indiceResultado = id;
+      this.ispdfVisible = true;
+      this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
+  return;
+  }
 
     //console.log('url--->'+path);
       this.resultSearching[id].visitado = true;
@@ -122,7 +130,8 @@ if(path.startsWith('Motor de'))return;
       this.indiceResultado = id;
       var armUrl = path.split("\\");
       this.ispdfVisible = true;
-      this.urlPDF = "https://drive.google.com/viewerng/viewer?embedded=true&url=https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
+      this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
+      console.log(this.urlPDF);
       //this.onResize();
     },
     onResize() {
@@ -182,7 +191,7 @@ if(path.startsWith('Motor de'))return;
                 visitado: false
                }];
 
-               urlPDF: this.urlPDF = "https://drive.google.com/viewerng/viewer?embedded=true&url=https://sminet.com.mx/docs/0.pdf"
+               urlPDF: this.onedrive+"https://sminet.com.mx/docs/0.pdf"
                return;
       }
 
