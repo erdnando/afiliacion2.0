@@ -85,11 +85,15 @@
                }
         ],
         inputSearch: '',
+        onedrive:'https://drive.google.com/viewerng/viewer?embedded=true&url=',
         urlPDF: this.onedrive+"https://sminet.com.mx/docs/0.pdf",
         maxHeightPDF:'',
-        maxHeightResults:'',
-        onedrive:'https://drive.google.com/viewerng/viewer?embedded=true&url='
+        maxHeightResults:''
+        
       }
+    },
+    created(){
+            this.urlPDF = "https://drive.google.com/viewerng/viewer?embedded=true&url=https://sminet.com.mx/docs/0.pdf";
     },
     mounted() {
     this.onResize();
@@ -116,13 +120,13 @@
 
   verPDF(path, id) {
 
-if(path.startsWith('Motor de')){
-      this.resultSearching[id].visitado = true;
-      this.indiceResultado = id;
-      this.ispdfVisible = true;
-      this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
-  return;
-  }
+    if(path.startsWith('Motor de')){
+          this.resultSearching[id].visitado = true;
+          this.indiceResultado = id;
+          this.ispdfVisible = true;
+          this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
+          return;
+       }
 
     //console.log('url--->'+path);
       this.resultSearching[id].visitado = true;
@@ -174,7 +178,7 @@ if(path.startsWith('Motor de')){
       }
       */
     },
-      realizarConsulta() {
+    realizarConsulta() {
       
        this.resultServer = [];
       this.resultSearching = [];
