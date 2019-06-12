@@ -103,12 +103,13 @@
   },
     computed: {
     searchErrors() {
-      /*const errors = [];
+      const errors = [];
+      /*
       if (!this.$v.inputSearch.$dirty) return errors;
       !this.$v.inputSearch.required &&
         errors.push("Escribe algún valor a buscar");
       return errors;*/
-      return;
+      return errors;
     }
   },
     methods:{
@@ -191,7 +192,7 @@ if(path.startsWith('Motor de')){
                 visitado: false
                }];
 
-               urlPDF: this.onedrive+"https://sminet.com.mx/docs/0.pdf"
+               this.urlPDF= this.onedrive+"https://sminet.com.mx/docs/0.pdf"
                return;
       }
 
