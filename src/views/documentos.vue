@@ -89,7 +89,7 @@
 <script>
    import axios from "axios";
    import FlipCard from '@/components/FlipCard'
-   import {bus} from '@/main.js'
+   
 
    export default {
      components: {
