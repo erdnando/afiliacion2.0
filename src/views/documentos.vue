@@ -24,53 +24,77 @@
  </v-layout>
 </v-container>
 
-    <v-container fluid class="resultados"  >
-     <v-layout row wrap>
-       <v-flex xs12 md5  class="scroll-y" :style="{'height':maxHeightResults}"   >
-         <v-card v-bind:key="id" v-for="(element, id) in resultSearching" class="vcardEspacio">
-           <v-card-title class="GoogleTitle">
-                  <span
-                    @click="verPDF(element.path, element.id)"
-                    v-bind:class="{visitado:element.visitado}"
-                  >{{element.path}}</span>
-                </v-card-title>
-          <v-card-text class="GoogleSubtitle">
-                  <span>Fecha de creación: {{element.last_modified}}</span>
-                </v-card-text>
-                <v-card-text class="GoogleContent">
-                  <v-flex xs12 sm12 md12 lg12 xl12>Tipo de contenido: {{element.content_type}}</v-flex>
-                  <v-flex xs12 sm12 md12 lg12 xl12>Nombre del recurso: {{element.resourcename}}</v-flex>
-                  <v-flex xs12 sm12 md12 lg12 xl12>Autor: {{element.author}}</v-flex>
-                  <v-flex xs12 sm12 md12 lg12 xl12>Versión: {{element.version}}</v-flex>
-                </v-card-text>
-         </v-card>
-       </v-flex>
-
-        <v-flex xs12 md7  hidden-sm-and-down>
-         <v-card v-bind:height="maxHeightPDF"  >
-           <v-card-title></v-card-title>
-           <!--<v-responsive  :aspect-ratio="1/.65"></v-responsive>-->
-                <iframe v-bind:src="urlPDF" class="framePDF"></iframe>
-         <!-- </v-responsive>-->
-           <v-card-text>
-             
-             </v-card-text>
-         </v-card>
-       </v-flex>
 
 
-     </v-layout>
-    </v-container>
+          <v-container fluid class="resultados"  >
+            <v-layout row wrap>
+              <v-flex xs12 md5  class="scroll-y" :style="{'height':maxHeightResults}"   >
+                <FlipCard >
+                  <template slot="front">
+                    <!-- front --->
+                    <!-- front --->
+                    <div slot="front" >
+                      <v-card v-bind:key="id" v-for="(element, id) in resultSearching" class="vcardEspacio">
+                        <v-card-title class="GoogleTitle">
+                                <span
+                                  @click="verPDF(element.path, element.id)"
+                                  v-bind:class="{visitado:element.visitado}"
+                                >{{element.path}}</span>
+                              </v-card-title>
+                        <v-card-text class="GoogleSubtitle">
+                                <span>Fecha de creación: {{element.last_modified}}</span>
+                              </v-card-text>
+                              <v-card-text class="GoogleContent">
+                                <v-flex xs12 sm12 md12 lg12 xl12>Tipo de contenido: {{element.content_type}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Nombre del recurso: {{element.resourcename}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Autor: {{element.author}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Versión: {{element.version}}</v-flex>
+                              </v-card-text>
+                      </v-card>
+                      </div>
+                  </template>
+                  <!-- front --->
+                  <!--  back --->
+                  <template slot="back">
+                    <v-flex xs12 md7  hidden-md-and-up>
+                      <v-card v-bind:height="maxHeightPDF" v-bind:width="maxWidthPDF"  >
+                        <v-card-title></v-card-title>
+                              <iframe v-bind:src="urlPDF" class="framePDF" ></iframe>
+                        <v-card-text>
+                          </v-card-text>
+                      </v-card>
+                  </v-flex>
+                  </template>
+                  <!--  back --->
+                </FlipCard>
+              </v-flex>
 
+                <v-flex xs12 md7  hidden-sm-and-down>
+                <v-card v-bind:height="maxHeightPDF"  >
+                  <v-card-title></v-card-title>
+                        <iframe v-bind:src="urlPDF" class="framePDF"></iframe>
+                  <v-card-text>
+                    </v-card-text>
+                </v-card>
+              </v-flex>
+          
+       
+      
+         </v-layout>
+        </v-container>
 
   </div>
 </template>
 
 <script>
    import axios from "axios";
-
+   import FlipCard from '@/components/FlipCard'
+   import {bus} from '@/main.js'
 
    export default {
+     components: {
+    FlipCard,
+    },
     data(){
       return{
         resultSearching: [{
@@ -88,8 +112,8 @@
         onedrive:'https://drive.google.com/viewerng/viewer?embedded=true&url=',
         urlPDF: this.onedrive+"https://sminet.com.mx/docs/0.pdf",
         maxHeightPDF:'',
+        maxWidthPDF:'',
         maxHeightResults:''
-        
       }
     },
     created(){
@@ -117,129 +141,130 @@
     }
   },
     methods:{
+        verPDF(path, id) {
 
-  verPDF(path, id) {
-
-    if(path.startsWith('Motor de')){
-          this.resultSearching[id].visitado = true;
-          this.indiceResultado = id;
-          this.ispdfVisible = true;
-          this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
-          return;
-       }
-
-    //console.log('url--->'+path);
-      this.resultSearching[id].visitado = true;
-      // let visitado = this.resultSearching[id].visitado = !this.resultSearching[id].visitado;
-
-      this.indiceResultado = id;
-      var armUrl = path.split("\\");
-      this.ispdfVisible = true;
-      this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
-      console.log(this.urlPDF);
-      //this.onResize();
-    },
-    onResize() {
-      //let resolucionPrimaria = window.innerHeight;
-      this.maxHeightPDF= (window.innerHeight-240)+'px';
-      this.maxHeightResults= (window.innerHeight-208)+'px';
-      /*this.pdfInternoVisible = false;
-      this.pdfExternoVisible = false;
-      if (resolucionPrimaria < 600) {
-        this.pdfInternoVisible = true;
-      }
-      if (resolucionPrimaria > 600 && resolucionPrimaria < 960) {
-        this.pdfInternoVisible = true;
-      }
-      if (resolucionPrimaria > 960 && resolucionPrimaria < 1264) {
-        this.pdfExternoVisible = true;
-      }
-      if (resolucionPrimaria > 1264 && resolucionPrimaria < 1904) {
-        this.pdfExternoVisible = true;
-      }
-      if (resolucionPrimaria > 1904) {
-        this.pdfExternoVisible = true;
-      }
-      
-      if(this.arrayResolucion.xs == true){
-          this.pdfInternoVisible = true;
-      }
-      if(this.arrayResolucion.sm == true){
-        this.pdfInternoVisible = true;
-      }
-      if(this.arrayResolucion.md == true){
-        this.pdfExternoVisible = true;
-      }
-      if(this.arrayResolucion.lg == true){
-        this.pdfExternoVisible = true;
-      }
-      if(this.arrayResolucion.xl == true){
-        this.pdfExternoVisible = true;
-      }
-      */
-    },
-    realizarConsulta() {
-      
-       this.resultServer = [];
-      this.resultSearching = [];
-
-       
-      if(this.inputSearch.trim()==''){
-            this.resultSearching = [{
-                id: 0,
-                path: 'Motor de busqueda Afiliación2.0',
-                last_modified: '2019',
-                content_type: '["application/pdf"]',
-                resourcename: 'Motor de busqueda indexado, powered by Solr',
-                author: 'Erdnando',
-                version: '1.0.0.0.0      Ingrese su busqueda y presione enter',
-                visitado: false
-               }];
-
-               this.urlPDF= this.onedrive+"https://sminet.com.mx/docs/0.pdf"
-               return;
-      }
-
-      
-      setTimeout(() => {
-        axios
-          .get(
-            "http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
-              this.inputSearch.trim() +
-              "&q=*%3A*",
-            {
-              headers: {}
+          if(path.startsWith('Motor de')){
+                this.resultSearching[id].visitado = true;
+                this.indiceResultado = id;
+                this.ispdfVisible = true;
+                this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
+                return;
             }
-          )
-          .then(respuesta => {
-            return respuesta.data.response.docs;
-          })
-          .then(respuestaJson => {
-            let indice = 0;
-            for (let id in respuestaJson) {
-              let resp = {
-                id: indice++,
-                path: respuestaJson[id].id,
-                last_modified: respuestaJson[id].last_modified,
-                content_type: respuestaJson[id].content_type,
-                resourcename: respuestaJson[id].resourcename,
-                author: respuestaJson[id].author,
-                version: respuestaJson[id]._version_,
-                visitado: false
-              };
 
-              this.resultSearching.push(resp);
+          //console.log('url--->'+path);
+            this.resultSearching[id].visitado = true;
+            // let visitado = this.resultSearching[id].visitado = !this.resultSearching[id].visitado;
+
+            this.indiceResultado = id;
+            var armUrl = path.split("\\");
+            this.ispdfVisible = true;
+            this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
+            console.log(this.urlPDF);
+            //this.onResize();
+          },
+          onResize() {
+            //let resolucionPrimaria = window.innerHeight;
+            this.maxHeightPDF= (window.innerHeight-240)+'px';
+            this.maxHeightResults= (window.innerHeight-208)+'px';
+
+            //this.maxWidthPDF=(window.innerWidth/2.6)+'px';    //(this.maxHeightResults+100)+'px'
+            /*this.pdfInternoVisible = false;
+            this.pdfExternoVisible = false;
+            if (resolucionPrimaria < 600) {
+              this.pdfInternoVisible = true;
             }
-          })
-          .catch(error => {
-            console.log(error);
-            this.$emit("update:dialogm", false);
-            window.getApp.$emit("SERVICE_ERROR");
-          })
-          .finally(() => {
-            //this.$root.$dialogLoader.hide();
-          });
-      }, 2000);
+            if (resolucionPrimaria > 600 && resolucionPrimaria < 960) {
+              this.pdfInternoVisible = true;
+            }
+            if (resolucionPrimaria > 960 && resolucionPrimaria < 1264) {
+              this.pdfExternoVisible = true;
+            }
+            if (resolucionPrimaria > 1264 && resolucionPrimaria < 1904) {
+              this.pdfExternoVisible = true;
+            }
+            if (resolucionPrimaria > 1904) {
+              this.pdfExternoVisible = true;
+            }
+            
+            if(this.arrayResolucion.xs == true){
+                this.pdfInternoVisible = true;
+            }
+            if(this.arrayResolucion.sm == true){
+              this.pdfInternoVisible = true;
+            }
+            if(this.arrayResolucion.md == true){
+              this.pdfExternoVisible = true;
+            }
+            if(this.arrayResolucion.lg == true){
+              this.pdfExternoVisible = true;
+            }
+            if(this.arrayResolucion.xl == true){
+              this.pdfExternoVisible = true;
+            }
+            */
+          },
+          realizarConsulta() {
+            
+            this.resultServer = [];
+            this.resultSearching = [];
+
+            
+            if(this.inputSearch.trim()==''){
+                  this.resultSearching = [{
+                      id: 0,
+                      path: 'Motor de busqueda Afiliación2.0',
+                      last_modified: '2019',
+                      content_type: '["application/pdf"]',
+                      resourcename: 'Motor de busqueda indexado, powered by Solr',
+                      author: 'Erdnando',
+                      version: '1.0.0.0.0      Ingrese su busqueda y presione enter',
+                      visitado: false
+                    }];
+
+                    this.urlPDF= this.onedrive+"https://sminet.com.mx/docs/0.pdf"
+                    return;
+            }
+
+      
+            setTimeout(() => {
+              axios
+                .get(
+                  "http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
+                    this.inputSearch.trim() +
+                    "&q=*%3A*",
+                  {
+                    headers: {}
+                  }
+                )
+                .then(respuesta => {
+                  return respuesta.data.response.docs;
+                })
+                .then(respuestaJson => {
+                  let indice = 0;
+                  for (let id in respuestaJson) {
+                    let resp = {
+                      id: indice++,
+                      path: (respuestaJson[id].id).replace('D:','...'),
+                      last_modified: respuestaJson[id].last_modified,
+                      content_type: respuestaJson[id].content_type,
+                      resourcename: respuestaJson[id].resourcename,
+                      author: respuestaJson[id].author,
+                      version: respuestaJson[id]._version_,
+                      visitado: false
+                    };
+
+                    this.resultSearching.push(resp);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                  this.$emit("update:dialogm", false);
+                  window.getApp.$emit("SERVICE_ERROR");
+                })
+                .finally(() => {
+                  //this.$root.$dialogLoader.hide();
+                });
+            }, 2000);
     }
     }
     
@@ -293,6 +318,6 @@
 .vcardEspacio{
   margin-right: 10px;
 }
-
-
+  
+     
 </style>
