@@ -4,7 +4,7 @@
     <Navbar/>
 
 
-    <v-content class="mx-4 mb-4 my-3">
+    <v-content class="mx-1 mb-4 my-3">   <!-- "mx-4 mb-4 my-3" -->
       <router-view></router-view>
     </v-content>
 
