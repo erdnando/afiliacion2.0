@@ -4,7 +4,7 @@
     <nav>
         <v-toolbar  app hidden>
 
-          <v-toolbar-side-icon v-if="isLogged"  class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+          <v-toolbar-side-icon  v-if="isLogged"  class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
           <v-toolbar-title class="text-uppercase grey--text">
               <span class="font-weight-light">Afiliacion</span>
               <span>2.0</span>
@@ -19,7 +19,7 @@
         </v-toolbar>
 
         <!-- Left menu aka drawer   temporary-->
-        <v-navigation-drawer   v-model="drawer"   app class="indigo">
+        <v-navigation-drawer hidden  v-model="drawer"   app class="indigo">
             <br/>
             <!-- datos del promotor-->
              <v-list class="pa-1">
