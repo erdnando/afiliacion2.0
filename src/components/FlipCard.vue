@@ -19,7 +19,7 @@
 
 <script>
 
-import {bus} from '@/main.js'
+//import {bus} from '@/main.js'
 
 export default {
   name: 'FlipCard',

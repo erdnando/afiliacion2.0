@@ -2,7 +2,7 @@
 
 <template>
     <nav>
-        <v-toolbar  app>
+        <v-toolbar  app hidden>
 
           <v-toolbar-side-icon v-if="isLogged"  class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
           <v-toolbar-title class="text-uppercase grey--text">
