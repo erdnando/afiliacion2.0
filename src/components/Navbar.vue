@@ -62,7 +62,7 @@ export default {
     data(){
         return{
             drawer:false,
-            isLogged:true,
+            isLogged:false,
             promotor:{
                 id:10001,
                 nombre:'Andres Arriaga Jimenez',
