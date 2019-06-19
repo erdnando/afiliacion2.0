@@ -19,27 +19,27 @@ export default new Router({
       component: Home
     },
     {
-      path: '/nuevasolicitud',
+      path: '/indexado/nuevasolicitud',
       name: 'nuevasolicitud',
       component: NuevaSolicitud
     },
     {
-      path: '/solicitudes',
+      path: '/indexado/solicitudes',
       name: 'solicitudes',
       component: MisSolicitudes
     },
     {
-      path: '/documentos',
+      path: '/indexado/documentos',
       name: 'documentos',
       component: Documentos
     },
     {
-      path: '/asistencia',
+      path: '/indexado/asistencia',
       name: 'asistencia',
       component: Asistencia
     },
     {
-      path: '/configuracion',
+      path: '/indexado/configuracion',
       name: 'configuracion',
       component: Configuracion
     }
