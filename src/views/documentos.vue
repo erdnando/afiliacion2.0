@@ -225,13 +225,14 @@
                     return;
             }
 
+      /*"http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
+                    this.inputSearch.trim() +
+                    "&q=*%3A*"*/
       
             setTimeout(() => {
               axios
                 .get(
-                  "http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
-                    this.inputSearch.trim() +
-                    "&q=*%3A*",
+                  "https://sminet.com.mx/Digital.Docs.Service/Service1.svc/API/select/" + this.inputSearch.trim() ,
                   {
                     headers: {}
                   }
