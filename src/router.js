@@ -7,14 +7,14 @@ import Documentos from './views/documentos.vue';
 import Asistencia from './views/asistencia.vue';
 import Configuracion from './views/configuracion.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/indexado/',
       name: 'home',
       component: Home
     },
@@ -44,4 +44,4 @@ export default new Router({
       component: Configuracion
     }
   ]
-})
+});

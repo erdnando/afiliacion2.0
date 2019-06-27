@@ -3,14 +3,14 @@
     <div class="flipper">
       <div class="front">
         <slot name="front"></slot>
-        <v-icon class="frontFlipBtn" v-on:click="giraTrue" >
-            3d_rotation
+        <v-icon class="frontFlipBtn alTop" v-on:click="giraTrue" >
+            replay
         </v-icon>
       </div>
       <div class="back" :style="{'visibility':pdfVisivilidad}">
         <slot name="back" :style="{'visibility':pdfVisivilidad}"></slot>
         <v-icon class="backFlipBtn" v-on:click="giraFalse">
-            3d_rotation
+            replay
         </v-icon>
       </div>
     </div>
@@ -119,5 +119,8 @@ i.backFlipBtn {
 }
 .front {
   z-index: 2;
+}
+.alTop{
+  z-index: 3000;
 }
 </style>

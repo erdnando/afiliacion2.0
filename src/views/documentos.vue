@@ -1,7 +1,7 @@
 <template >
   <div class="documentos">
 <!--se actualiza el documento 1.3  -->  
-    <h1 class="subheading grey--text">Documentos</h1>
+    <!--<h1 class="subheading grey--text">Documentos</h1>-->
 
 <v-container  fluid class="txtBuscador">
   <v-layout row wrap>
@@ -64,6 +64,36 @@
                           </v-card-text>
                       </v-card>
                   </v-flex>
+
+                  <v-flex xs12 md11   hidden-sm-and-down>
+                      <!--<v-card v-bind:height="maxHeightPDF" v-bind:width="maxWidthPDF"  >
+                        <v-card-title></v-card-title>
+                              
+                        <v-card-text>
+                          Search engine powered by Solr
+                          </v-card-text>
+                      </v-card>-->
+<v-card v-bind:key="id" v-for="(element, id) in resultSearching" class="vcardEspacio">
+                        <v-card-title class="GoogleTitle">
+                                <span
+                                  @click="verPDF(element.path, element.id)"
+                                  v-bind:class="{visitado:element.visitado}"
+                                >{{element.path}}</span>
+                              </v-card-title>
+                        <v-card-text class="GoogleSubtitle">
+                                <span>Fecha de creación: {{element.last_modified}}</span>
+                              </v-card-text>
+                              <v-card-text class="GoogleContent">
+                                <v-flex xs12 sm12 md12 lg12 xl12>Tipo de contenido: {{element.content_type}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Nombre del recurso: {{element.resourcename}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Autor: {{element.author}}</v-flex>
+                                <v-flex xs12 sm12 md12 lg12 xl12>Versión: {{element.version}}</v-flex>
+                              </v-card-text>
+                      </v-card>
+                      
+                  </v-flex>
+
+
                   </template>
                   <!--  back --->
                 </FlipCard>
@@ -71,7 +101,7 @@
 
                 <v-flex xs12 md7  hidden-sm-and-down>
                 <v-card v-bind:height="maxHeightPDF"  >
-                  <v-card-title></v-card-title>
+                  <!--<v-card-title></v-card-title> -->
                         <iframe v-bind:src="urlPDF" class="framePDF"></iframe>
                   <v-card-text>
                     </v-card-text>
@@ -164,8 +194,8 @@
           },
           onResize() {
             //let resolucionPrimaria = window.innerHeight;
-            this.maxHeightPDF= (window.innerHeight-240)+'px';
-            this.maxHeightResults= (window.innerHeight-208)+'px';
+            this.maxHeightPDF= (window.innerHeight-230)+'px';//240
+            this.maxHeightResults= (window.innerHeight-218)+'px';//208
 
             //this.maxWidthPDF=(window.innerWidth/2.6)+'px';    //(this.maxHeightResults+100)+'px'
             /*this.pdfInternoVisible = false;
@@ -275,7 +305,7 @@
 <style>
 
 .txtBuscador{
-    margin-top: -50px;  
+    margin-top: 0px;  
 }
 .resultados{
     margin-top: -30px; 

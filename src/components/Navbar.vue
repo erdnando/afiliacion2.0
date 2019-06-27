@@ -1,8 +1,6 @@
-
-
 <template>
     <nav>
-        <v-toolbar  app hidden>
+        <v-toolbar  app >
 
           <v-toolbar-side-icon  v-if="isLogged"  class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
           <v-toolbar-title class="text-uppercase grey--text">
@@ -19,7 +17,7 @@
         </v-toolbar>
 
         <!-- Left menu aka drawer   temporary-->
-        <v-navigation-drawer hidden  v-model="drawer"   app class="indigo">
+        <v-navigation-drawer   v-model="drawer"   app class="indigo">
             <br/>
             <!-- datos del promotor-->
              <v-list class="pa-1">
@@ -62,7 +60,7 @@ export default {
     data(){
         return{
             drawer:false,
-            isLogged:false,
+            isLogged:true,
             promotor:{
                 id:10001,
                 nombre:'Andres Arriaga Jimenez',
@@ -71,12 +69,12 @@ export default {
                 tienda:'55'
             },
             modulos: [
-                { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/' },
-                { clave:'02' , allow:'rw' , modulo: 'Mis solicitudes', icon: 'library_books',ruta:'/solicitudes' },
-                { clave:'03' , allow:'rw' , modulo: 'Nueva solicitud', icon: 'library_add',ruta:'/nuevasolicitud' },
-                { clave:'04' , allow:'rw' , modulo: 'Documentos digitales', icon: 'how_to_vote',ruta:'/documentos' },
-                { clave:'05' , allow:'rw' , modulo: 'Asistencia', icon: 'report_problem',ruta:'/asistencia' },
-                { clave:'06' , allow:'rw' , modulo: 'Configuración', icon: 'settings',ruta:'/configuracion' },
+                { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/indexado/' },
+                { clave:'02' , allow:'rw' , modulo: 'Mis solicitudes', icon: 'library_books',ruta:'/indexado/solicitudes' },
+                { clave:'03' , allow:'rw' , modulo: 'Nueva solicitud', icon: 'library_add',ruta:'/indexado/nuevasolicitud' },
+                { clave:'04' , allow:'rw' , modulo: 'Documentos digitales', icon: 'how_to_vote',ruta:'/indexado/documentos' },
+                { clave:'05' , allow:'rw' , modulo: 'Asistencia', icon: 'report_problem',ruta:'/indexado/asistencia' },
+                { clave:'06' , allow:'rw' , modulo: 'Configuración', icon: 'settings',ruta:'/indexado/configuracion' },
                 { clave:'07' , allow:'rw' , modulo: 'Salir', icon: 'power_settings_new',ruta:'/' }
                 ]
       }
