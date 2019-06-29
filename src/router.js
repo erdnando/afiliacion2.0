@@ -21,7 +21,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/fintech/',
+      path: '/fintech',
       name: 'home',
       component: Home
     },
@@ -31,8 +31,8 @@ export default new Router({
       component: Afiliacion
     },
         {
-          path: '/fintech/afiliacion/nueva',
-          name: 'afiliacion',
+          path: '/fintech/afiliacion/nuevasolicitud',
+          name: 'afiliacion-nueva',
           component: NuevaSolicitud
         },
         {

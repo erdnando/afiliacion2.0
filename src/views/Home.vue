@@ -2,9 +2,9 @@
   <div class="home">
 
     <v-container fluid class="my-2 containerHome">
-    <carousel></carousel>
-     <carousel-cards></carousel-cards>
-     <landing-page></landing-page>
+      <carousel></carousel>
+      <carousel-cards></carousel-cards>
+      <landing-page></landing-page>
     </v-container>
   </div>
 </template>
@@ -13,7 +13,6 @@
 import CarouselCards from '@/components/start/CarouselCards'
 import Carousel from '@/components/start/Carousel'
 import LandingPage from '@/components/start/LandingPage'
-
 
    export default {
      components: {
