@@ -28,8 +28,8 @@
  //         this obj= obj
  //     })
 //}
-import BandejaItemList from '@/components/BandejaItemList'
-import BandejaItemCard from '@/components/BandejaItemCard'
+import BandejaItemList from '@/components/afiliacion/BandejaItemList'
+import BandejaItemCard from '@/components/afiliacion/BandejaItemCard'
 
 export default {
   name: 'BandejaList',

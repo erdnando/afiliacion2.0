@@ -5,8 +5,8 @@
       <!-- <v-card> -->
         <!-- <v-container fluid > -->
            <v-layout row wrap> 
-            <v-flex v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="padding-left: 3px;padding-bottom: 3px;">
-               <v-card>  
+            <v-flex v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="">
+               <v-card style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
                <v-container fluid grid-list-md style="padding:8px">
                 <v-layout row wrap>
                   <v-flex d-flex xs12 sm6 md4>
@@ -16,7 +16,12 @@
                   <v-flex d-flex xs12 sm6 md8>
                     <v-layout row wrap>
                       <v-flex d-flex >
-                        <span class="body-1 black--text font-weight-medium" v-text="solicitud.nombre"></span>
+                         <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                                  <span v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
+                          </template>
+                            <span>{{solicitud.nombre}}</span>
+                        </v-tooltip>
                       </v-flex>
                       <v-flex d-flex>
                          <span class="caption black--text" v-text="solicitud.account"></span>
@@ -41,14 +46,14 @@
                   <v-spacer></v-spacer>
                   
                   <v-btn icon>
-                    <v-icon>how_to_reg</v-icon>
+                    <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
                   </v-btn>
                   <v-btn icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
-                  <v-btn icon>
+                  <!-- <v-btn icon>
                     <v-icon>share</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -71,18 +76,30 @@
     },
     data(){
         return{
-             cards: [
-                { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3 },
-                { title: 'Pre-fab homesb', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3 },
-                { title: 'Favorite road tripsx', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
-                { title: 'Favorite road tripsy', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
-                { title: 'Favorite road tripsz', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3 },
-                { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3 }
-            ]
+            
         }
     },
     props:['solicitudes'],
     methods:{
+      cutName(nombre){
+        if(nombre.trim().length>18)
+         return nombre.substring(0,19)+"...";
+         else return nombre;
+      },
+      setIcon(estatus){
+        if(estatus=='Aprobado'){
+          return 'thumb_up_alt';
+        }else{
+          return 'thumb_down_alt';
+        }
+      },
+       getColor(estatus){
+        if(estatus=='Aprobado'){
+          return 'green lighten-1';
+        }else{
+          return 'red lighten-1';
+        }
+      }
     }
     
   }

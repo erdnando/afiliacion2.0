@@ -1,29 +1,34 @@
 <template >
   <div class="home">
-   
-    <h1 class="subheading grey--text">Home</h1>
-<!--<br/>
-    <br/>
-    <h1>- Debe contener una invitacion a participar</h1>
-    <h1>- Incluye un gancho</h1>
-    <h1>- Una explicacion corta d eor que debes participar</h1>
-    <h1>- Un boton de registro facil</h1>
--->
-    <v-container fluid class="my-2">
-     contenido
-    </v-container>
 
+    <v-container fluid class="my-2 containerHome">
+    <carousel></carousel>
+     <carousel-cards></carousel-cards>
+     <landing-page></landing-page>
+    </v-container>
   </div>
 </template>
 
 <script>
+import CarouselCards from '@/components/start/CarouselCards'
+import Carousel from '@/components/start/Carousel'
+import LandingPage from '@/components/start/LandingPage'
+
+
    export default {
-    
-    
+     components: {
+    CarouselCards,Carousel,LandingPage
+    },
+    data(){
+      return{
+       publicPath: process.env.BASE_URL
+      }
+    },
   }
 </script>
 
-<style>
-
+<style lang="stylus">
+ .containerHome{
+   padding:0px!important;margin-top: 0px!important;
+ }
 </style>
-

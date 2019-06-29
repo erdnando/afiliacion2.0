@@ -1,15 +1,15 @@
 <template >
   <div class="solicitudes">
-    <h1 class="subheading grey--text">Mis solicitudes</h1>
+    <!-- <h1 class="subheading grey--text">Mis solicitudes</h1> -->
     <bandeja-searcher v-bind:solicitudesLength="solicitudes.length" v-bind:pageType="pageType" v-bind:solicitudes="solicitudes"></bandeja-searcher>
     <bandeja-list v-bind:solicitudes="solicitudes" v-bind:pageType="pageType"></bandeja-list>
   </div>
 </template>
 
 <script>
-import {bus} from '../main.js'
-import BandejaList from '@/components/BandejaList'
-import BandejaSearcher from '@/components/BandejaSearcher'
+import {bus} from '../../main.js'
+import BandejaList from '@/components/afiliacion/BandejaList'
+import BandejaSearcher from '@/components/afiliacion/BandejaSearcher'
 
 
    export default {
@@ -21,11 +21,12 @@ import BandejaSearcher from '@/components/BandejaSearcher'
     },
     data () {
     return {
-          solicitudes: [{
+          solicitudes: [
+            {
                 account:100001,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000432',
                 collectionViewUrl:'url'
                },
@@ -33,7 +34,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100002,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Andrea Jimenez Mendez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000401',
                 collectionViewUrl:'url'
                },
@@ -41,7 +42,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100003,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Israel Torres Fernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000411',
                 collectionViewUrl:'url'
                },
@@ -49,7 +50,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100004,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Joaquin Jimenez Flores',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000400',
                 collectionViewUrl:'url'
                },
@@ -57,7 +58,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100005,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Javier Hernandez gomez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000226',
                 collectionViewUrl:'url'
                },
@@ -65,7 +66,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100006,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Mirella Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000417',
                 collectionViewUrl:'url'
                },
@@ -73,7 +74,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100007,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Laura Sanchez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000418',
                 collectionViewUrl:'url'
                },
@@ -81,7 +82,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100008,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000419',
                 collectionViewUrl:'url'
                },
@@ -89,7 +90,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100009,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Sandra Perez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000420',
                 collectionViewUrl:'url'
                },
@@ -97,7 +98,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100010,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Jesus Lopez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000421',
                 collectionViewUrl:'url'
                },
@@ -105,7 +106,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100011,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Daniel Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000422',
                 collectionViewUrl:'url'
                },
@@ -113,12 +114,12 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100012,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000123',
                 collectionViewUrl:'url'
                }
         ],
-        pageType:'LIST'
+        pageType:'CARD'
     }
   },
   methods:{
@@ -128,7 +129,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100001,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000432',
                 collectionViewUrl:'url'
                },
@@ -136,7 +137,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100002,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Andrea Jimenez Mendez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000401',
                 collectionViewUrl:'url'
                },
@@ -144,7 +145,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100003,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Israel Torres Fernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000411',
                 collectionViewUrl:'url'
                },
@@ -152,7 +153,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100004,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Joaquin Jimenez Flores',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000400',
                 collectionViewUrl:'url'
                },
@@ -160,7 +161,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100005,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Javier Hernandez gomez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000226',
                 collectionViewUrl:'url'
                },
@@ -168,7 +169,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100006,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Mirella Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000417',
                 collectionViewUrl:'url'
                },
@@ -176,7 +177,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100007,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Laura Sanchez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000418',
                 collectionViewUrl:'url'
                },
@@ -184,7 +185,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100008,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000419',
                 collectionViewUrl:'url'
                },
@@ -192,7 +193,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100009,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Sandra Perez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000420',
                 collectionViewUrl:'url'
                },
@@ -200,7 +201,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100010,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Jesus Lopez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000421',
                 collectionViewUrl:'url'
                },
@@ -208,7 +209,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100011,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Daniel Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000422',
                 collectionViewUrl:'url'
                },
@@ -216,7 +217,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100012,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000123',
                 collectionViewUrl:'url'
                }
@@ -238,7 +239,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100001,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000432',
                 collectionViewUrl:'url'
                },
@@ -246,7 +247,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100002,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Andrea Jimenez Mendez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000401',
                 collectionViewUrl:'url'
                },
@@ -254,7 +255,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100003,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Israel Torres Fernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000411',
                 collectionViewUrl:'url'
                },
@@ -262,7 +263,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100004,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Joaquin Jimenez Flores',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000400',
                 collectionViewUrl:'url'
                },
@@ -270,7 +271,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100005,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Javier Hernandez gomez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000226',
                 collectionViewUrl:'url'
                },
@@ -278,7 +279,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100006,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Mirella Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000417',
                 collectionViewUrl:'url'
                },
@@ -286,7 +287,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100007,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Laura Sanchez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000418',
                 collectionViewUrl:'url'
                },
@@ -294,7 +295,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100008,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000419',
                 collectionViewUrl:'url'
                },
@@ -302,7 +303,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100009,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Sandra Perez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000420',
                 collectionViewUrl:'url'
                },
@@ -310,7 +311,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100010,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Jesus Lopez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000421',
                 collectionViewUrl:'url'
                },
@@ -318,7 +319,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100011,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Daniel Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000422',
                 collectionViewUrl:'url'
                },
@@ -326,7 +327,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100012,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000123',
                 collectionViewUrl:'url'
                }
@@ -340,7 +341,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100001,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000432',
                 collectionViewUrl:'url'
                },
@@ -348,7 +349,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100002,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Andrea Jimenez Mendez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000401',
                 collectionViewUrl:'url'
                },
@@ -356,7 +357,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100003,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Israel Torres Fernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000411',
                 collectionViewUrl:'url'
                },
@@ -364,7 +365,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100004,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Joaquin Jimenez Flores',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000400',
                 collectionViewUrl:'url'
                },
@@ -372,7 +373,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100005,
                 foto:'http://lorempixel.com/130/140/',
                 nombre:'Javier Hernandez gomez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000226',
                 collectionViewUrl:'url'
                },
@@ -380,7 +381,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100006,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Mirella Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000417',
                 collectionViewUrl:'url'
                },
@@ -388,7 +389,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100007,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Laura Sanchez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000418',
                 collectionViewUrl:'url'
                },
@@ -396,7 +397,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100008,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Rechazado',
                 expediente:'F0000419',
                 collectionViewUrl:'url'
                },
@@ -404,7 +405,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100009,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Sandra Perez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000420',
                 collectionViewUrl:'url'
                },
@@ -412,7 +413,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100010,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Jesus Lopez Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000421',
                 collectionViewUrl:'url'
                },
@@ -420,7 +421,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100011,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Daniel Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000422',
                 collectionViewUrl:'url'
                },
@@ -428,7 +429,7 @@ import BandejaSearcher from '@/components/BandejaSearcher'
                 account:100012,
                 foto:'http://lorempixel.com/130/130/',
                 nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Pendiente',
+                estatus:'Aprobado',
                 expediente:'F0000123',
                 collectionViewUrl:'url'
                }

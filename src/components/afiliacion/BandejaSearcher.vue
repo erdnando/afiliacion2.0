@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import {bus} from '../main.js'
+    import {bus} from '../../main.js'
     export default {
     props:['solicitudesLength','pageType','solicitudes'],
     data () {

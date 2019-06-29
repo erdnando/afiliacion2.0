@@ -118,7 +118,7 @@
 
 <script>
    import axios from "axios";
-   import FlipCard from '@/components/FlipCard'
+   import FlipCard from '@/components/afiliacion/FlipCard'
    
 
    export default {

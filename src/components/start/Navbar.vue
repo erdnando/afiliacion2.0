@@ -4,22 +4,22 @@
 
           <v-toolbar-side-icon  v-if="isLogged"  class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
           <v-toolbar-title class="text-uppercase grey--text">
-              <span class="font-weight-light">Afiliacion</span>
+              <span class="font-weight-light">Fintech</span>
               <span>2.0</span>
           </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
           <v-btn  flat color="grey">
-             <span>Login</span>
+             <span>Admin</span>
              <v-icon right>exit_to_app</v-icon>
           </v-btn>
         </v-toolbar>
 
         <!-- Left menu aka drawer   temporary-->
-        <v-navigation-drawer   v-model="drawer"   app class="indigo">
+        <!-- <v-navigation-drawer   v-model="drawer"   app class="indigo">
             <br/>
-            <!-- datos del promotor-->
+            
              <v-list class="pa-1">
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
@@ -32,7 +32,7 @@
                 </v-list-tile>
             </v-list>
     
-             <!-- modulos-->
+             
             <v-list class="pt-0" dense>
                 <v-divider></v-divider>
                
@@ -47,7 +47,7 @@
                 </v-list-tile>
             </v-list>
 
-        </v-navigation-drawer>
+        </v-navigation-drawer> -->
 
 
 
@@ -60,7 +60,7 @@ export default {
     data(){
         return{
             drawer:false,
-            isLogged:true,
+            isLogged:false,
             promotor:{
                 id:10001,
                 nombre:'Andres Arriaga Jimenez',
