@@ -4,7 +4,7 @@
     <v-content class="" style=" min-width: 480px;" >   <!-- "mx-4 mb-4 my-3" -->
     
       <router-view></router-view>
-      
+
     </v-content>
   </v-app>
 </template>
@@ -14,13 +14,12 @@
 
 import Navbar from '@/components/start/Navbar'
 
-
 export default {
   name: 'App',
   components:{Navbar},
   data () {
     return {
-      //
+     
     }
   }
 }

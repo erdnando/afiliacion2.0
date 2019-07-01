@@ -26,13 +26,13 @@ export default {
   name: 'FlipCard',
   methods:{
     giraTrue(){
-      console.log('visible');
+     // console.log('visible');
        this.pdfVisivilidad = 'visible';
        this.flipped=true;
       //bus.giraTarjetaBusqueda(true);
     },
      giraFalse(){
-       console.log('invisible');
+      // console.log('invisible');
         this.pdfVisivilidad = 'collapse';
         this.flipped=false
         //aqui
@@ -47,8 +47,9 @@ export default {
     };
   },
   created(){
-      bus.$on('giraFlipCard',(valor)=>{
-            console.log("enviando a girar.....");
+      bus.$on('giraFlipCard',()=>{
+        
+           // console.log("enviando a girar.....");
             this.giraTrue();
 
         })

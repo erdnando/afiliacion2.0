@@ -26,20 +26,20 @@ import LandingPage from '@/components/start/LandingPage'
       return{
         publicPath: process.env.BASE_URL,
         solucionesArr: [
-          {id:1 ,color:'green', name: 'Afiliación', tag: "Onboarding digital",ruta:'/fintech/afiliacion'},
-          {id:2 ,color:'green', name: 'Self-service', tag: "Tramitalo tu mismo",ruta:'/fintech/self-service'},
-          {id:3 ,color:'green', name: 'Krece B2B', tag: "Crowfounding",ruta:'/fintech/krece'},
-          {id:4 ,color:'green', name: 'MaaS 360', tag: "Onboarding digital",ruta:'/fintech/maas'},
-          {id:5 ,color:'warning', name: 'Home Banking', tag: "Tu Banca en internet",ruta:'/fintech/hb'},
-          {id:6 ,color:'warning', name: 'Mobile Banking', tag: "Télefono inteligente",ruta:'/fintech/mobile-banking'},
-          {id:7 ,color:'warning', name: 'Tu Wallet', tag: "Tus pagos, tus servicios",ruta:'/fintech/wallet'},
+          {id:1 ,logo:'img.png',color:'green', name: 'Afiliación', tag: "Onboarding digital",ruta:'/fintech/afiliacion'},
+          {id:2 ,logo:'img.png',color:'green', name: 'Self-service', tag: "Tramitalo tu mismo",ruta:'/fintech/self-service'},
+          {id:3 ,logo:'img.png',color:'green', name: 'Krece B2B', tag: "Crowfounding",ruta:'/fintech/krece'},
+          {id:4 ,logo:'img.png',color:'green', name: 'MaaS 360', tag: "Onboarding digital",ruta:'/fintech/maas'},
+          {id:5 ,logo:'img.png',color:'warning', name: 'Home Banking', tag: "Tu Banca en internet",ruta:'/fintech/hb'},
+          {id:6 ,logo:'img.png',color:'warning', name: 'Mobile Banking', tag: "Télefono inteligente",ruta:'/fintech/mobile-banking'},
+          {id:7 ,logo:'img.png',color:'warning', name: 'Tu Wallet', tag: "Tus pagos, tus servicios",ruta:'/fintech/wallet'},
         ],
         apisComponentsArr: [
-          {id:1 ,color:'green', name: 'OCR', tag: "Data extraction customed",ruta:'/fintech/ocr'},
-          {id:2 ,color:'green', name: 'Digital Docs', tag: "Desing it & use it",ruta:'/fintech/digital-docs'},
-          {id:3 ,color:'warning', name: 'Soft token', tag: "Simple soft token",ruta:'/fintech/soft-token'},
-          {id:4 ,color:'error', name: 'One ring', tag: "Reference phone numbers",ruta:'/fintech/one-ring'},
-          {id:5 ,color:'success', name: 'Cognitive', tag: "Chat & phone",ruta:'/fintech/cognitive'}
+          {id:1,logo:'img.png' ,color:'green', name: 'OCR', tag: "Data extraction customed",ruta:'/fintech/ocr'},
+          {id:2,logo:'img.png' ,color:'green', name: 'Digital Docs', tag: "Desing it & use it",ruta:'/fintech/digital-docs'},
+          {id:3,logo:'img.png' ,color:'warning', name: 'Soft token', tag: "Simple soft token",ruta:'/fintech/soft-token'},
+          {id:4,logo:'img.png' ,color:'error', name: 'One ring', tag: "Reference phone numbers",ruta:'/fintech/one-ring'},
+          {id:5,logo:'img.png' ,color:'success', name: 'Cognitive', tag: "Chat & phone",ruta:'/fintech/cognitive'}
         ],
       }
     },

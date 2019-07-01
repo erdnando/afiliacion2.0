@@ -4,14 +4,14 @@
     <div class="card-carousel--nav__left" @click="moveCarousel(-1)" :disabled="atHeadOfList"></div>
     <div class="card-carousel">
       <div class="card-carousel--overflow-container">
-        <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
-          <div class="card-carousel--card cardx " v-for="item in items" :key="item.id"  >
-            <img src="https://placehold.it/200x200"/>
-            <div class="card-carousel--card--footer">
+        <div  class="card-carousel-cards"  :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
+          <div class="card-carousel--card "  v-for="item in items" :key="item.id" style="box-shadow: 0 0 11px rgba(33, 33, 33, 0.5)" >
+            <img  src="https://placehold.it/200x200"/>
+            <div v-ripple class="card-carousel--card--footer">
               <p>{{ item.name }}</p>
                <v-layout row>
-                <v-flex grow pa-0>
-                   <p style="font-size: 10px;height:39px;width:67px;padding:0px!important">{{ item.tag }}</p>
+                <v-flex  grow pa-0>
+                   <p  style="font-size: 10px;height:39px;width:67px;padding:0px!important">{{ item.tag }}</p>
                 </v-flex>
                 <v-flex shrink  pa-0>
                   <v-btn small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
@@ -202,7 +202,7 @@ body {
   color: #42b883;
 } */
 .cardx:hover, article.media-wrap:hover {
-  box-shadow: 0 0 20px rgba(33, 33, 33, 0.5);
+  box-shadow: 0 0 20px rgba(33, 33, 33, 0.5)!important;
   border-radius: 5px;
   
 }

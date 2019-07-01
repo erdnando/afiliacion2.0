@@ -4,6 +4,7 @@
       <div  class="column card" v-for="solicitud in solicitudes" :key="solicitud.account" style="margin-top: 5px;">
         <!-- <v-flex xs12 sm12 md12 lg12 xl12 >height:55px; -->
             <v-card style=" -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">
+           <div v-ripple>
             <v-layout >
                 <v-card-media>
                     <v-img style="margin:5px;width:50px;" :src="solicitud.foto"></v-img>                  
@@ -35,7 +36,8 @@
 
                 </v-card-title>
                 
-            </v-layout>            
+            </v-layout> 
+            </div>
             </v-card>
         <!-- </v-flex> -->
     </div>

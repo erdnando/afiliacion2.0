@@ -60,7 +60,7 @@
                       <!-- solo en vista pequeña -->
                       <v-card v-bind:height="maxHeightPDF" v-bind:width="maxWidthPDF"  >
                         <v-card-title></v-card-title>
-                              <iframe v-bind:src="urlPDF" class="framePDF" ></iframe>
+                              <iframe v-bind:src="urlPDF" class="framePDF" :onload="docLoaded('link')" ></iframe>
                         <v-card-text>
                           </v-card-text>
                       </v-card>
@@ -111,7 +111,7 @@
 <script>
    import axios from "axios";
    import FlipCard from '@/components/afiliacion/FlipCard'
-   import {bus} from '../../main.js'
+   import {bus} from '../../main.js';
 
    export default {
      components: {
@@ -163,31 +163,32 @@
     }
   },
     methods:{
-        verPDF(path, id) {
-
+          docLoaded(arg){
+            console.log("archivo cargado...");
+            if(arg == 'link'){
+              setTimeout(function(){ bus.$emit('afiliacion.loading.end',''); }, 2000);
+              
+            }
+          },
+          verPDF(path, id) {
+          bus.$emit('afiliacion.loading.ini','');
           if(path.startsWith('Motor de')){
                 this.resultSearching[id].visitado = true;
                 this.indiceResultado = id;
                 this.ispdfVisible = true;
                 this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/0.pdf";
+                //bus.$emit('afiliacion.loading.end','');
                 return;
             }
-
-          //console.log('url--->'+path);
             this.resultSearching[id].visitado = true;
-            // let visitado = this.resultSearching[id].visitado = !this.resultSearching[id].visitado;
-
             this.indiceResultado = id;
             var armUrl = path.split("\\");
             this.ispdfVisible = true;
             this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
             console.log(this.urlPDF);
-            //this.onResize();
             //emit para q se gire
             bus.$emit('giraFlipCard', "ok" );
-
-
-
+            //bus.$emit('afiliacion.loading.end','');
           },
           onResize() {
             //let resolucionPrimaria = window.innerHeight;
@@ -231,7 +232,7 @@
             */
           },
           realizarConsulta() {
-            
+            bus.$emit('afiliacion.loading.ini','');
             this.resultServer = [];
             this.resultSearching = [];
 
@@ -255,20 +256,22 @@
       /*"http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
                     this.inputSearch.trim() +
                     "&q=*%3A*"*/
-      
-            setTimeout(() => {
-              axios
-                .get(
-                  "https://sminet.com.mx/Digital.Docs.Service/Service1.svc/API/select/" + this.inputSearch.trim() ,
-                  {
-                    headers: {}
-                  }
-                )
-                .then(respuesta => {
-                  return respuesta.data.response.docs;
-                })
-                .then(respuestaJson => {
-                  let indice = 0;
+                    
+            this.getSolRResults(this.inputSearch.trim());
+
+            
+
+
+
+    },
+    async getSolRResults(inputSearch){
+
+        try{
+          
+          let datos = await axios.get("https://sminet.com.mx/Digital.Docs.Service/Service1.svc/API/select/"+ inputSearch);
+          console.log(datos.data.response.docs);
+          var respuestaJson= datos.data.response.docs;
+           let indice = 0;
                   for (let id in respuestaJson) {
                     let resp = {
                       id: indice++,
@@ -283,17 +286,16 @@
 
                     this.resultSearching.push(resp);
                   }
-                })
-                .catch(error => {
-                  console.log(error);
-                  this.$emit("update:dialogm", false);
-                  window.getApp.$emit("SERVICE_ERROR");
-                })
-                .finally(() => {
-                  //this.$root.$dialogLoader.hide();
-                });
-            }, 2000);
+          }catch(error){
+            console.log('ERR:', error.message)
+          }
+
+        bus.$emit('afiliacion.loading.end','');
+
+
+
     }
+
     }
     
   }

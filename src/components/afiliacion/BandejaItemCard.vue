@@ -5,8 +5,9 @@
       <!-- <v-card> -->
         <!-- <v-container fluid > -->
            <v-layout row wrap> 
-            <v-flex v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="">
-               <v-card style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
+            <v-flex  v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="">
+               <v-card  style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
+               <div v-ripple>
                <v-container fluid grid-list-md style="padding:8px">
                 <v-layout row wrap>
                   <v-flex d-flex xs12 sm6 md4>
@@ -18,7 +19,7 @@
                       <v-flex d-flex >
                          <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                                  <span v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
+                                  <span  v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
                           </template>
                             <span>{{solicitud.nombre}}</span>
                         </v-tooltip>
@@ -38,7 +39,8 @@
                  
                 </v-layout>
                 
-              </v-container>           
+              </v-container>  
+              </div>
               <v-divider  ></v-divider>
                <!-- <v-card>   -->
                 
