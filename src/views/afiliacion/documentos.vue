@@ -57,6 +57,7 @@
                   <!--  back --->
                   <template slot="back">
                     <v-flex xs12 md7  hidden-md-and-up>
+                      <!-- solo en vista pequeña -->
                       <v-card v-bind:height="maxHeightPDF" v-bind:width="maxWidthPDF"  >
                         <v-card-title></v-card-title>
                               <iframe v-bind:src="urlPDF" class="framePDF" ></iframe>
@@ -66,14 +67,8 @@
                   </v-flex>
 
                   <v-flex xs12 md11   hidden-sm-and-down>
-                      <!--<v-card v-bind:height="maxHeightPDF" v-bind:width="maxWidthPDF"  >
-                        <v-card-title></v-card-title>
-                              
-                        <v-card-text>
-                          Search engine powered by Solr
-                          </v-card-text>
-                      </v-card>-->
-<v-card v-bind:key="id" v-for="(element, id) in resultSearching" class="vcardEspacio">
+                    <!-- solo en vista grande -->
+                  <v-card v-bind:key="id" v-for="(element, id) in resultSearching" class="vcardEspacio">
                         <v-card-title class="GoogleTitle">
                                 <span
                                   @click="verPDF(element.path, element.id)"
@@ -92,8 +87,6 @@
                       </v-card>
                       
                   </v-flex>
-
-
                   </template>
                   <!--  back --->
                 </FlipCard>
@@ -101,7 +94,6 @@
 
                 <v-flex xs12 md7  hidden-sm-and-down>
                 <v-card v-bind:height="maxHeightPDF"  >
-                  <!--<v-card-title></v-card-title> -->
                         <iframe v-bind:src="urlPDF" class="framePDF"></iframe>
                   <v-card-text>
                     </v-card-text>
@@ -119,7 +111,7 @@
 <script>
    import axios from "axios";
    import FlipCard from '@/components/afiliacion/FlipCard'
-   
+   import {bus} from '../../main.js'
 
    export default {
      components: {
@@ -191,6 +183,11 @@
             this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
             console.log(this.urlPDF);
             //this.onResize();
+            //emit para q se gire
+            bus.$emit('giraFlipCard', "ok" );
+
+
+
           },
           onResize() {
             //let resolucionPrimaria = window.innerHeight;

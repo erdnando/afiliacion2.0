@@ -8,6 +8,7 @@
         </v-icon>
       </div>
       <div class="back" :style="{'visibility':pdfVisivilidad}">
+        
         <slot name="back" :style="{'visibility':pdfVisivilidad}"></slot>
         <v-icon class="backFlipBtn" v-on:click="giraFalse">
             replay
@@ -19,7 +20,7 @@
 
 <script>
 
-//import {bus} from '@/main.js'
+import {bus} from '../../main.js'
 
 export default {
   name: 'FlipCard',
@@ -27,13 +28,15 @@ export default {
     giraTrue(){
       console.log('visible');
        this.pdfVisivilidad = 'visible';
-       this.flipped=true
+       this.flipped=true;
       //bus.giraTarjetaBusqueda(true);
     },
      giraFalse(){
        console.log('invisible');
         this.pdfVisivilidad = 'collapse';
         this.flipped=false
+        //aqui
+       // console.log("aqui es donde debe lanzarse el click que gire");
       //bus.giraTarjetaBusqueda(false);
     }
   },
@@ -42,7 +45,14 @@ export default {
         flipped: false,
         pdfVisivilidad:'collapse'
     };
-  }
+  },
+  created(){
+      bus.$on('giraFlipCard',(valor)=>{
+            console.log("enviando a girar.....");
+            this.giraTrue();
+
+        })
+    }
 };
 </script>
 

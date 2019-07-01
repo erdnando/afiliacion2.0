@@ -5,7 +5,7 @@
     <div class="card-carousel">
       <div class="card-carousel--overflow-container">
         <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
-          <div class="card-carousel--card cardx" v-for="item in items" :key="item.id" >
+          <div class="card-carousel--card cardx " v-for="item in items" :key="item.id"  >
             <img src="https://placehold.it/200x200"/>
             <div class="card-carousel--card--footer">
               <p>{{ item.name }}</p>
@@ -14,7 +14,7 @@
                    <p style="font-size: 10px;height:39px;width:67px;padding:0px!important">{{ item.tag }}</p>
                 </v-flex>
                 <v-flex shrink  pa-0>
-                  <v-btn  small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
+                  <v-btn small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
                 </v-flex>
               </v-layout>
             </div>
@@ -36,18 +36,10 @@
     return {
       currentOffset: 0,
       windowSize: 2,
-      paginationFactor: 220,
-      items: [
-        {id:1 ,color:'green', name: 'Afiliación', tag: "Onboarding digital",ruta:'/fintech/afiliacion'},
-        {id:2 ,color:'green', name: 'Self-service', tag: "Tramitalo tu mismo",ruta:'/fintech/self-service'},
-        {id:3 ,color:'green', name: 'Krece B2B', tag: "Crowfounding",ruta:'/fintech/krece'},
-        {id:4 ,color:'green', name: 'MaaS 360', tag: "Onboarding digital",ruta:'/fintech/maas'},
-        {id:5 ,color:'warning', name: 'Home Banking', tag: "Tu Banca en internet",ruta:'/fintech/hb'},
-        {id:6 ,color:'warning', name: 'Mobile Banking', tag: "Télefono inteligente",ruta:'/fintech/mobile-banking'},
-        {id:7 ,color:'warning', name: 'Tu Wallet', tag: "Tus pagos, tus servicios",ruta:'/fintech/wallet'},
-      ]
+      paginationFactor: 220
     }
   },
+  props:['items'],
   computed: {
     atEndOfList() {
       return this.currentOffset <= (this.paginationFactor * -1) * (this.items.length - this.windowSize);
