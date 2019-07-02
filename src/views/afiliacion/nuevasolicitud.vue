@@ -4,21 +4,22 @@
 
  <v-layout justify-center>
     <v-flex xs12 sm12>
-           <v-layout row wrap style="-webkit-box-pack:center;justify-content:center;margin-top: 0px;"> 
+           <v-layout row wrap style="-webkit-box-pack:center;justify-content:center;margin-top: 40px;"> 
             <v-flex  v-for="etapa in etapas" :key="etapa.id" xs6 md3 lg2 xl1 class="card" style="margin-left: 8px;max-width: 160px;">
 
               <v-hover >
                 <v-card slot-scope="{hover}" class="mx-auto" color="grey lighten-4"  max-width="160" >
                   <v-img :aspect-ratio="2/2" src="https://cdn.vuetifyjs.com/images/cards/kitchen.png">
                     <v-expand-transition>
-                      <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text" style="height: 100%;">
-                        $14.99
+                      <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal headline white--text" 
+                      style="height: 100%;">
+                        {{etapa.nombre}}
                       </div>
                     </v-expand-transition>
                   </v-img>
                   <v-card-text class="pt-5" style="position: relative;">
-                    <v-btn absolute color="orange" class="body-1 white--text" fab large right top>
-                      iniciar
+                    <v-btn @click="s_solicitud=true"  :disabled="etapa.disabled" absolute color="orange" class="body-1 white--text" fab large right top>
+                      {{etapa.iniciarContinuar}}
                     </v-btn>
                     <div class="subheading font-weight-medium black--text  mb-2" style="text-align: -webkit-center;margin-top: -13px;">{{etapa.nombre}}</div>
                     <h3 class="title font-weight-medium orange--text mb-2 "  style="text-align: -webkit-center;">{{etapa.value}}%</h3>
@@ -29,61 +30,69 @@
                   </v-card-text>
                 </v-card>
               </v-hover>
-               <!-- <v-card  style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
-               <div v-ripple>
-               <v-container fluid grid-list-md style="padding:8px">
-                <v-layout row wrap>
-                  <v-flex d-flex xs12 sm6 md4>
-                     <v-img  :src="solicitud.foto" height="80px" width="auto"></v-img>
-                  </v-flex>
-                  <v-flex d-flex xs12 sm6 md8>
-                    <v-layout row wrap>
-                      <v-flex d-flex >
-                         <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                                  <span  v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
-                          </template>
-                            <span>{{solicitud.nombre}}</span>
-                        </v-tooltip>
-                      </v-flex>
-                      <v-flex d-flex>
-                         <span class="caption black--text" v-text="solicitud.account"></span>
-                      </v-flex>
-                      <v-flex d-flex>
-                         <span class="caption black--text font-weight-medium" v-text="solicitud.expediente"></span>
-                      </v-flex>
-                      <v-flex d-flex>
-                         <span class="caption black--text" v-text="solicitud.estatus"></span>
-                      </v-flex>
-
-                    </v-layout>
-                  </v-flex>
-                 
-                </v-layout>
-                
-              </v-container>  
-              </div>
-              <v-divider  ></v-divider>
-                
-                <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
-                  <v-spacer></v-spacer>
-                  
-                  <v-btn icon>
-                    <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
-                  </v-btn>
-                  <v-btn icon>
-                    <v-icon>folder_shared</v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </v-card> -->
+              
             </v-flex>
            </v-layout> 
     </v-flex>
   </v-layout>
-
-
-
-
+ 
+<solicitud v-bind:open="s_solicitud"></solicitud>
+<!-- 
+<v-layout row justify-center>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Solicitud</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md4>
+                <v-text-field label="Legal first name*" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field
+                  label="Legal last name*"
+                  hint="example of persistent helper text"
+                  persistent-hint
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Email*" required></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Password*" type="password" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-select
+                  :items="['0-17', '18-29', '30-54', '54+']"
+                  label="Age*"
+                  required
+                ></v-select>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-autocomplete
+                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  label="Interests"
+                  multiple
+                ></v-autocomplete>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout> -->
 
 
 
@@ -100,20 +109,27 @@
 </template>
 
 <script>
+import {bus} from '../../main.js'
+import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
+
    export default {
+      components: {
+    Solicitud
+    },
     data () {
       return {
         currentOffset: 0,
         windowSize: 0,
         paginationFactor: 0,
+        s_solicitud: false,
         etapas:[
-                  {id:1,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:2,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:3,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:4,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:5,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:6,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:7,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
+                  {id:1,iniciarContinuar:'INICIAR', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:2,iniciarContinuar:'INICIAR', disabled:false,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:3,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:4,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:5,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:6,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:7,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
                     ],
         solicitudes: [
             {
@@ -176,18 +192,22 @@
       }
     },
     methods:{
-      cutName(nombre){
-        if(nombre.trim().length>18)
-         return nombre.substring(0,19)+"...";
-         else return nombre;
-      },
-      setIcon(estatus){
-        if(estatus=='Aprobado'){
-          return 'thumb_up_alt';
-        }else{
-          return 'thumb_down_alt';
-        }
-      }
+     
+    },
+    created(){
+    
+        bus.$on('afiliacion.newSol.closeWindow',(idWin, porcentaje)=>{
+           switch(idWin){
+             
+             case 0: {this.s_solicitud=false;
+                      console.log("Cerrando:"+idWin + "Porcentaje:"+porcentaje);
+                      this.etapas[idWin].value=porcentaje;
+                      break;
+                      }
+           }
+        });
+
+        
     }
     
   }
