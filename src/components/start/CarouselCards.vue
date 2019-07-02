@@ -1,5 +1,6 @@
 <template >
   <div class="CarouselCards" >
+    
     <div class="card-carousel-wrapper">
     <div class="card-carousel--nav__left" @click="moveCarousel(-1)" :disabled="atHeadOfList"></div>
     <div class="card-carousel">

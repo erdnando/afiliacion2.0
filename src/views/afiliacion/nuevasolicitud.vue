@@ -1,22 +1,343 @@
 <template >
   <div class="nuevasolicitud">
    
-    <h1 class="subheading grey--text">Nueva solicitud</h1>
-     <v-container fluid class="my-2">
-     contenido
-    </v-container>
 
+ <v-layout justify-center>
+    <v-flex xs12 sm12>
+           <v-layout row wrap style="-webkit-box-pack:center;justify-content:center;margin-top: 0px;"> 
+            <v-flex  v-for="etapa in etapas" :key="etapa.id" xs6 md3 lg2 xl1 class="card" style="margin-left: 8px;max-width: 160px;">
+
+              <v-hover >
+                <v-card slot-scope="{hover}" class="mx-auto" color="grey lighten-4"  max-width="160" >
+                  <v-img :aspect-ratio="2/2" src="https://cdn.vuetifyjs.com/images/cards/kitchen.png">
+                    <v-expand-transition>
+                      <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text" style="height: 100%;">
+                        $14.99
+                      </div>
+                    </v-expand-transition>
+                  </v-img>
+                  <v-card-text class="pt-5" style="position: relative;">
+                    <v-btn absolute color="orange" class="body-1 white--text" fab large right top>
+                      iniciar
+                    </v-btn>
+                    <div class="subheading font-weight-medium black--text  mb-2" style="text-align: -webkit-center;margin-top: -13px;">{{etapa.nombre}}</div>
+                    <h3 class="title font-weight-medium orange--text mb-2 "  style="text-align: -webkit-center;">{{etapa.value}}%</h3>
+                    <div class="subheading font-weight-light  mb-2">
+                        <v-progress-linear v-bind:background-color=etapa.barra color="#f5f5f5 " v-model="etapa.value" :active="etapa.show" 
+                        :indeterminate="etapa.query" :query="true"></v-progress-linear>
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-hover>
+               <!-- <v-card  style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
+               <div v-ripple>
+               <v-container fluid grid-list-md style="padding:8px">
+                <v-layout row wrap>
+                  <v-flex d-flex xs12 sm6 md4>
+                     <v-img  :src="solicitud.foto" height="80px" width="auto"></v-img>
+                  </v-flex>
+                  <v-flex d-flex xs12 sm6 md8>
+                    <v-layout row wrap>
+                      <v-flex d-flex >
+                         <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                                  <span  v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
+                          </template>
+                            <span>{{solicitud.nombre}}</span>
+                        </v-tooltip>
+                      </v-flex>
+                      <v-flex d-flex>
+                         <span class="caption black--text" v-text="solicitud.account"></span>
+                      </v-flex>
+                      <v-flex d-flex>
+                         <span class="caption black--text font-weight-medium" v-text="solicitud.expediente"></span>
+                      </v-flex>
+                      <v-flex d-flex>
+                         <span class="caption black--text" v-text="solicitud.estatus"></span>
+                      </v-flex>
+
+                    </v-layout>
+                  </v-flex>
+                 
+                </v-layout>
+                
+              </v-container>  
+              </div>
+              <v-divider  ></v-divider>
+                
+                <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
+                  <v-spacer></v-spacer>
+                  
+                  <v-btn icon>
+                    <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
+                  </v-btn>
+                  <v-btn icon>
+                    <v-icon>folder_shared</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card> -->
+            </v-flex>
+           </v-layout> 
+    </v-flex>
+  </v-layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
   </div>
 </template>
 
 <script>
    export default {
-    
+    data () {
+      return {
+        currentOffset: 0,
+        windowSize: 0,
+        paginationFactor: 0,
+        etapas:[
+                  {id:1,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:2,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:3,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:4,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:5,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:6,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:7,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
+                    ],
+        solicitudes: [
+            {
+                account:100001,
+                foto:'http://lorempixel.com/130/140/',
+                nombre:'Erdnando Rodriguez Vargas',
+                estatus:'Aprobado',
+                expediente:'F0000432',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100002,
+                foto:'http://lorempixel.com/130/130/',
+                nombre:'Andrea Jimenez Mendez',
+                estatus:'Aprobado',
+                expediente:'F0000401',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100003,
+                foto:'http://lorempixel.com/130/140/',
+                nombre:'Israel Torres Fernandez',
+                estatus:'Rechazado',
+                expediente:'F0000411',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100004,
+                foto:'http://lorempixel.com/130/130/',
+                nombre:'Joaquin Jimenez Flores',
+                estatus:'Aprobado',
+                expediente:'F0000400',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100005,
+                foto:'http://lorempixel.com/130/140/',
+                nombre:'Javier Hernandez gomez',
+                estatus:'Aprobado',
+                expediente:'F0000226',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100006,
+                foto:'http://lorempixel.com/130/130/',
+                nombre:'Mirella Sandoval Hernandez',
+                estatus:'Aprobado',
+                expediente:'F0000417',
+                collectionViewUrl:'url'
+               },
+               {
+                account:100007,
+                foto:'http://lorempixel.com/130/130/',
+                nombre:'Laura Sanchez Hernandez',
+                estatus:'Aprobado',
+                expediente:'F0000418',
+                collectionViewUrl:'url'
+               }
+        ]
+      }
+    },
+    methods:{
+      cutName(nombre){
+        if(nombre.trim().length>18)
+         return nombre.substring(0,19)+"...";
+         else return nombre;
+      },
+      setIcon(estatus){
+        if(estatus=='Aprobado'){
+          return 'thumb_up_alt';
+        }else{
+          return 'thumb_down_alt';
+        }
+      }
+    }
     
   }
 </script>
 
-<style>
+<style scoped>
 
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+}
+
+
+.card-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 40px;
+  color: #666a73;
+}
+
+.card-carousel {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+.card-carousel--overflow-container {
+  overflow: hidden;
+}
+.card-carousel--nav__left, .card-carousel--nav__right {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-top: 2px solid #42b883;
+  border-right: 2px solid #42b883;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: transform 150ms linear;
+}
+.card-carousel--nav__left[disabled], .card-carousel--nav__right[disabled] {
+  opacity: 0.2;
+  border-color: black;
+}
+.card-carousel--nav__left {
+  transform: rotate(-135deg);
+}
+.card-carousel--nav__left:active {
+  transform: rotate(-135deg) scale(0.9);
+}
+.card-carousel--nav__right {
+  transform: rotate(45deg);
+}
+.card-carousel--nav__right:active {
+  transform: rotate(45deg) scale(0.9);
+}
+
+.card-carousel-cards {
+  display: flex;
+  transition: transform 150ms ease-out;
+  transform: translatex(0px);
+}
+.card-carousel-cards .card-carousel--card {
+  margin: 0 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px 0 rgba(40, 44, 53, 0.06), 0 2px 2px 0 rgba(40, 44, 53, 0.08);
+  background-color: #fff;
+  border-radius: 4px;
+  z-index: 3;
+  margin-bottom: 2px;
+}
+.card-carousel-cards .card-carousel--card:first-child {
+  margin-left: 0;
+}
+.card-carousel-cards .card-carousel--card:last-child {
+  margin-right: 0;
+}
+.card-carousel-cards .card-carousel--card img {
+  vertical-align: bottom;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  transition: opacity 150ms linear;
+  user-select: none;
+}
+.card-carousel-cards .card-carousel--card img:hover {
+  opacity: 0.5;
+}
+.card-carousel-cards .card-carousel--card--footer {
+  border-top: 0;
+  padding: 7px 15px;
+}
+.card-carousel-cards .card-carousel--card--footer p {
+  padding: 3px 0;
+  margin: 0;
+  margin-bottom: 2px;
+  font-size: 19px;
+  font-weight: 500;
+  color: #2c3e50;
+  user-select: none;
+}
+.card-carousel-cards .card-carousel--card--footer p:nth-of-type(2) {
+  font-size: 12px;
+  font-weight: 300;
+  padding: 6px;
+  background: rgba(40, 44, 53, 0.06);
+  display: inline-block;
+  position: relative;
+  margin-left: 4px;
+  color: #666a73;
+}
+.card-carousel-cards .card-carousel--card--footer p:nth-of-type(2):before {
+  content: "";
+  float: left;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-color: transparent rgba(40, 44, 53, 0.06) transparent transparent;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+}
+.card-carousel-cards .card-carousel--card--footer p:nth-of-type(2):after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: -1px;
+  float: left;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: white;
+  box-shadow: -0px -0px 0px #004977;
+}
+
+/* h1 {
+  font-size: 3.6em;
+  font-weight: 100;
+  text-align: center;
+  margin-bottom: 0;
+  color: #42b883;
+} */
+.cardx:hover, article.media-wrap:hover {
+  box-shadow: 0 0 20px rgba(33, 33, 33, 0.5)!important;
+  border-radius: 5px;
+  
+}
 </style>

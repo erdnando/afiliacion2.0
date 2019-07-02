@@ -2,8 +2,6 @@
   <div class="BandejaItemCard"  >
      <v-layout justify-center>
     <v-flex xs12 sm12>
-      <!-- <v-card> -->
-        <!-- <v-container fluid > -->
            <v-layout row wrap> 
             <v-flex  v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="">
                <v-card  style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
@@ -42,7 +40,6 @@
               </v-container>  
               </div>
               <v-divider  ></v-divider>
-               <!-- <v-card>   -->
                 
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
@@ -53,15 +50,10 @@
                   <v-btn icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
-                  <!-- <v-btn icon>
-                    <v-icon>share</v-icon>
-                  </v-btn> -->
                 </v-card-actions>
               </v-card>
             </v-flex>
            </v-layout> 
-        <!-- </v-container> -->
-      <!-- </v-card> -->
     </v-flex>
   </v-layout>
   
