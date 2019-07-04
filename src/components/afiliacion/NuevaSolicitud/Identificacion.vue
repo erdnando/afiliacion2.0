@@ -1,17 +1,42 @@
 <template >
   <div class="Identificacion">
 
+
+
+
     <v-layout row  justify-center>
+
+
+
+
+
     <v-dialog v-model="open" persistent max-width="900" >
+
+      <button @click="upload">Upload</button>
+                <image-compressor
+                  :done="getFiles"
+                  :scale="scale"
+                  :quality="quality">
+                </image-compressor>
+                <div class="text-center" v-if="img">
+                <img v-if="img"  alt="" :src="img">
+                </div>
+
+
+
       <v-card  >
         <v-card-title>
-          <span class="headline">Identificacion</span>
+          <span class="headline">Card ID</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
 
-              <v-flex xs12 sm6 md4>
+        
+                
+          
+              
+              <!-- <v-flex xs12 sm6 md4>
                 <v-text-field label="Creation date*" required v-model="fechaCreacion"></v-text-field>
               </v-flex>
 
@@ -30,7 +55,7 @@
 
              <v-flex xs12 sm6 md4>
                 <v-text-field label="Store*" hint="The store with the most sales in the month" v-model="objSolicitud.tienda"></v-text-field>
-              </v-flex>
+              </v-flex> -->
 
             </v-layout>
           </v-container>
@@ -38,7 +63,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="save(1)">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="close(1)">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="save(1)">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -50,19 +75,24 @@
 
 <script>
 import {bus} from '../../../main.js'
+ import imageCompressor from 'vue-image-compressor'
 
    export default {
+       components: {
+        imageCompressor
+    },
      props:['open'],
      data(){
        return{
           objSolicitud:{
             avance:0,
-            origen:'Store',
-            promotor:'Admin',
-            tienda:'Roma',
-            fechaSolicitud:'',
             color:'orange'
-          }
+          },
+          img: "",
+          scale: 100,
+          quality: 50,
+          originalSize: true,
+          original: {},
        }
      },
      computed:{
@@ -80,6 +110,7 @@ import {bus} from '../../../main.js'
       save(idWin){
         this.objSolicitud.fechaSolicitud=this.fechaCreacion;
         var porcentaje=0;
+
         if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
         if(this.objSolicitud.origen.toString().length>0)porcentaje+=25;
         if(this.objSolicitud.promotor.toString().length>0)porcentaje+=25;
@@ -92,15 +123,56 @@ import {bus} from '../../../main.js'
         else this.objSolicitud.color='orange';
 
         bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+      },
+      close(idWin){
+        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+      },
+      upload () {
+        console.log("en upload");
+       
+
+        let compressor = this.$refs.compressor.$el;
+        compressor.click()
+      },
+      getFiles(obj){
+        console.log("en getfiles");
+       
+        this.img = obj.compressed.blob
+         console.log(this.img);
+        this.original = obj.original
+        this.compressed = obj.compressed
       }
     },
   
   }
 </script>
 
-<style>
+<style scoped>
 .v-dialog {
     position: absolute;
     top: 120px;
+}
+
+#fileInput {
+  display: none;
+}
+h1,
+h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+.my-8 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 </style>

@@ -153,6 +153,15 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
        if(idForm==5)this.s_documentos=true;
        if(idForm==6)this.s_refTelefonicas=true;
        if(idForm==7)this.s_complementarios=true;
+     },
+     hideSteps(){
+           this.s_solicitud=false;
+           this.s_identificacion=false;
+           this.s_personales=false
+           this.s_autorizo=false;
+           this.s_documentos=false;
+           this.s_refTelefonicas=false;
+           this.s_complementarios=false;
      }
     },
     created(){
@@ -175,21 +184,13 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
              }catch{}
            }
            
-           this.s_solicitud=false;
-           this.s_identificacion=false;
-           this.s_personales=false
-           this.s_autorizo=false;
-           this.s_documentos=false;
-           this.s_refTelefonicas=false;
-           this.s_complementarios=false;
+           this.hideSteps();
 
            var countTotal=0;
            for(var i=0;i<this.etapas.length;i++){
-            // console.log("i"+i+":"+this.etapas[i].form.avance);
              countTotal+= parseInt(this.etapas[i].form.avance);
            }
 
-            //console.log("countTotal:"+countTotal);
            if(countTotal>=this.etapas.length*100){
                 //console.log("proceso terminado..");
                 alert("Proceso terminado!");
@@ -197,7 +198,10 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
            //todo
            //validate if all are completed and show the final operation that interate with core
         });
+        bus.$on('afiliacion.newSol.closeForm',()=>{
+              this.hideSteps();
 
+        });
         
     }
     

@@ -38,7 +38,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="save(2)">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="close(2)">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="save(2)">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -93,6 +93,9 @@ import {bus} from '../../../main.js'
         else this.objSolicitud.color='orange';
 
         bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+      },
+      close(idWin){
+        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
       }
     },
   
