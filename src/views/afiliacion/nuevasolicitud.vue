@@ -11,20 +11,20 @@
                 <v-card slot-scope="{hover}" class="mx-auto" color="grey lighten-4"  max-width="160" >
                   <v-img :aspect-ratio="2/2" src="https://cdn.vuetifyjs.com/images/cards/kitchen.png">
                     <v-expand-transition>
-                      <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal headline white--text" 
+                      <div v-if="hover" v-bind:style="{ background: etapa.form.color }" class="d-flex transition-fast-in-fast-out  darken-2 v-card--reveal headline white--text" 
                       style="height: 100%;">
                         {{etapa.nombre}}
                       </div>
                     </v-expand-transition>
                   </v-img>
                   <v-card-text class="pt-5" style="position: relative;">
-                    <v-btn @click="s_solicitud=true"  :disabled="etapa.disabled" absolute color="orange" class="body-1 white--text" fab large right top>
+                    <v-btn  @click="s_solicitud=true"  :disabled="etapa.disabled" absolute v-bind:color="etapa.form.color" class="body-1 white--text" fab large right top>
                       {{etapa.iniciarContinuar}}
                     </v-btn>
                     <div class="subheading font-weight-medium black--text  mb-2" style="text-align: -webkit-center;margin-top: -13px;">{{etapa.nombre}}</div>
-                    <h3 class="title font-weight-medium orange--text mb-2 "  style="text-align: -webkit-center;">{{etapa.value}}%</h3>
+                    <h3 v-bind:style="{ color: etapa.form.color }" class="title font-weight-medium  mb-2 "  style="text-align: -webkit-center;">{{etapa.form.avance}}%</h3>
                     <div class="subheading font-weight-light  mb-2">
-                        <v-progress-linear v-bind:background-color=etapa.barra color="#f5f5f5 " v-model="etapa.value" :active="etapa.show" 
+                        <v-progress-linear v-bind:background-color=etapa.barra color="green " v-model="etapa.form.avance" :active="etapa.show" 
                         :indeterminate="etapa.query" :query="true"></v-progress-linear>
                     </div>
                   </v-card-text>
@@ -57,13 +57,13 @@ import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
         paginationFactor: 0,
         s_solicitud: false,
         etapas:[
-                  {id:1,iniciarContinuar:'INICIAR', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:2,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:3,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:4,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:5,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:6,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:7,iniciarContinuar:'INICIAR', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
+                  {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:7, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
                     ],
         solicitudes: [
             {
@@ -129,16 +129,9 @@ import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
      
     },
     created(){
-    
-        bus.$on('afiliacion.newSol.closeWindow',(idWin, porcentaje)=>{
-           switch(idWin){
-             
-             case 0: {this.s_solicitud=false;
-                      console.log("Cerrando:"+idWin + "Porcentaje:"+porcentaje);
-                      this.etapas[idWin].value=porcentaje;
-                      break;
-                      }
-           }
+         bus.$on('afiliacion.newSol.setForm',(idWin, objForm)=>{
+           this.etapas[idWin].form = objForm;
+           this.s_solicitud=false;
         });
 
         
