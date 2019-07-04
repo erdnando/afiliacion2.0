@@ -176,12 +176,16 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
            if(objForm.avance==100 && idWin<this.etapas.length-1){
              try{
                 this.etapas[idWin+1].disabled=false;
-             }catch{}
+             }catch(e){
+               console.log(e);
+             }
               
            }else{
              try{
                 this.etapas[idWin+1].disabled=true;
-             }catch{}
+             }catch(e){
+               console.log(e);
+             }
            }
            
            this.hideSteps();

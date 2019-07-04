@@ -112,6 +112,7 @@ export default {
 
         bus.$on('loadDrawer',(userAccediendo)=>{
         //TODO add logic to get modules based in user and app
+        console.log(userAccediendo);
         this.modulos= [
             { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/fintech/afiliacion' },
             { clave:'02' , allow:'rw' , modulo: 'Mis solicitudes', icon: 'library_books',ruta:'/fintech/afiliacion/solicitudes' },
