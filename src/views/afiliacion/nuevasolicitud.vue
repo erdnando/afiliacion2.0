@@ -18,7 +18,7 @@
                     </v-expand-transition>
                   </v-img>
                   <v-card-text class="pt-5" style="position: relative;">
-                    <v-btn  @click="s_solicitud=true"  :disabled="etapa.disabled" absolute v-bind:color="etapa.form.color" class="body-1 white--text" fab large right top>
+                    <v-btn  @click="openForm(etapa.id)"  :disabled="etapa.disabled" absolute v-bind:color="etapa.form.color" class="body-1 white--text" fab large right top>
                       {{etapa.iniciarContinuar}}
                     </v-btn>
                     <div class="subheading font-weight-medium black--text  mb-2" style="text-align: -webkit-center;margin-top: -13px;">{{etapa.nombre}}</div>
@@ -37,6 +37,12 @@
   </v-layout>
  
 <solicitud v-bind:open="s_solicitud"></solicitud>
+<identificacion v-bind:open="s_identificacion"></identificacion>
+<personales v-bind:open="s_personales"></personales>
+<autorizo v-bind:open="s_autorizo"></autorizo>
+<documentos v-bind:open="s_documentos"></documentos>
+<ref-telefonicas v-bind:open="s_refTelefonicas"></ref-telefonicas>
+<complementarios v-bind:open="s_complementarios"></complementarios>
     
 
   </div>
@@ -45,10 +51,16 @@
 <script>
 import {bus} from '../../main.js'
 import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
+import Identificacion from '@/components/afiliacion/NuevaSolicitud/Identificacion'
+import Personales from '@/components/afiliacion/NuevaSolicitud/Personales'
+import Autorizo from '@/components/afiliacion/NuevaSolicitud/Autorizo'
+import Documentos from '@/components/afiliacion/NuevaSolicitud/Documentos'
+import RefTelefonicas from '@/components/afiliacion/NuevaSolicitud/RefTelefonicas'
+import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementarios'
 
    export default {
       components: {
-    Solicitud
+    Solicitud,Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,Complementarios
     },
     data () {
       return {
@@ -56,14 +68,20 @@ import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
         windowSize: 0,
         paginationFactor: 0,
         s_solicitud: false,
+        s_identificacion: false,
+        s_personales: false,
+        s_autorizo: false,
+        s_documentos: false,
+        s_refTelefonicas: false,
+        s_complementarios: false,
         etapas:[
-                  {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:7, form:{'color':'orange','avance':'0'}, iniciarContinuar:'INICIAR', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
+                  {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
+                  {id:7, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
                     ],
         solicitudes: [
             {
@@ -126,12 +144,58 @@ import Solicitud from '@/components/afiliacion/NuevaSolicitud/Solicitud'
       }
     },
     methods:{
-     
+     openForm(idForm){
+       //console.log(idForm);
+       if(idForm==1)this.s_solicitud=true;
+       if(idForm==2)this.s_identificacion=true;
+       if(idForm==3)this.s_personales=true;
+       if(idForm==4)this.s_autorizo=true;
+       if(idForm==5)this.s_documentos=true;
+       if(idForm==6)this.s_refTelefonicas=true;
+       if(idForm==7)this.s_complementarios=true;
+     }
     },
     created(){
          bus.$on('afiliacion.newSol.setForm',(idWin, objForm)=>{
            this.etapas[idWin].form = objForm;
+
+           //console.log("length:"+this.etapas.length+ "  id:"+idWin);
+
+           if(objForm.avance==100)this.etapas[idWin].iniciarContinuar="filled";
+           else this.etapas[idWin].iniciarContinuar="continue";
+
+           if(objForm.avance==100 && idWin<this.etapas.length-1){
+             try{
+                this.etapas[idWin+1].disabled=false;
+             }catch{}
+              
+           }else{
+             try{
+                this.etapas[idWin+1].disabled=true;
+             }catch{}
+           }
+           
            this.s_solicitud=false;
+           this.s_identificacion=false;
+           this.s_personales=false
+           this.s_autorizo=false;
+           this.s_documentos=false;
+           this.s_refTelefonicas=false;
+           this.s_complementarios=false;
+
+           var countTotal=0;
+           for(var i=0;i<this.etapas.length;i++){
+            // console.log("i"+i+":"+this.etapas[i].form.avance);
+             countTotal+= parseInt(this.etapas[i].form.avance);
+           }
+
+            //console.log("countTotal:"+countTotal);
+           if(countTotal>=this.etapas.length*100){
+                //console.log("proceso terminado..");
+                alert("Proceso terminado!");
+             }
+           //todo
+           //validate if all are completed and show the final operation that interate with core
         });
 
         

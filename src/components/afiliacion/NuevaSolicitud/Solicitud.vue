@@ -66,18 +66,27 @@ import {bus} from '../../../main.js'
        }
      },
      computed:{
-       fechaCreacion: function(){
-          var today = new Date();
-          var dd = String(today.getDate()).padStart(2, '0');
-          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-          var yyyy = today.getFullYear();
+       fechaCreacion: {
+          get:function(){
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
 
-          today = mm + '/' + dd + '/' + yyyy;
-          return today;
+            today = mm + '/' + dd + '/' + yyyy;
+            return today;
+         },
+         set: function(newValue){
+              this.fechaSolicitud=newValue;
+         }
+
+         
        }
+
      },
     methods:{
       save(idWin){
+        this.objSolicitud.avance=0;
         this.objSolicitud.fechaSolicitud=this.fechaCreacion;
         var porcentaje=0;
         if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
@@ -89,6 +98,7 @@ import {bus} from '../../../main.js'
         this.objSolicitud.avance=porcentaje;
         
         if(porcentaje>=100) this.objSolicitud.color='green';
+        else this.objSolicitud.color='orange';
 
         bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
       }
