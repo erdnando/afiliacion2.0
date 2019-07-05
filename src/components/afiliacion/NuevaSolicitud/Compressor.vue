@@ -55,8 +55,6 @@
         When Input File has changed
       */
       onChange(e){
-          console.log("on change...");
-          
         // If There's no file choosen
         let file = e.target.files[0]
         
@@ -71,7 +69,6 @@
         this.reader = new FileReader()
         // Convert the file to base64 text
         this.reader.readAsDataURL(this.file)
-        console.log("--->"+this.fileOnLoad);
         // on reader load somthing...
         this.reader.onload = this.fileOnLoad
       },
@@ -80,7 +77,6 @@
         @params {String} imgUrl
       */
       drawImage(imgUrl) {
-          console.log("on draw image...1:::::"+ imgUrl);
         // Recreate Canvas Element
         let canvas = document.createElement('canvas')
         this.canvas = canvas
@@ -89,8 +85,6 @@
         // Create New Image
         let img = new Image()
         img.src = imgUrl
-        console.log(img.src+"...xxx...."+img.height);
-        console.log(img.width+"...xxx...."+img.height);
 
          if(width==0)width=400;
         if(height==0)height=300;
@@ -99,7 +93,6 @@ if(width==0)return;
 
         // Image Size After Scaling
         let scale = parseInt(this.scale) / 100
-        //console.log("scale::::"+scale);
         let width = img.width * scale
         let height = img.height * scale
         // Set Canvas Height And Width According to Image Size And Scale
@@ -110,15 +103,12 @@ if(width==0)return;
         ctx.drawImage(img, 0, 0, width, height)
         // Quality Of Image
         let quality = this.quality ? (this.quality / 100) : 1
-        //console.log("quality::::"+quality);
         // If all files have been proceed
         let base64 = this.canvas.toDataURL('image/jpeg', quality)
-console.log("base64:::::::"+base64);
         let fileName = this.result.file.name
         let lastDot = fileName.lastIndexOf(".")
         fileName = fileName.substr(0,lastDot) + '.jpeg'
 
-        //console.log("on draw image...2 new 64:::::"+base64);
         let objToPass = {
           canvas: this.canvas,
           original: this.result,
@@ -131,10 +121,8 @@ console.log("base64:::::::"+base64);
           },
         }
 
-        //console.log("on draw image...3");
         objToPass.compressed.size = Math.round(objToPass.compressed.file.size / 1000)+' kB'
         objToPass.compressed.type = "image/jpeg"
-        //console.log("on draw image...4 antes done:"+ objToPass);
         this.done(objToPass)
       },
       /*
@@ -149,7 +137,6 @@ console.log("base64:::::::"+base64);
         When The File in loaded
       */
       fileOnLoad() {
-         // console.log("on file on load...");
         // The File
         let { file } = this
         // Make a fileInfo Object
@@ -160,7 +147,7 @@ console.log("base64:::::::"+base64);
           base64: this.reader.result,
           file: file
         }
-        //console.log(fileInfo);
+  
         // Push it to the state
         this.result = fileInfo
 
