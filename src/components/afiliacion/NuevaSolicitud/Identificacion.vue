@@ -11,52 +11,82 @@
           <span class="headline">Card ID</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
+          <v-container fluid>
 
 
 
-               <div align="center">
 
+      <v-layout row>
+        <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
+          <div v-ripple>
+            <div class="image-info" v-if="img">
+              <b>Before: </b>
+              <span>{{ original.size }}</span>
+              <span class="separator"> | </span>
+              <b>After: </b>
+              <span>{{ compressed.size }}</span>
+            </div>
+            <div class="text-center " >
+              <img @click="upload" alt="" style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" width="400px" height="300px" :src="img">
+            </div>
+          </div>
+        </v-flex>
+
+        <v-flex xs6>
+          <div v-ripple>
+            <div class="image-info" v-if="img2">
+              <b>Before: </b>
+              <span>{{ original2.size }}</span>
+              <span class="separator"> | </span>
+              <b>After: </b>
+              <span>{{ compressed2.size }}</span>
+            </div>
+            <div class="text-center " >
+              <img @click="upload2" alt="" style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" width="400px" height="300px" :src="img2">
+            </div>
+          </div>
+        </v-flex>
+    </v-layout>
+
+
+      
+
+          
                
-                <div class="image-info" v-if="img">
-                  <b>Before: </b>
-                  <span>{{ original.size }}</span>
-                  <span class="separator"> | </span>
-                  <b>After: </b>
-                  <span>{{ compressed.size }}</span>
-                </div>
-
-                <div class="text-center " v-ripple>
-                  <img @click="upload" alt="" style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" width="400px" height="300px" :src="img">
-                </div>
 
                 <!-- <button class="upload-button button" type="button" @click="upload" >Upload</button> -->
-                <compressor class="compressor" :done="getFiles" :scale="scale" :quality="quality" ref="compressor"></compressor>
+                <compressor class="compressor" :done="getFiles" :scale="scale" :quality="quality" :tipoFoto="tipoFoto" ref="compressor"></compressor>
 
                 <div class="checkbox" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
                   <input type="checkbox" v-model="originalSize">
                   <span>Responsive Image?</span>
                 </div>
-
                 <div class="input-group" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
                   <label>Image Scale</label>
                   <input type="number" v-model="scale">
                 </div>
-
                 <div class="input-group" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
                   <label>Image Quality</label>
                   <input type="number" v-model="quality">
                 </div>
 
-               
 
-              </div>
+                 <div class="checkbox" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
+                  <input type="checkbox" v-model="originalSize2">
+                  <span>Responsive Image?</span>
+                </div>
+                <div class="input-group" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
+                  <label>Image Scale</label>
+                  <input type="number" v-model="scale2">
+                </div>
+                <div class="input-group" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
+                  <label>Image Quality</label>
+                  <input type="number" v-model="quality2">
+                </div>
              
 
-            </v-layout>
+
           </v-container>
-          <!-- <small>*indicates required field</small> -->
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -85,12 +115,19 @@ import {bus} from '../../../main.js'
             avance:0,
             color:'orange'
           },
+          tipoFoto:'ANVERSO',
           img: "https://placehold.it/400x300",
           scale: 100,
           quality: 50,
           originalSize: true,
           original: {},
           compressed: {},
+          img2: "https://placehold.it/400x300",
+          scale2: 100,
+          quality2: 50,
+          originalSize2: true,
+          original2: {},
+          compressed2: {},
        }
      },
      computed:{
@@ -133,6 +170,14 @@ import {bus} from '../../../main.js'
         compressor.click()
         
       },
+       upload2 () {
+         console.log("on upload");
+         
+        let compressor2 = this.$refs.compressor.$el
+        console.log("click on compressor2");
+        compressor2.click()
+        
+      },
       getFiles(obj){
         console.log("on get files:"+obj.compressed.width);
         
@@ -147,8 +192,21 @@ import {bus} from '../../../main.js'
         this.img = obj.compressed.blob
         this.original = obj.original
         this.compressed = obj.compressed
-
-
+      },
+      getFiles2(obj2){
+        console.log("on get files2:"+obj2.compressed.width);
+        
+        if(obj2.compressed.width==0){
+            if(this.scale2==100){
+            this.scale2=99;
+          }else{
+            this.scale2=100;
+          }
+          return;
+          }
+        this.img2 = obj2.compressed.blob
+        this.original2 = obj2.original
+        this.compressed2 = obj2.compressed
       }
 
     },

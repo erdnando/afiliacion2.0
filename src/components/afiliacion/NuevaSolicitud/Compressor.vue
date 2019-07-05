@@ -26,6 +26,9 @@
       quality: {
         default: 100
       },
+      tipoFoto: {
+        default: ''
+      },
       // Pass the files info when it's done
       done: {
         type: Function,
