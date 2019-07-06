@@ -2,25 +2,29 @@
   <div class="Solicitud">
 
     <v-layout row  justify-center>
-    <v-dialog v-model="open" persistent max-width="900" >
-      <v-card  >
-        <v-card-title>
-          <span class="headline">Solicitud</span>
+    <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
+      <v-card color="white" ref="form">
+        <v-card-title class="grey lighten-2">
+          <span class="headline">New application</span>
+           <span class="subtitle grey--text" >&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Creation date*" required v-model="fechaCreacion"></v-text-field>
+              <v-flex xs12 sm6 md6>
+                <v-text-field solo prepend-inner-icon="folder" box disabled="" color="green" label="Folio*" hint="The store with the most sales in the month" v-model="objSolicitud.folio"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Origin*" hint="" v-model="objSolicitud.origen"></v-text-field>
+              <v-flex xs12 sm6 md6>
+                <v-text-field prepend-inner-icon="today" solo box disabled label="Creation date*" required v-model="fechaCreacion"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md4>
+
+              <v-flex xs12 sm6 md6>
                 <v-text-field
+                prepend-inner-icon="assignment_ind"
+                 box disabled solo
                   label="Promotor*"
                   hint="Thanks for generating another request"
                   persistent-hint
@@ -28,8 +32,25 @@
                 ></v-text-field>
               </v-flex>
 
-             <v-flex xs12 sm6 md4>
-                <v-text-field label="Store*" hint="The store with the most sales in the month" v-model="objSolicitud.tienda"></v-text-field>
+              <v-flex xs12 sm6 md6>
+                <v-text-field 
+                ref="objSolicitud.origen" 
+                v-model="objSolicitud.origen" 
+                :rules="[() => !!objSolicitud.origen || 'This field is required']"
+                :error-messages="errorMessages"
+                required
+                counter maxlength="25" box label="Origin*" hint="" ></v-text-field>
+              </v-flex>
+
+             <v-flex xs12 sm6 md6>
+                <v-text-field 
+                ref="objSolicitud.tienda" 
+                v-model="objSolicitud.tienda" 
+                :rules="[() => !!objSolicitud.tienda || 'This field is required']"
+                :error-messages="errorMessages"
+                required
+                counter maxlength="25" prepend-inner-icon="store_mall_directory" box label="Store*" 
+                hint="The store with the most sales in the month"></v-text-field>
               </v-flex>
 
             </v-layout>
@@ -57,12 +78,15 @@ import {bus} from '../../../main.js'
        return{
           objSolicitud:{
             avance:0,
+            folio:'F1000900',
             origen:'Store',
             promotor:'Admin',
             tienda:'Roma',
             fechaSolicitud:'',
             color:'orange'
-          }
+          },
+          errorMessages: '',
+          formHasErrors: false
        }
      },
      computed:{
@@ -81,11 +105,57 @@ import {bus} from '../../../main.js'
          }
 
          
-       }
+       },
+       form () {
+        return {
+          origen: this.objSolicitud.origen,
+          tienda: this.objSolicitud.tienda
+        }
+      }
 
      },
+     watch: {
+      origen () {
+        this.errorMessages = ''
+      },
+      tienda () {
+        this.errorMessages = ''
+      }
+    },
     methods:{
       save(idWin){
+
+        this.formHasErrors = false
+        var isError=false;
+        Object.keys(this.form).forEach(f => {
+          if (!this.form[f]) {
+              this.formHasErrors = true
+              console.log("-->"+this.formHasErrors);
+              isError=true;
+              return;
+          }
+         // this.$refs[f].validate(true)
+        });
+
+        if(isError){
+
+          return;
+        }
+
+
+         this.updatestatus();
+
+        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+      },
+      close(idWin){
+
+        this.updatestatus();
+
+
+        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+      },
+      updatestatus(){
+        
         this.objSolicitud.avance=0;
         this.objSolicitud.fechaSolicitud=this.fechaCreacion;
         var porcentaje=0;
@@ -99,11 +169,7 @@ import {bus} from '../../../main.js'
         
         if(porcentaje>=100) this.objSolicitud.color='green';
         else this.objSolicitud.color='orange';
-
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
-      },
-      close(idWin){
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+       
       }
     },
   

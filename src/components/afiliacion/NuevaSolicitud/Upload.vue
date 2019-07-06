@@ -36,8 +36,9 @@
 </template>
 
 <script>
-import {bus} from '../../../main.js'
- import Compressor from '@/components/afiliacion/NuevaSolicitud/Compressor'
+  import axios from "axios";
+  import {bus} from '../../../main.js'
+  import Compressor from '@/components/afiliacion/NuevaSolicitud/Compressor'
 
    export default {
        components: {
@@ -47,7 +48,7 @@ import {bus} from '../../../main.js'
      data(){
        return{
           scale: 100,
-          quality: 50,
+          quality: 30,
           originalSize: true,
           original: {},
           compressed: {},
@@ -58,14 +59,13 @@ import {bus} from '../../../main.js'
         this.img=this.imagenFondo;
     },
      computed:{
-      
+     
        
      },
     methods:{
        upload () {
         let compressor = this.$refs.compressor.$el
         compressor.click()
-        
       },
       getFiles(obj){
         if(obj.compressed.width==0){
@@ -79,10 +79,73 @@ import {bus} from '../../../main.js'
         this.img = obj.compressed.blob
         this.original = obj.original
         this.compressed = obj.compressed
+
+    
         //TODO call ocr ws and show results
         console.log("Anexando archivo al CM :"+this.expediente + "-"+this.categoria);
+        
+        var my_time1 = new Date(); // date object 
+        my_time1=my_time1.getTime(); // first time variable
+        //TODO emit when the image is loaded
+        bus.$emit('afiliacion.upload.categoria',this.categoria);
+        this.ocrProcess(obj.compressed.base64,my_time1);
+       
       },
-     
+      async ocrProcess(string64,my_time1){
+          axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
+                timeout: 1000 * 35, // Wait for 5 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+                  tipoCred: '1'
+                }
+              })
+                .then(response => {
+                  //console.log(response.data);
+
+                  var my_time2 = new Date(); // date object 
+                  my_time2=my_time2.getTime(); // second time variable
+                  var diff = ( my_time2-my_time1); // difference in time 
+                  console.log("Procesado en:"+  parseFloat(diff/1000));
+                  bus.$emit('afiliacion.upload.documento',response.data,this.categoria);
+                   this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
+
+                })
+                .catch(error => {
+                  console.log(error);
+              });
+    },
+    async cmProcess(string64,my_time1,nombre,paterno){
+          axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
+                timeout: 1000 * 1, // Wait for 1 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+                  idTramite: this.expediente,
+                  categoria: this.categoria,
+                  lang: 'eng',
+                  contraste: '200',
+                  ext: '',
+                  nombre: nombre,
+                  paterno: paterno
+                }
+              })
+                .then(response => {
+                  console.log("CM....");
+                })
+                .catch(error => {
+                  console.log("Enviado a CM....");
+                  //console.log(error);
+              });
+    }
 
     },
   

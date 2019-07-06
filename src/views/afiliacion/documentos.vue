@@ -154,11 +154,6 @@
     computed: {
     searchErrors() {
       const errors = [];
-      /*
-      if (!this.$v.inputSearch.$dirty) return errors;
-      !this.$v.inputSearch.required &&
-        errors.push("Escribe algún valor a buscar");
-      return errors;*/
       return errors;
     }
   },
@@ -252,18 +247,11 @@
                     this.urlPDF= this.onedrive+"https://sminet.com.mx/docs/0.pdf"
                     return;
             }
-
-      /*"http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
-                    this.inputSearch.trim() +
-                    "&q=*%3A*"*/
-                    
-            this.getSolRResults(this.inputSearch.trim());
-
-            
-
-
-
-    },
+          /*"http://74.208.98.86:8183/solr/afiliacionRumania/select?fq=" +
+                        this.inputSearch.trim() +
+                        "&q=*%3A*"*/
+                this.getSolRResults(this.inputSearch.trim());
+           },
     async getSolRResults(inputSearch){
 
         try{
@@ -289,11 +277,7 @@
           }catch(error){
             console.log('ERR:', error.message)
           }
-
         bus.$emit('afiliacion.loading.end','');
-
-
-
     }
 
     }

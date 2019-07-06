@@ -98,7 +98,7 @@ export default {
             //TODO add logic to authenticate
             if(userAccediendo.user=="admin"){
                 this.isLogged= true;
-                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'green');
+                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
                 bus.$emit('loadDrawer', userAccediendo)
                 bus.$emit('showDrawer',true);
             }else{
