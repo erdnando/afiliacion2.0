@@ -12,7 +12,9 @@
                 <span>{{ compressed.size }}</span>
                 </div>
                 <div class="text-center " >
-                <img   @click="upload" alt="" style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" width="400px" height="300px" :src="img">
+                <img  @click="upload" alt="" 
+                      style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
+                      width="400px" height="300px" :src="img">
             </div>
             </div>
             </v-flex>
@@ -47,23 +49,34 @@
      props:['categoria','expediente','imagenFondo'],
      data(){
        return{
-          scale: 100,
-          quality: 30,
           originalSize: true,
           original: {},
           compressed: {},
-          img:''
+          img:'',
+          quality:60,
+          scale:100,
        }
      },
      mounted() {
         this.img=this.imagenFondo;
+
+         
     },
      computed:{
      
        
      },
+      created(){
+       
+    },
+    updated(){
+        // bus.$on('afiliacion.upload.reload',(categoria)=>{
+        //     this.img=this.imagenFondo='https://placehold.it/400x300'
+        // });
+    },
     methods:{
        upload () {
+       
         let compressor = this.$refs.compressor.$el
         compressor.click()
       },
@@ -88,10 +101,10 @@
         my_time1=my_time1.getTime(); // first time variable
         //TODO emit when the image is loaded
         bus.$emit('afiliacion.upload.categoria',this.categoria);
-        this.ocrProcess(obj.compressed.base64,my_time1);
+        this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
        
       },
-      async ocrProcess(string64,my_time1){
+      async ocrProcess(string64,my_time1,blobUrl){
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
@@ -111,12 +124,14 @@
                   my_time2=my_time2.getTime(); // second time variable
                   var diff = ( my_time2-my_time1); // difference in time 
                   console.log("Procesado en:"+  parseFloat(diff/1000));
-                  bus.$emit('afiliacion.upload.documento',response.data,this.categoria);
-                   this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
+                  bus.$emit('afiliacion.upload.documento',response.data,this.categoria,blobUrl);
+                  //avoid to load trash to cm in test mode
+                   //this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
 
                 })
                 .catch(error => {
                   console.log(error);
+                  bus.$emit('afiliacion.upload.documento.error');
               });
     },
     async cmProcess(string64,my_time1,nombre,paterno){

@@ -74,6 +74,7 @@ export default {
             promotor:{},
             modulos: [],
             loading: false,
+            mostrarLoadingAun:true,
             solucion:'FINTECH',
             version:'2.0'
       }
@@ -140,12 +141,18 @@ export default {
 
         bus.$on('afiliacion.loading.ini',()=>{
           console.log('loading......ini');
+          //if(this.mostrarLoadingAun)
             this.loading=true;
         })
         bus.$on('afiliacion.loading.end',()=>{
           console.log('loading......end');
             this.loading=false;
+            //this.mostrarLoadingAun=false;
         })
+
+        // bus.$on('afiliacion.loading.reset',()=>{
+        //     this.mostrarLoadingAun=true;
+        // })
     }
    }  
       
