@@ -167,14 +167,13 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
     created(){
          bus.$on('afiliacion.newSol.setForm',(idWin, objForm)=>{
            this.etapas[idWin].form = objForm;
-
-           //console.log("length:"+this.etapas.length+ "  id:"+idWin);
-
+         
            if(objForm.avance==100)this.etapas[idWin].iniciarContinuar="filled";
            else this.etapas[idWin].iniciarContinuar="continue";
 
            if(objForm.avance==100 && idWin<this.etapas.length-1){
              try{
+                 console.log("Etapa:"+ objForm.etapa + " completada");
                 this.etapas[idWin+1].disabled=false;
              }catch(e){
                console.log(e);

@@ -4,9 +4,9 @@
     <v-layout row  justify-center>
     <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
       <v-card >
-        <v-card-title class="grey lighten-2">
-          <span class="headline">Card ID</span>
-          <span class="subtitle grey--text" >&nbsp;&nbsp;{{subtitulo}}</span>
+        <v-card-title class="indigo lighten">
+          <span class="headline white--text">Card ID</span>
+          <span class="subtitle orange--text" >&nbsp;&nbsp;{{subtitulo}}</span>
         </v-card-title>
         <v-card-text>
           <v-container fluid style="margin-top: -40px;">
@@ -92,6 +92,7 @@ import {bus} from '../../../main.js'
      data(){
        return{
           objSolicitud:{
+            etapa:'Identificacion',
             avance:0,
             color:'orange'
           },

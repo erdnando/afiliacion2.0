@@ -4,9 +4,9 @@
     <v-layout row  justify-center>
     <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
       <v-card color="white" ref="form">
-        <v-card-title class="grey lighten-2">
-          <span class="headline">New application</span>
-           <span class="subtitle grey--text" >&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
+        <v-card-title class="indigo lighten">
+          <span class="headline white--text">New application</span>
+           <span class="subtitle orange--text"  >&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -59,8 +59,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="close(0)">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="save(0)">Save</v-btn>
+          <v-btn flat color="blue darken-1"  @click="close(0)">Close</v-btn>
+          <v-btn flat color="blue darken-1"  @click="save(0)">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -77,6 +77,7 @@ import {bus} from '../../../main.js'
      data(){
        return{
           objSolicitud:{
+            etapa:'Solicitud',
             avance:0,
             folio:'F1000900',
             origen:'Store',

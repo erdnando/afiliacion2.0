@@ -11,7 +11,7 @@
                 <b>After: </b>
                 <span>{{ compressed.size }}</span>
                 </div>
-                <div class="text-center " >
+                <div class="text-center " style="cursor:pointer;">
                 <img  @click="upload" alt="" 
                       style="max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
                       width="400px" height="300px" :src="img">

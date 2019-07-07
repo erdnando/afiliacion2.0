@@ -1,5 +1,6 @@
 <template >
   <div class="Carousel" >
+     
       <v-carousel height="370">
         <div v-for="item in carouselItems" :key="item.id" >
           <v-carousel-item reverse-transition="fade" transition="fade" >
@@ -16,7 +17,12 @@
 </template>
 
 <script>
+
+
    export default {
+     components: {
+  
+    },
  data(){
    return {
      carouselItems: [
