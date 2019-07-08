@@ -11,11 +11,13 @@
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
+    "signature_pad": "^3.0.0-beta.3",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
     "vue-image-compressor": "^1.0.3",
     "vue-image-upload-resize": "^2.0.4",
     "vue-router": "^3.0.3",
+    "vue-signature-pad": "^1.1.10",
     "vuetify": "^1.5.5",
     "vuex": "^3.1.1"
   },

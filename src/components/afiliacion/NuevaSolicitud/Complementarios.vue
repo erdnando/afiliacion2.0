@@ -52,10 +52,11 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open'],
+     props:['open','folio'],
      data(){
        return{
           objSolicitud:{
+            etapa:'Complementarios',
             avance:0,
             origen:'Store',
             promotor:'Admin',

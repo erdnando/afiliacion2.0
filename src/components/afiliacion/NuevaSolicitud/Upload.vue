@@ -46,7 +46,7 @@
        components: {
         Compressor
     },
-     props:['categoria','expediente','imagenFondo'],
+     props:['categoria','folio','imagenFondo'],
      data(){
        return{
           originalSize: true,
@@ -95,7 +95,7 @@
 
     
         //TODO call ocr ws and show results
-        console.log("Anexando archivo al CM :"+this.expediente + "-"+this.categoria);
+        console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
         
         var my_time1 = new Date(); // date object 
         my_time1=my_time1.getTime(); // first time variable
@@ -108,7 +108,7 @@
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
-                timeout: 1000 * 35, // Wait for 5 seconds
+                timeout: 1000 * 45, // Wait for 45 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -126,7 +126,7 @@
                   console.log("Procesado en:"+  parseFloat(diff/1000));
                   bus.$emit('afiliacion.upload.documento',response.data,this.categoria,blobUrl);
                   //avoid to load trash to cm in test mode
-                   //this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
+                  this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
 
                 })
                 .catch(error => {
@@ -135,16 +135,20 @@
               });
     },
     async cmProcess(string64,my_time1,nombre,paterno){
+          console.log("----------CM----------");
+          console.log(this.folio);
+          console.log(this.categoria);
+          console.log("----------CM----------");
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
-                timeout: 1000 * 1, // Wait for 1 seconds
+                timeout: 13500 * 1, // Wait for 13.5 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
                 data: {
                   pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
-                  idTramite: this.expediente,
+                  idTramite: this.folio,
                   categoria: this.categoria,
                   lang: 'eng',
                   contraste: '200',
@@ -157,7 +161,7 @@
                   console.log("CM....");
                 })
                 .catch(error => {
-                  console.log("Enviado a CM....");
+                  console.log("Enviado a CM....Timeout");
                   //console.log(error);
               });
     }

@@ -1,11 +1,9 @@
 <template >
   <div class="nuevasolicitud">
-   
-
  <v-layout justify-center>
     <v-flex xs12 sm12>
            <v-layout row wrap style="-webkit-box-pack:center;justify-content:center;margin-top: 40px;"> 
-            <v-flex  v-for="etapa in etapas" :key="etapa.id" xs6 md3 lg2 xl1 class="card" style="margin-left: 8px;max-width: 160px;">
+            <v-flex  v-for="etapa in etapasSolicitud" :key="etapa.id" xs6 md3 lg2 xl1 class="card" style="margin-left: 8px;max-width: 160px;">
 
               <v-hover >
                 <v-card slot-scope="{hover}" class="mx-auto" color="grey lighten-4"  max-width="160" >
@@ -18,7 +16,7 @@
                     </v-expand-transition>
                   </v-img>
                   <v-card-text class="pt-5" style="position: relative;">
-                    <v-btn  @click="openForm(etapa.id)"  :disabled="etapa.disabled" absolute v-bind:color="etapa.form.color" class="body-1 white--text" fab large right top>
+                    <v-btn  @click="openForm(etapa.id)"  :disabled="etapa.disabled" absolute v-bind:color="etapa.form.color"  class="body-1 white--text" fab large right top>
                       {{etapa.iniciarContinuar}}
                     </v-btn>
                     <div class="subheading font-weight-medium black--text  mb-2" style="text-align: -webkit-center;margin-top: -13px;">{{etapa.nombre}}</div>
@@ -36,15 +34,14 @@
     </v-flex>
   </v-layout>
  
-<solicitud v-bind:open="s_solicitud"></solicitud>
-<identificacion v-bind:open="s_identificacion"></identificacion>
-<personales v-bind:open="s_personales"></personales>
-<autorizo v-bind:open="s_autorizo"></autorizo>
-<documentos v-bind:open="s_documentos"></documentos>
-<ref-telefonicas v-bind:open="s_refTelefonicas"></ref-telefonicas>
-<complementarios v-bind:open="s_complementarios"></complementarios>
+<solicitud v-bind:open="etapasSolicitud[0].visible" v-bind:folio="folio"></solicitud>
+<identificacion v-bind:open="etapasSolicitud[1].visible" v-bind:folio="folio"></identificacion>
+<personales v-bind:open="etapasSolicitud[2].visible" v-bind:etapasSolicitud="etapasSolicitud[1]" v-bind:folio="folio" ></personales>
+<autorizo v-bind:open="etapasSolicitud[3].visible" v-bind:folio="folio"></autorizo>
+<documentos v-bind:open="etapasSolicitud[4].visible" v-bind:folio="folio"></documentos>
+<ref-telefonicas v-bind:open="etapasSolicitud[5].visible" v-bind:folio="folio"></ref-telefonicas>
+<complementarios v-bind:open="etapasSolicitud[6].visible" v-bind:folio="folio"></complementarios>
     
-
   </div>
 </template>
 
@@ -67,22 +64,7 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
         currentOffset: 0,
         windowSize: 0,
         paginationFactor: 0,
-        s_solicitud: false,
-        s_identificacion: false,
-        s_personales: false,
-        s_autorizo: false,
-        s_documentos: false,
-        s_refTelefonicas: false,
-        s_complementarios: false,
-        etapas:[
-                  {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange'  },
-                  {id:7, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange'  }
-                    ],
+        folio:'F1000913',
         solicitudes: [
             {
                 account:100001,
@@ -140,71 +122,24 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
                 expediente:'F0000418',
                 collectionViewUrl:'url'
                }
-        ]
+        ],
+        objFormAnterior:{}
       }
     },
     methods:{
      openForm(idForm){
-       //console.log(idForm);
-       if(idForm==1)this.s_solicitud=true;
-       if(idForm==2)this.s_identificacion=true;
-       if(idForm==3)this.s_personales=true;
-       if(idForm==4)this.s_autorizo=true;
-       if(idForm==5)this.s_documentos=true;
-       if(idForm==6)this.s_refTelefonicas=true;
-       if(idForm==7)this.s_complementarios=true;
-     },
-     hideSteps(){
-           this.s_solicitud=false;
-           this.s_identificacion=false;
-           this.s_personales=false
-           this.s_autorizo=false;
-           this.s_documentos=false;
-           this.s_refTelefonicas=false;
-           this.s_complementarios=false;
+       this.$store.commit('openForm',idForm);
      }
     },
+    computed:{
+      etapasSolicitud:{
+             get(){
+            return this.$store.state.etapasSolicitud;
+         }
+      }
+     },
     created(){
-         bus.$on('afiliacion.newSol.setForm',(idWin, objForm)=>{
-           this.etapas[idWin].form = objForm;
-         
-           if(objForm.avance==100)this.etapas[idWin].iniciarContinuar="filled";
-           else this.etapas[idWin].iniciarContinuar="continue";
-
-           if(objForm.avance==100 && idWin<this.etapas.length-1){
-             try{
-                 console.log("Etapa:"+ objForm.etapa + " completada");
-                this.etapas[idWin+1].disabled=false;
-             }catch(e){
-               console.log(e);
-             }
-              
-           }else{
-             try{
-                this.etapas[idWin+1].disabled=true;
-             }catch(e){
-               console.log(e);
-             }
-           }
-           
-           this.hideSteps();
-
-           var countTotal=0;
-           for(var i=0;i<this.etapas.length;i++){
-             countTotal+= parseInt(this.etapas[i].form.avance);
-           }
-
-           if(countTotal>=this.etapas.length*100){
-                //console.log("proceso terminado..");
-                alert("Proceso terminado!");
-             }
-           //todo
-           //validate if all are completed and show the final operation that interate with core
-        });
-        bus.$on('afiliacion.newSol.closeForm',()=>{
-              this.hideSteps();
-
-        });
+        
         
     }
     

@@ -5,39 +5,22 @@
     <v-dialog v-model="open" persistent max-width="900" >
       <v-card  >
         <v-card-title>
-          <span class="headline">Autorizo</span>
+          <span class="headline">I agree with the use of my data</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
+            <!-- <v-layout > -->
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Creation date*" required v-model="fechaCreacion"></v-text-field>
-              </v-flex>
+              <Vue-Signature id="signature" style="width:100%;" height="300px" ref="signaturePad"/>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Origin*" hint="" v-model="objSolicitud.origen"></v-text-field>
-              </v-flex>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                  label="Promotor*"
-                  hint="Thanks for generating another request"
-                  persistent-hint
-                  required v-model="objSolicitud.promotor"
-                ></v-text-field>
-              </v-flex>
-
-             <v-flex xs12 sm6 md4>
-                <v-text-field label="Store*" hint="The store with the most sales in the month" v-model="objSolicitud.tienda"></v-text-field>
-              </v-flex>
-
-            </v-layout>
+            <!-- </v-layout> -->
           </v-container>
-          <small>*indicates required field</small>
+          <small>*Sign with your cursor or finger</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="undo()">Undo</v-btn>
           <v-btn color="blue darken-1" flat @click="close(3)">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="save(3)">Save</v-btn>
         </v-card-actions>
@@ -50,52 +33,93 @@
 
 <script>
 import {bus} from '../../../main.js'
+import VueSignature from 'vue-signature-pad'
+ import axios from "axios"
 
    export default {
-     props:['open'],
+     props:['open','folio'],
+      components: {
+        VueSignature,axios
+    },
      data(){
        return{
-          objSolicitud:{
-            avance:0,
-            origen:'Store',
-            promotor:'Admin',
-            tienda:'Roma',
-            fechaSolicitud:'',
-            color:'orange'
+          objForm:{
+              etapa:'Autorizo',
+              avance:0,
+              origen:'Store',
+              promotor:'Admin',
+              tienda:'Roma',
+              fechaSolicitud:'',
+              color:'orange',
+              categoria:'3'
           }
        }
      },
      computed:{
-       fechaCreacion: function(){
-          var today = new Date();
-          var dd = String(today.getDate()).padStart(2, '0');
-          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-          var yyyy = today.getFullYear();
-
-          today = mm + '/' + dd + '/' + yyyy;
-          return today;
-       }
+       
      },
     methods:{
       save(idWin){
-        this.objSolicitud.fechaSolicitud=this.fechaCreacion;
+       
         var porcentaje=0;
-        if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.origen.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.promotor.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.tienda.toString().length>0)porcentaje+=25;
+       
+        const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
+        console.log("estatus del objeto firma:");
+        console.log(isEmpty);
+        console.log(data);
+        var pImgS64=data;
+        //TODO save img 64
+        //pImgS64= pImgS64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "");
+        this.cmProcess(pImgS64,"Firma","autorizo");
 
-
-        this.objSolicitud.avance=porcentaje;
+        if(!isEmpty)porcentaje+=100;
+        this.objForm.avance=porcentaje;
         
-        if(porcentaje>=100) this.objSolicitud.color='green';
-        else this.objSolicitud.color='orange';
+        if(porcentaje>=100) this.objForm.color='green';
+        else this.objForm.color='orange';
 
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+         var objx={"idWin":idWin,"objForm":this.objForm};
+         this.$store.commit('setForm',objx);
       },
       close(idWin){
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
-      }
+        this.$store.commit('closeForm',idWin);
+      },
+      undo() {
+      this.$refs.signaturePad.undoSignature();
+    },
+    async cmProcess(string64,nombre,paterno){
+
+
+      console.log(string64);
+      console.log(this.objForm.categoria);
+      console.log(this.folio);
+
+          axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
+                timeout: 13000 * 1, // Wait for 1 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+                  idTramite: this.folio,
+                  categoria: this.objForm.categoria,
+                  lang: 'eng',
+                  contraste: '1',
+                  ext: '',
+                  nombre: nombre,
+                  paterno: paterno
+                }
+              })
+                .then(response => {
+                  console.log("CM....");
+                })
+                .catch(error => {
+                  console.log("Enviado a CM....timeout");
+                  //console.log(error);
+              });
+    }
     },
   
   }
@@ -106,4 +130,13 @@ import {bus} from '../../../main.js'
     position: absolute;
     top: 120px;
 }
+#signature {
+  border: double 3px transparent;
+  border-radius: 5px;
+  background-image: linear-gradient(white, white),
+    radial-gradient(circle at top left, #4bc5e8, #9f6274);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
 </style>

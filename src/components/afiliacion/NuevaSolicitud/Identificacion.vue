@@ -14,10 +14,10 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md6 lg6 xl6 style="margin-left: -8px;margin-right: 35px;" >
-                <uploader categoria="1" v-bind:expediente="expediente" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader>
+                <uploader categoria="1" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader>
               </v-flex>
               <v-flex  md6 lg6 xl6>
-                <uploader categoria="2" v-bind:expediente="expediente" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader>
+                <uploader categoria="2" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader>
               </v-flex>
             </v-layout>
             <!-- resultados -->
@@ -42,7 +42,7 @@
                              <div class="headline">Data with structure:</div>
                               <div class=" caption font-weight-regular grey--text">
                                 <ul id="ocrEstructuradosDiv">
-                                  <li v-for="property in ocrEstructurados" v-bind:key="property.nombre">
+                                  <li v-for="property in objForm.ocrEstructurados" v-bind:key="property.nombre">
                                     {{ property.nombre }} :  {{ property.valor }}
                                   </li>
                                 </ul>
@@ -88,17 +88,17 @@ import {bus} from '../../../main.js'
        components: {
         Uploader
     },
-     props:['open'],
+     props:['open','folio'],
      data(){
        return{
-          objSolicitud:{
+          objForm:{
             etapa:'Identificacion',
             avance:0,
-            color:'orange'
+            color:'orange',
+            ocrEstructurados:[{nombre:'...',valor:'loading...'}]
           },
           componentKey1:0,
           componentKey2:0,
-          expediente:'F1000235',
           fondoAnverso:'https://placehold.it/400x300',
           fondoReverso:'https://placehold.it/400x300',
           vistaUploader:true,
@@ -106,7 +106,6 @@ import {bus} from '../../../main.js'
           canProcess:false,
           categoriasCargadas:[],
           resultadoOCR:'loading...',
-          ocrEstructurados:[{nombre:'...',valor:'loading...'}],
           porcentaje:0
        }
      },
@@ -134,7 +133,7 @@ import {bus} from '../../../main.js'
          this.fondoAnverso='https://placehold.it/400x300',
          this.fondoReverso='https://placehold.it/400x300',
          this.resultadoOCR='loading...',
-         this.ocrEstructurados=[{nombre:'...',valor:'loading...'}]
+         this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}]
          this.forceRerender();
          this.porcentaje=0;
          
@@ -147,28 +146,26 @@ import {bus} from '../../../main.js'
          this.subtitulo='Verify the data and continue or retry'
       },
       save(idWin){
-        //this.objSolicitud.fechaSolicitud=this.fechaCreacion;
-        //var porcentaje=0;
-
-        //if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
-        //if(this.objSolicitud.origen.toString().length>0)porcentaje+=25;
-        //if(this.objSolicitud.promotor.toString().length>0)porcentaje+=25;
-        //if(this.objSolicitud.tienda.toString().length>0)porcentaje+=25;
-
-
-        this.objSolicitud.avance=this.porcentaje;
-        
-        if(this.porcentaje>=100) this.objSolicitud.color='green';
-        else this.objSolicitud.color='orange';
+       
+        this.objForm.avance=this.porcentaje;
+        if(this.porcentaje>=100) this.objForm.color='green';
+        else this.objForm.color='orange';
 
         this.vistaUploader=true;
         this.subtitulo='Load the images and then process them'
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+        
+        //bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
+        var objx={"idWin":idWin,"objForm":this.objForm};
+        this.$store.commit('setForm',objx);
+
+
+
       },
       close(idWin){
         this.vistaUploader=true;
         this.subtitulo='Load the images and then process them'
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
+        this.$store.commit('closeForm',idWin);
       }
     },
     created(){
@@ -198,12 +195,12 @@ import {bus} from '../../../main.js'
                   }
                   salida=salida.replace("iiic","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","").replace("71s1itljIf","");
 
-                console.log(salida);
+                //console.log(salida);
                  this.resultadoOCR = salida;
                  this.fondoAnverso=blobUrl;
 
                  //console.log(data);
-                 this.ocrEstructurados=[];
+                 this.objForm.ocrEstructurados=[];
                
                   Object.entries(data).forEach(entry => {
                     let key = entry[0];
@@ -211,7 +208,7 @@ import {bus} from '../../../main.js'
                     //use key and value here
                     if(key=='ResultadoOCR')return true;
                     if(value=='' || value== null )return true;
-                     this.ocrEstructurados.push({'nombre':key,'valor':value});
+                     this.objForm.ocrEstructurados.push({'nombre':key,'valor':value});
                   });
         
                  bus.$emit('afiliacion.loading.end','');

@@ -6,14 +6,14 @@
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
           <span class="headline white--text">New application</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
+           <span class="subtitle orange--text"  >&nbsp;&nbsp; Verify the data, save and continue with other sections </span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field solo prepend-inner-icon="folder" box disabled="" color="green" label="Folio*" hint="The store with the most sales in the month" v-model="objSolicitud.folio"></v-text-field>
+                <v-text-field solo prepend-inner-icon="folder" box disabled="" color="green" label="Folio*" hint="The store with the most sales in the month" v-model="objForm.folio"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
@@ -28,15 +28,15 @@
                   label="Promotor*"
                   hint="Thanks for generating another request"
                   persistent-hint
-                  required v-model="objSolicitud.promotor"
+                  required v-model="objForm.promotor"
                 ></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
                 <v-text-field 
-                ref="objSolicitud.origen" 
-                v-model="objSolicitud.origen" 
-                :rules="[() => !!objSolicitud.origen || 'This field is required']"
+                ref="objForm.origen" 
+                v-model="objForm.origen" 
+                :rules="[() => !!objForm.origen || 'This field is required']"
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" box label="Origin*" hint="" ></v-text-field>
@@ -44,9 +44,9 @@
 
              <v-flex xs12 sm6 md6>
                 <v-text-field 
-                ref="objSolicitud.tienda" 
-                v-model="objSolicitud.tienda" 
-                :rules="[() => !!objSolicitud.tienda || 'This field is required']"
+                ref="objForm.tienda" 
+                v-model="objForm.tienda" 
+                :rules="[() => !!objForm.tienda || 'This field is required']"
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" prepend-inner-icon="store_mall_directory" box label="Store*" 
@@ -76,7 +76,7 @@ import {bus} from '../../../main.js'
      props:['open'],
      data(){
        return{
-          objSolicitud:{
+          objForm:{
             etapa:'Solicitud',
             avance:0,
             folio:'F1000900',
@@ -104,16 +104,13 @@ import {bus} from '../../../main.js'
          set: function(newValue){
               this.fechaSolicitud=newValue;
          }
-
-         
        },
        form () {
         return {
-          origen: this.objSolicitud.origen,
-          tienda: this.objSolicitud.tienda
+          origen: this.objForm.origen,
+          tienda: this.objForm.tienda
         }
       }
-
      },
      watch: {
       origen () {
@@ -125,7 +122,6 @@ import {bus} from '../../../main.js'
     },
     methods:{
       save(idWin){
-
         this.formHasErrors = false
         var isError=false;
         Object.keys(this.form).forEach(f => {
@@ -135,45 +131,34 @@ import {bus} from '../../../main.js'
               isError=true;
               return;
           }
-         // this.$refs[f].validate(true)
         });
-
         if(isError){
-
           return;
         }
-
-
          this.updatestatus();
 
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+        var objx={"idWin":idWin,"objForm":this.objForm};
+         this.$store.commit('setForm',objx);
       },
       close(idWin){
-
         this.updatestatus();
-
-
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+        this.$store.commit('closeForm',idWin);
       },
       updatestatus(){
-        
-        this.objSolicitud.avance=0;
-        this.objSolicitud.fechaSolicitud=this.fechaCreacion;
+        this.objForm.avance=0;
+        this.objForm.fechaSolicitud=this.fechaCreacion;
         var porcentaje=0;
-        if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.origen.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.promotor.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.tienda.toString().length>0)porcentaje+=25;
+        if(this.objForm.fechaSolicitud.toString().length>0)porcentaje+=25;
+        if(this.objForm.origen.toString().length>0)porcentaje+=25;
+        if(this.objForm.promotor.toString().length>0)porcentaje+=25;
+        if(this.objForm.tienda.toString().length>0)porcentaje+=25;
 
-
-        this.objSolicitud.avance=porcentaje;
+        this.objForm.avance=porcentaje;
         
-        if(porcentaje>=100) this.objSolicitud.color='green';
-        else this.objSolicitud.color='orange';
-       
+        if(porcentaje>=100) this.objForm.color='green';
+        else this.objForm.color='orange';
       }
     },
-  
   }
 </script>
 

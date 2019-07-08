@@ -14,16 +14,16 @@
 
               <v-flex xs12 sm5 md5>
                 <v-text-field  prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
-                 ref="objSolicitud.nombre"  :rules="[() => !!objSolicitud.nombre || 'This field is required']"
+                 ref="objForm.nombre"  :rules="[() => !!objForm.nombre || 'This field is required']"
                 :error-messages="errorMessages" required 
-                v-model="objSolicitud.nombre"></v-text-field>
+                v-model="objForm.nombre"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="how_to_reg"  box  label="Last name*" 
-                ref="objSolicitud.apellidos"  :rules="[() => !!objSolicitud.apellidos || 'This field is required']"
+                ref="objForm.apellidos"  :rules="[() => !!objForm.apellidos || 'This field is required']"
                 :error-messages="errorMessages" required  
-                v-model="objSolicitud.apellidos"></v-text-field>
+                v-model="objForm.apellidos"></v-text-field>
               </v-flex>
 
 
@@ -61,9 +61,9 @@
               <v-flex xs12 sm7 md7>
                 <v-text-field 
                  prepend-inner-icon="wc"
-                ref="objSolicitud.sexo" 
-                v-model="objSolicitud.sexo" 
-                :rules="[() => !!objSolicitud.sexo || 'This field is required']"
+                ref="objForm.sexo" 
+                v-model="objForm.sexo" 
+                :rules="[() => !!objForm.sexo || 'This field is required']"
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" box label="Sex*" hint="" ></v-text-field>
@@ -72,9 +72,9 @@
              <v-flex xs12 sm5 md5>
                 <v-text-field 
                  prepend-inner-icon="public"
-                ref="objSolicitud.nacionalidad" 
-                v-model="objSolicitud.nacionalidad" 
-                :rules="[() => !!objSolicitud.nacionalidad || 'This field is required']"
+                ref="objForm.nacionalidad" 
+                v-model="objForm.nacionalidad" 
+                :rules="[() => !!objForm.nacionalidad || 'This field is required']"
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" box label="Nationality*" 
@@ -83,16 +83,16 @@
 
                <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="location_on"  box  label="Address*" 
-                ref="objSolicitud.direccion"  :rules="[() => !!objSolicitud.direccion || 'This field is required']"
+                ref="objForm.direccion"  :rules="[() => !!objForm.direccion || 'This field is required']"
                 :error-messages="errorMessages" required 
-                v-model="objSolicitud.direccion"></v-text-field>
+                v-model="objForm.direccion"></v-text-field>
               </v-flex>
 
                <v-flex xs12 sm5 md5>
                 <v-text-field prepend-inner-icon="card_giftcard"  box  label="Product*" 
-                ref="objSolicitud.producto"  :rules="[() => !!objSolicitud.producto || 'This field is required']"
+                ref="objForm.producto"  :rules="[() => !!objForm.producto || 'This field is required']"
                 :error-messages="errorMessages" required  
-                v-model="objSolicitud.producto"></v-text-field>
+                v-model="objForm.producto"></v-text-field>
               </v-flex>
 
             </v-layout>
@@ -115,19 +115,19 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open'],
+     props:['open','etapasSolicitud','folio'],
      data(){
        return{
-          objSolicitud:{
+          objForm:{
             etapa:'Personales',
             avance:0,
             folio:'F1000900',
-            nombre:'Erdnando',
-            apellidos:'Rodriguez Vargas',
-            c:'',
+            nombre:'',
+            apellidos:'',
+            fechaDeNacimiento:'',
             sexo:'H',
-            nacionalidad:'Mexican',
-            direccion:'Paloma negra 277, 57000',
+            nacionalidad:'',
+            direccion:'',
             producto:'Simple credit',
             color:'orange'
           },
@@ -137,16 +137,54 @@ import {bus} from '../../../main.js'
           fechaNac:new Date().toISOString().substr(0, 10),
        }
      },
+     updated(){
+       console.log("cargando formulario...");
+       
+       //console.log(this.objFormAnterior.form.ocrEstructurados);
+      
+        var arrResultados = this.etapasSolicitud.objForm.ocrEstructurados;
+
+        if(arrResultados==undefined)return;
+        
+        var paterno='';
+        var materno='';
+        var direccion='';
+        for(var i=0;i<arrResultados.length;i++){
+          if(arrResultados[i].nombre == "Nombre") this.objForm.nombre = arrResultados[i].valor;
+          if(arrResultados[i].nombre == "Paterno") paterno = arrResultados[i].valor;
+          if(arrResultados[i].nombre == "Materno") materno = arrResultados[i].valor;
+          if(arrResultados[i].nombre == "fechaDeNacimiento") this.objForm.fechaDeNacimiento = arrResultados[i].valor;
+          if(arrResultados[i].nombre == "sexo") this.objForm.sexo = arrResultados[i].valor;
+          if(arrResultados[i].nombre == "tipo") this.objForm.nacionalidad = arrResultados[i].valor;
+           if(arrResultados[i].nombre == "calle") direccion += arrResultados[i].valor;
+           if(arrResultados[i].nombre == "codigoPostal") direccion += arrResultados[i].valor;
+           if(arrResultados[i].nombre == "colonia") direccion += arrResultados[i].valor;
+           if(arrResultados[i].nombre == "numeroExt") direccion += arrResultados[i].valor;
+        }
+        this.objForm.apellidos = paterno+' '+materno;
+        this.objForm.direccion = direccion;
+        //valida fecha nac
+       
+       try{
+        var fechaObtenida = new Date(this.objForm.fechaDeNacimiento);
+        if(fechaObtenida.isValid()){
+          this.objForm.fechaNac = fechaObtenida;
+        }
+        }
+        catch(e){
+            console.log("fecha invalida:" + this.objForm.fechaDeNacimiento);
+        }
+     },
      computed:{
       
       form () {
         return {
-          nombre: this.objSolicitud.nombre,
-          apellidos: this.objSolicitud.apellidos,
-          sexo: this.objSolicitud.sexo,
-          nacionalidad: this.objSolicitud.nacionalidad,
-          direccion: this.objSolicitud.direccion,
-          producto: this.objSolicitud.producto
+          nombre: this.objForm.nombre,
+          apellidos: this.objForm.apellidos,
+          sexo: this.objForm.sexo,
+          nacionalidad: this.objForm.nacionalidad,
+          direccion: this.objForm.direccion,
+          producto: this.objForm.producto
         }
       }
      },
@@ -172,7 +210,6 @@ import {bus} from '../../../main.js'
     },
     methods:{
       save(idWin){
-
         this.formHasErrors = false
         var isError=false;
          console.log(this.form);
@@ -189,27 +226,28 @@ import {bus} from '../../../main.js'
           return;
         }
          this.updatestatus();
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+          var objx={"idWin":idWin,"objForm":this.objForm};
+         this.$store.commit('setForm',objx);
+       // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
       close(idWin){
         this.updatestatus();
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
+        this.$store.commit('closeForm',idWin);
       },
       updatestatus(){
-        
-        this.objSolicitud.avance=0;
-       
+        this.objForm.avance=0;
         var porcentaje=0;
-         if(this.objSolicitud.nombre.toString().length>0)porcentaje+=17;
-        if(this.objSolicitud.apellidos.toString().length>0)porcentaje+=17;
-        if(this.objSolicitud.sexo.toString().length>0)porcentaje+=16;
-        if(this.objSolicitud.nacionalidad.toString().length>0)porcentaje+=16;
-        if(this.objSolicitud.direccion.toString().length>0)porcentaje+=17;
-        if(this.objSolicitud.producto.toString().length>0)porcentaje+=17;
+         if(this.objForm.nombre.toString().length>0)porcentaje+=17;
+        if(this.objForm.apellidos.toString().length>0)porcentaje+=17;
+        if(this.objForm.sexo.toString().length>0)porcentaje+=16;
+        if(this.objForm.nacionalidad.toString().length>0)porcentaje+=16;
+        if(this.objForm.direccion.toString().length>0)porcentaje+=17;
+        if(this.objForm.producto.toString().length>0)porcentaje+=17;
 
-        this.objSolicitud.avance=porcentaje;
-        if(porcentaje>=100) this.objSolicitud.color='green';
-        else this.objSolicitud.color='orange';
+        this.objForm.avance=porcentaje;
+        if(porcentaje>=100) this.objForm.color='green';
+        else this.objForm.color='orange';
       }
     },
   
