@@ -30,14 +30,14 @@
                     <v-layout>
 
                       <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
-                        <v-img style="margin-top: 5px;margin-left: 8px;width: 351px;max-width:400px;border-radius: 3px;height:300px;" width="400px" height="300px"
+                        <v-img style="border-radius: 5px;border-style: solid;border-color: darkgray;border-width: 1px;margin-top: 29px;margin-left: 8px;width: 351px;max-width:400px;height:300px;" width="400px" height="300px"
                           v-bind:src="fondoAnverso"  contain></v-img>
                       </v-flex>
 
                       <v-flex xs6>
                         <v-card-title primary-title>
                           <div>
-                            <div class="headline">Data obtained without structure:</div>
+                            <div class="headline">Data without structure:</div>
                             <div class="caption font-italic grey--text">{{resultadoOCR}}</div>
                              <div class="headline">Data with structure:</div>
                               <div class=" caption font-weight-regular grey--text">
@@ -185,18 +185,23 @@ import {bus} from '../../../main.js'
          bus.$on('afiliacion.upload.documento',(data,categoria,blobUrl)=>{
              if(categoria=="1"){
                 console.log("solo para anverso");
+                console.log(data);
+                if(data==null)return;
+                if(data.ResultadoOCR==null)return;
                 var outString = data.ResultadoOCR.replace(/[`~!@#$%^&*()_|+\-=?;:'",.¡’•—‘ç<>\{\}\[\]\\\/]/gi, '');
                 var arrDatos = outString.split('\n');
                 var salida='';
                   for(var i=0;i< arrDatos.length;i++){
                     if(arrDatos[i].startsWith(' '))continue;
                     if(arrDatos[i].length<5)continue;
+                     if(salida.length>=700)continue;
                     salida+= arrDatos[i]+" ";
+                   
                   }
                   salida=salida.replace("iiic","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","").replace("71s1itljIf","");
 
                 //console.log(salida);
-                 this.resultadoOCR = salida;
+                 this.resultadoOCR = salida+ "...";
                  this.fondoAnverso=blobUrl;
 
                  //console.log(data);

@@ -2,9 +2,9 @@
   <div class="Uploader">
     <v-layout row  justify-center>
       <v-layout row>
-            <v-flex  xs12 style="margin-left: -8px;margin-right: 35px;">
+            <v-flex  xs12 style="">
             <div v-ripple>
-                <div class="image-info" v-if="img">
+                <div class="image-info" v-if="img" style="text-align: -webkit-center;">
                 <b>Before: </b>
                 <span>{{ original.size }}</span>
                 <span class="separator"> | </span>
@@ -13,8 +13,8 @@
                 </div>
                 <div class="text-center " style="cursor:pointer;">
                 <img  @click="upload" alt="" 
-                      style="object-fit: contain;max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
-                      width="400px" height="300px" :src="img">
+                      style="object-fit: contain;max-width:200px;border-radius: 6px;width:200px;height:150px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
+                      width="200px" height="150px" :src="img">
             </div>
             </div>
             </v-flex>
@@ -101,7 +101,8 @@
         my_time1=my_time1.getTime(); // first time variable
         //TODO emit when the image is loaded
         bus.$emit('afiliacion.upload.categoria',this.categoria);
-        this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
+        //this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
+         this.cmProcess(obj.compressed.base64,my_time1,this.categoria,'');
        
       },
       async ocrProcess(string64,my_time1,blobUrl){

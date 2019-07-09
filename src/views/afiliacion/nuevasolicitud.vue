@@ -64,7 +64,7 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
         currentOffset: 0,
         windowSize: 0,
         paginationFactor: 0,
-        folio:'F1000913',
+        folio:'F1000923',
         solicitudes: [
             {
                 account:100001,

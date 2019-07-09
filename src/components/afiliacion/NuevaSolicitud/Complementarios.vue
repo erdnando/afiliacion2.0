@@ -1,45 +1,71 @@
 <template >
-  <div class="Complementarios">
+  <div class="complementarios">
 
     <v-layout row  justify-center>
-    <v-dialog v-model="open" persistent max-width="900" >
-      <v-card  >
-        <v-card-title>
-          <span class="headline">Complementarios</span>
+    <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
+      <v-card color="white" ref="form">
+        <v-card-title class="indigo lighten">
+          <span class="headline white--text">Complement</span>
+           <span class="subtitle orange--text"  >&nbsp;&nbsp; Enter the data</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Creation date*" required v-model="fechaCreacion"></v-text-field>
+              <v-flex xs12 sm5 md5>
+                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Edo civil*" hint="His name, his access" 
+                 ref="objForm.edoCivil"  :rules="[() => !!objForm.edoCivil || 'This field is required']"
+                :error-messages="errorMessages" required 
+                v-model="objForm.edoCivil"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Origin*" hint="" v-model="objSolicitud.origen"></v-text-field>
+              <v-flex xs12 sm7 md7>
+                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="RFC*" 
+                ref="objForm.rfc"  :rules="[() => !!objForm.rfc || 'This field is required']"
+                :error-messages="errorMessages" required  
+                v-model="objForm.rfc"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                  label="Promotor*"
-                  hint="Thanks for generating another request"
-                  persistent-hint
-                  required v-model="objSolicitud.promotor"
-                ></v-text-field>
+              <v-flex xs12 sm5 md5>
+                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Country*" hint="His name, his access" 
+                 ref="objForm.country"  :rules="[() => !!objForm.country || 'This field is required']"
+                :error-messages="errorMessages" required 
+                v-model="objForm.country"></v-text-field>
               </v-flex>
 
-             <v-flex xs12 sm6 md4>
-                <v-text-field label="Store*" hint="The store with the most sales in the month" v-model="objSolicitud.tienda"></v-text-field>
+              <v-flex xs12 sm7 md7>
+                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="CURP*" 
+                ref="objForm.curp"  :rules="[() => !!objForm.curp || 'This field is required']"
+                :error-messages="errorMessages" required  
+                v-model="objForm.curp"></v-text-field>
               </v-flex>
 
+
+
+              <v-flex xs12 sm7 md7>
+                <v-text-field 
+                 prepend-inner-icon="wc"
+                ref="objForm.email" 
+                v-model="objForm.email" 
+                :rules="[() => !!objForm.email || 'This field is required']"
+                :error-messages="errorMessages"
+                required
+                counter maxlength="25" box label="Email*" hint="" ></v-text-field>
+              </v-flex>
+
+             <!-- <v-flex xs12 sm7 md7>
+                checkbox1
+              </v-flex> -->
+
+              
             </v-layout>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="close(6)">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="save(6)">Save</v-btn>
+          <v-btn flat color="blue darken-1"  @click="close(6)">Close</v-btn>
+          <v-btn flat color="blue darken-1"  @click="save(6)">Send</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -52,50 +78,95 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open','folio'],
+     props:['open','etapasSolicitud','folio'],
      data(){
        return{
-          objSolicitud:{
+          objForm:{
             etapa:'Complementarios',
             avance:0,
-            origen:'Store',
-            promotor:'Admin',
-            tienda:'Roma',
-            fechaSolicitud:'',
-            color:'orange'
-          }
+            color:'orange',
+            edoCivil:'',
+            rfc:'',
+            country:'',
+            curp:'',
+            email:''
+          },
+          errorMessages: '',
+          formHasErrors: false
        }
+     },
+     updated(){
+       console.log("cargando formulario...");
      },
      computed:{
-       fechaCreacion: function(){
-          var today = new Date();
-          var dd = String(today.getDate()).padStart(2, '0');
-          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-          var yyyy = today.getFullYear();
-
-          today = mm + '/' + dd + '/' + yyyy;
-          return today;
-       }
+      
+      form () {
+        return {
+          edoCivil: this.objForm.edoCivil,
+          rfc: this.objForm.rfc,
+          country: this.objForm.country,
+          curp: this.objForm.curp,
+          email: this.objForm.email
+        }
+      }
      },
+     watch: {
+      edoCivil () {
+        this.errorMessages = ''
+      },
+      rfc () {
+        this.errorMessages = ''
+      },
+      country () {
+        this.errorMessages = ''
+      },
+      curp () {
+        this.errorMessages = ''
+      },
+      email () {
+        this.errorMessages = ''
+      }
+    },
     methods:{
       save(idWin){
-        this.objSolicitud.fechaSolicitud=this.fechaCreacion;
-        var porcentaje=0;
-        if(this.objSolicitud.fechaSolicitud.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.origen.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.promotor.toString().length>0)porcentaje+=25;
-        if(this.objSolicitud.tienda.toString().length>0)porcentaje+=25;
+        this.formHasErrors = false
+        var isError=false;
+         console.log(this.form);
+        Object.keys(this.form).forEach(f => {
+          if (!this.form[f]) {
+              this.formHasErrors = true
+              console.log("-->"+this.formHasErrors);
+              isError=true;
+              return;
+          }
+        });
 
-
-        this.objSolicitud.avance=porcentaje;
-        
-        if(porcentaje>=100) this.objSolicitud.color='green';
-        else this.objSolicitud.color='orange';
-
-        bus.$emit('afiliacion.newSol.setForm',idWin,this.objSolicitud);
+        if(isError){
+          return;
+        }
+         this.updatestatus();
+          var objx={"idWin":idWin,"objForm":this.objForm};
+         this.$store.commit('setForm',objx);
+       // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
       close(idWin){
-        bus.$emit('afiliacion.newSol.closeForm',idWin,this.objSolicitud);
+        this.updatestatus();
+        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
+        this.$store.commit('closeForm',idWin);
+      },
+      updatestatus(){
+        this.objForm.avance=0;
+        var porcentaje=0;
+          if(this.objForm.edoCivil.toString().length>0)porcentaje+=20;
+          if(this.objForm.rfc.toString().length>0)porcentaje+=20;
+          if(this.objForm.country.toString().length>0)porcentaje+=20;
+          if(this.objForm.curp.toString().length>0)porcentaje+=20;
+          if(this.objForm.email.toString().length>0)porcentaje+=20;
+       
+
+        this.objForm.avance=porcentaje;
+        if(porcentaje>=100) this.objForm.color='green';
+        else this.objForm.color='orange';
       }
     },
   
