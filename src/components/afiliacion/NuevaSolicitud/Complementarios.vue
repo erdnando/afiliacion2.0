@@ -5,8 +5,8 @@
     <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
-          <span class="headline white--text">Complement</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Enter the data</span>
+          <span class="headline white--text">Your query to buro was successful!</span>
+           <span class="subtitle orange--text"  >&nbsp;&nbsp; Continue with missing information</span>
             <v-spacer></v-spacer>
           <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
@@ -14,28 +14,49 @@
           <v-container grid-list-md>
             <v-layout wrap>
 
-              <v-flex xs12 sm5 md5>
+               <v-flex xs12 sm6 md6>
+                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Folio buro*" hint="Congratulations, your query to buro was successful!" 
+                 ref="objForm.buro"  :rules="[() => !!objForm.buro || 'This field is required']"
+                :error-messages="errorMessages" required 
+                v-model="objForm.buro"></v-text-field>
+              </v-flex>
+
+              <v-flex xs12 sm6 md6>
+                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="Scoring*" hint="It's a great scoring"
+                ref="objForm.scoring"  :rules="[() => !!objForm.scoring || 'This field is required']"
+                :error-messages="errorMessages" required  
+                v-model="objForm.scoring"></v-text-field>
+              </v-flex>
+
+              <v-flex xs12 sm6 md6>
+                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="Case number*" hint="Your credit core code"
+                ref="objForm.casenumber"  :rules="[() => !!objForm.casenumber || 'This field is required']"
+                :error-messages="errorMessages" required  
+                v-model="objForm.casenumber"></v-text-field>
+              </v-flex>
+
+              <v-flex xs12 sm6 md6>
                 <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Edo civil*" hint="His name, his access" 
                  ref="objForm.edoCivil"  :rules="[() => !!objForm.edoCivil || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.edoCivil"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm7 md7>
+              <v-flex xs12 sm8 md8>
                 <v-text-field   prepend-inner-icon="how_to_reg"  box  label="RFC*" 
                 ref="objForm.rfc"  :rules="[() => !!objForm.rfc || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.rfc"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm5 md5>
+              <v-flex xs12 sm4 md4>
                 <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Country*" hint="His name, his access" 
                  ref="objForm.country"  :rules="[() => !!objForm.country || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.country"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm7 md7>
+              <v-flex xs12 sm8 md8>
                 <v-text-field   prepend-inner-icon="how_to_reg"  box  label="CURP*" 
                 ref="objForm.curp"  :rules="[() => !!objForm.curp || 'This field is required']"
                 :error-messages="errorMessages" required  
@@ -44,7 +65,7 @@
 
 
 
-              <v-flex xs12 sm7 md7>
+              <v-flex xs12 sm8 md8>
                 <v-text-field 
                  prepend-inner-icon="wc"
                 ref="objForm.email" 
@@ -67,7 +88,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat color="blue darken-1"  @click="close(6)">Close</v-btn>
-          <v-btn flat color="blue darken-1"  @click="save(6)">Send</v-btn>
+          <v-btn flat color="blue darken-1"  @click="save(6)">Send application</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -88,10 +109,13 @@ import {bus} from '../../../main.js'
             avance:0,
             color:'orange',
             edoCivil:'Casado',
-            rfc:'',
+            rfc:'ROVE730121PK5',
             country:'MX',
             curp:'',
-            email:''
+            email:'',
+            scoring:'972',
+            casenumber:'10001',
+            buro:'20001'
           },
           errorMessages: '',
           formHasErrors: false
