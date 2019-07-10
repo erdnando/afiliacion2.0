@@ -7,6 +7,8 @@
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Personal data</span>
            <span class="subtitle orange--text"  >&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
+            <v-spacer></v-spacer>
+          <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -121,7 +123,7 @@ import {bus} from '../../../main.js'
           objForm:{
             etapa:'Personales',
             avance:0,
-            folio:'F1000900',
+            folio:'',
             nombre:'',
             apellidos:'',
             fechaDeNacimiento:'',
@@ -210,6 +212,7 @@ import {bus} from '../../../main.js'
     },
     methods:{
       save(idWin){
+        this.objForm.folio=this.folio;
         this.formHasErrors = false
         var isError=false;
          console.log(this.form);

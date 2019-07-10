@@ -13,7 +13,8 @@
             <v-layout wrap>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field solo prepend-inner-icon="folder" box disabled="" color="green" label="Folio*" hint="The store with the most sales in the month" v-model="objForm.folio"></v-text-field>
+                <v-text-field solo prepend-inner-icon="folder" box disabled="" color="green" label="Folio*" hint="The store with the most sales in the month" 
+                v-model="folio"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
@@ -73,13 +74,13 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open'],
+     props:['open','folio'],
      data(){
        return{
           objForm:{
             etapa:'Solicitud',
             avance:0,
-            folio:'F1000900',
+            folio:'',
             origen:'Store',
             promotor:'Admin',
             tienda:'Roma',
@@ -122,6 +123,8 @@ import {bus} from '../../../main.js'
     },
     methods:{
       save(idWin){
+
+        this.objForm.folio=this.folio;
         this.formHasErrors = false
         var isError=false;
         Object.keys(this.form).forEach(f => {

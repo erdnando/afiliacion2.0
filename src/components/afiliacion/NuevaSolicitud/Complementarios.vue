@@ -7,6 +7,8 @@
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Complement</span>
            <span class="subtitle orange--text"  >&nbsp;&nbsp; Enter the data</span>
+            <v-spacer></v-spacer>
+          <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -85,9 +87,9 @@ import {bus} from '../../../main.js'
             etapa:'Complementarios',
             avance:0,
             color:'orange',
-            edoCivil:'',
+            edoCivil:'Casado',
             rfc:'',
-            country:'',
+            country:'MX',
             curp:'',
             email:''
           },

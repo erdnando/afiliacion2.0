@@ -10,7 +10,7 @@ const etapasSolicitud = () =>{
         {id:0, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
         {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
         {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-        {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
         {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
         {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
         {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
@@ -20,9 +20,16 @@ const etapasSolicitud = () =>{
 
 export  default new Vuex.Store({
     state:{
-        etapasSolicitud : etapasSolicitud()
+        etapasSolicitud : etapasSolicitud(),
+        folioGenerado:''
     },
     mutations:{
+        generaFolio(state){
+          var newFolio= 'F0';
+          var randomValue= Math.floor(Math.random() * 99999999) + 10090000;
+          state.folioGenerado=newFolio+randomValue;
+          state.etapasSolicitud = etapasSolicitud()
+        },
         openForm(state, id){
             state.etapasSolicitud[id].visible = true;
         },

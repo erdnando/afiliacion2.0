@@ -7,6 +7,8 @@
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Documents</span>
           <span class="subtitle orange--text" >&nbsp;&nbsp;{{subtitulo}}</span>
+           <v-spacer></v-spacer>
+          <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
         <v-card-text>
           <v-container fluid style="margin-top: -40px;">

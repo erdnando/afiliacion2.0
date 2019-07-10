@@ -3,19 +3,20 @@
 
     <v-layout row  justify-center>
     <v-dialog v-model="open" persistent max-width="900" >
-      <v-card  >
-        <v-card-title>
-          <span class="headline">I agree with the use of my data</span>
+      <v-card  color="white" ref="form">
+        <v-card-title class="indigo lighten">
+          <span class="headline white--text">I agree with the use of my data</span>
+           <v-spacer></v-spacer>
+          <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <!-- <v-layout > -->
-
-              <Vue-Signature id="signature" style="width:100%;" height="300px" ref="signaturePad"/>
-
-
-            <!-- </v-layout> -->
+          
+          <v-container grid-list-md style="" class="fondoBuro">
+                 <!-- <div class="sig sigWrapper current " id="firma-Electronica-sigWrapper" > -->
+               <Vue-Signature id="signature" width="450px" height="140px" ref="signaturePad" style="margin-top:284px"/>
+              <!-- </div> -->
           </v-container>
+         
           <small>*Sign with your cursor or finger</small>
         </v-card-text>
         <v-card-actions>
@@ -68,7 +69,7 @@ import VueSignature from 'vue-signature-pad'
         console.log(isEmpty);
         console.log(data);
         var pImgS64=data;
-        //TODO save img 64
+
         //pImgS64= pImgS64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "");
         this.cmProcess(pImgS64,"Firma","autorizo");
 
@@ -83,10 +84,15 @@ import VueSignature from 'vue-signature-pad'
       },
       close(idWin){
         this.$store.commit('closeForm',idWin);
+        this.resizeCanvas();
       },
       undo() {
       this.$refs.signaturePad.undoSignature();
     },
+     sleep(delay){
+        var start = new Date().getTime();
+        while(new Date().getTime() < start + delay);
+      },
     async cmProcess(string64,nombre,paterno){
 
 
@@ -119,9 +125,50 @@ import VueSignature from 'vue-signature-pad'
                   console.log("Enviado a CM....timeout");
                   //console.log(error);
               });
+    },
+    resizeCanvas() {
+      //try{
+       
+        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+         var canvas = this.$refs.signaturePad.getCanvasRef();
+          console.log("inside resizeCanvas");
+         console.log(canvas);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.width=450;
+      canvas.height=140;
+        canvas.getContext("2d").scale(ratio, ratio);
+        // }catch(error){
+        //   console.log("onResize");
+        // }
     }
     },
-  
+    created(){
+       
+    },
+   mounted() {
+    window.addEventListener("resize", this.resizeCanvas);
+
+   // this.resizeCanvas();
+     console.log("on resize canvas");
+     var canvas = this.$refs.signaturePad.getCanvasRef(); // <---- view NOTA
+     console.log(canvas);
+        canvas.width = 400;
+        canvas.height = 180;
+        // this.resizeCanvas();
+        canvas.width = 450;
+        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+        canvas.getContext("2d").scale(ratio, ratio);
+        console.log("despues del get context");
+    //NOTA NOTA NOTA
+    //se añadio esta funcion al componente node en vue-signature-pad,esm y pad.commons
+    // getCanvasRef: function getCanvasRef(){
+    //         return this.$refs.signaturePadCanvas;
+    // }
+  }
+
+
+
   }
 </script>
 
@@ -131,12 +178,20 @@ import VueSignature from 'vue-signature-pad'
     top: 120px;
 }
 #signature {
-  border: double 3px transparent;
-  border-radius: 5px;
-  background-image: linear-gradient(white, white),
-    radial-gradient(circle at top left, #4bc5e8, #9f6274);
-  background-origin: border-box;
+  background-color: honeydew;
   background-clip: content-box, border-box;
+  opacity: 0.55;
+  box-shadow: 0 4px 31px rgb(101, 107, 101);
+}
+
+.fondoBuro{
+  background-image: url('~@/assets/fondoBuro2.png');
+  box-shadow: 0 4px 31px rgb(101, 107, 101);
+  width: 100%!important;
+  height:460px;
+  text-align: -webkit-center;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 </style>

@@ -64,7 +64,7 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
         currentOffset: 0,
         windowSize: 0,
         paginationFactor: 0,
-        folio:'F1000923',
+        folio:'',
         solicitudes: [
             {
                 account:100001,
@@ -131,10 +131,14 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
        this.$store.commit('openForm',idForm);
      }
     },
+    mounted: function () {
+       this.$store.commit('generaFolio');
+       this.folio = this.$store.state.folioGenerado;
+    },
     computed:{
       etapasSolicitud:{
-             get(){
-            return this.$store.state.etapasSolicitud;
+        get(){
+          return this.$store.state.etapasSolicitud;
          }
       }
      },
