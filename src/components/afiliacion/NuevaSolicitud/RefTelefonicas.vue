@@ -18,7 +18,7 @@
 
 
               <v-flex xs12 sm7 md7>
-                <v-text-field mask="phone"  
+                <v-text-field autofocus mask="phone"  
                 prepend-inner-icon="local_phone"
                 box  color="green" label="Home homePhone*" 
                  ref="objForm.homePhone"  :rules="[() => !!objForm.homePhone || 'This field is required with 10 digits']"
@@ -97,7 +97,7 @@ import {bus} from '../../../main.js'
 import axios from "axios";
 
    export default {
-     props:['open','etapasSolicitud','folio'],
+     props:['open','etapaPersonales','folio'],
      data(){
        return{
           objForm:{
@@ -109,7 +109,10 @@ import axios from "axios";
             homePhoneStatus:"",
             cellPhoneStatus:"",
             fullName:'Andrea Jimenez Mendez',
-            parentesco:'Hermana'
+            parentesco:'Hermana',
+            folioBuro:'',
+            numCaso:'',
+            rfc:''
           },
           errorMessagesHomePhone: '',
           errorMessagesCellPhone:'',
@@ -322,6 +325,45 @@ import axios from "axios";
                   //bus.$emit('afiliacion.upload.documento.error');
               });
     },
+     async precalifica(idWin){
+
+       //TODO
+       //get data from previous steps
+          console.log(this.etapaPersonales.objForm.nombre);
+          console.log(this.etapaPersonales.objForm.apellidos);
+          console.log(this.etapaPersonales.objForm.fechaDeNacimiento);
+          console.log(this.folio);
+          console.log(this.etapaPersonales.objForm.email);
+          
+          axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/precalifica',
+                timeout: 1000 * 10, // Wait for 10 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  nombre:this.etapaPersonales.objForm.nombre, 
+                  paterno:this.etapaPersonales.objForm.apellidos, 
+                  materno:"", 
+                  fnacimiento:this.etapaPersonales.objForm.fechaDeNacimiento, 
+                  folio:this.folio, 
+                  email:this.etapaPersonales.objForm.email
+                }
+              })
+                .then(response => {
+                   console.log("precalifica response...");
+                   console.log(response.data.folioBuro);
+                   console.log(response.data.numCaso);
+                   console.log(response.data.rfc);
+                  this.savePrecalifica(idWin,response.data)
+
+                })
+                .catch(error => {
+                  console.log(error);
+                  
+              });
+    },
       save(idWin){
         console.log("saving ref telefonicas...");
         this.formHasErrors = false
@@ -358,7 +400,18 @@ import axios from "axios";
          this.updatestatus();
           var objx={"idWin":idWin,"objForm":this.objForm};
          this.$store.commit('setForm',objx);
-       // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
+
+         this.precalifica(idWin);
+       
+      },
+      savePrecalifica(idWin,data){
+        console.log("saving precalifica...");
+       this.objForm.folioBuro=data.folioBuro;
+       this.objForm.numCaso=data.numCaso;
+       this.objForm.rfc=data.rfc;
+        
+        var objx={"idWin":idWin,"objForm":this.objForm};
+        this.$store.commit('setForm',objx);
       },
       close(idWin){
         this.updatestatus();

@@ -15,7 +15,7 @@
             <v-layout wrap>
 
               <v-flex xs12 sm5 md5>
-                <v-text-field  prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
+                <v-text-field autofocus  prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
                  ref="objForm.nombre"  :rules="[() => !!objForm.nombre || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.nombre"></v-text-field>
@@ -29,7 +29,7 @@
               </v-flex>
 
 
-              <v-flex xs12 sm5 md5>
+              <v-flex xs12 sm5 md5 style="margin-top: 7px;">
                  <v-dialog
                   ref="dialog"
                   v-model="modalFecha"
@@ -54,10 +54,6 @@
                     <v-btn flat color="primary" @click="$refs.dialog.save(fechaNac)">OK</v-btn>
                   </v-date-picker>
                 </v-dialog>
-
-
-
-
               </v-flex>
 
               <v-flex xs12 sm7 md7>
@@ -90,7 +86,24 @@
                 v-model="objForm.direccion"></v-text-field>
               </v-flex>
 
+
+
                <v-flex xs12 sm5 md5>
+                <v-text-field  type="email"
+                 prepend-inner-icon="wc"
+                ref="objForm.email" 
+                v-model="objForm.email" 
+                :rules="[rules.required, rules.email]"
+                :error-messages="errorMessages"
+                required
+                counter maxlength="25" box label="Email*" hint="" ></v-text-field>
+              </v-flex>
+
+
+
+
+
+               <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="card_giftcard"  box  label="Product*" 
                 ref="objForm.producto"  :rules="[() => !!objForm.producto || 'This field is required']"
                 :error-messages="errorMessages" required  
@@ -131,19 +144,25 @@ import {bus} from '../../../main.js'
             nacionalidad:'',
             direccion:'',
             producto:'Simple credit',
+            email:'',
             color:'orange'
           },
           errorMessages: '',
           formHasErrors: false,
           modalFecha: false,
           fechaNac:new Date().toISOString().substr(0, 10),
+          rules: {
+            required: value => !!value || 'Required.',
+             counter: value => value.length <= 20 || 'Max 20 characters',
+            email: value => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              return pattern.test(value) || 'Invalid e-mail.'
+            }
+        }
        }
      },
      updated(){
        console.log("cargando formulario...");
-       
-       //console.log(this.objFormAnterior.form.ocrEstructurados);
-      
         var arrResultados = this.etapasSolicitud.objForm.ocrEstructurados;
 
         if(arrResultados==undefined)return;
@@ -168,13 +187,21 @@ import {bus} from '../../../main.js'
         //valida fecha nac
        
        try{
-        var fechaObtenida = new Date(this.objForm.fechaDeNacimiento);
-        if(fechaObtenida.isValid()){
-          this.objForm.fechaNac = fechaObtenida;
-        }
+         console.log(this.fechaNac);
+        var fechaObtenida = new Date(this.fechaNac+"T12:00:00-06:00");
+        
+        console.log(fechaObtenida);
+        var year = fechaObtenida.getFullYear();
+        var month = fechaObtenida.getMonth()+1;
+        var day = fechaObtenida.getDate();
+
+        if (day < 10) day = '0' + day;
+        if (month < 10) month = '0' + month;
+
+        this.objForm.fechaDeNacimiento = day + '/' + month + '/'+year;
         }
         catch(e){
-            console.log("fecha invalida:" + this.objForm.fechaDeNacimiento);
+            console.log("fecha invalida:" + this.fechaNac);
         }
      },
      computed:{
@@ -186,7 +213,9 @@ import {bus} from '../../../main.js'
           sexo: this.objForm.sexo,
           nacionalidad: this.objForm.nacionalidad,
           direccion: this.objForm.direccion,
-          producto: this.objForm.producto
+          producto: this.objForm.producto,
+          email: this.objForm.email,
+          fechaNac: this.objForm.fechaDeNacimiento
         }
       }
      },
@@ -208,11 +237,15 @@ import {bus} from '../../../main.js'
       },
       producto () {
         this.errorMessages = ''
+      },
+       email () {
+        this.errorMessages = ''
       }
     },
     methods:{
       save(idWin){
         this.objForm.folio=this.folio;
+        this.objForm.fechaDeNacimiento=this.fechaNac;
         this.formHasErrors = false
         var isError=false;
          console.log(this.form);
@@ -241,12 +274,13 @@ import {bus} from '../../../main.js'
       updatestatus(){
         this.objForm.avance=0;
         var porcentaje=0;
-         if(this.objForm.nombre.toString().length>0)porcentaje+=17;
-        if(this.objForm.apellidos.toString().length>0)porcentaje+=17;
-        if(this.objForm.sexo.toString().length>0)porcentaje+=16;
-        if(this.objForm.nacionalidad.toString().length>0)porcentaje+=16;
-        if(this.objForm.direccion.toString().length>0)porcentaje+=17;
-        if(this.objForm.producto.toString().length>0)porcentaje+=17;
+         if(this.objForm.nombre.toString().length>0)porcentaje+=14;
+        if(this.objForm.apellidos.toString().length>0)porcentaje+=14;
+        if(this.objForm.sexo.toString().length>0)porcentaje+=14;
+        if(this.objForm.nacionalidad.toString().length>0)porcentaje+=14;
+        if(this.objForm.direccion.toString().length>0)porcentaje+=14;
+        if(this.objForm.producto.toString().length>0)porcentaje+=14;
+        if(this.objForm.email.toString().length>0)porcentaje+=16;
 
         this.objForm.avance=porcentaje;
         if(porcentaje>=100) this.objForm.color='green';

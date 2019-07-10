@@ -206,6 +206,9 @@ import {bus} from '../../../main.js'
          bus.$on('afiliacion.upload.documento',(data,categoria,blobUrl)=>{
              if(categoria=="1"){
                 console.log("solo para anverso");
+                if(data==null){bus.$emit('afiliacion.loading.end','');return;}
+                if(data.ResultadoOCR==null){bus.$emit('afiliacion.loading.end','');return;}
+
                 var outString = data.ResultadoOCR.replace(/[`~!@#$%^&*()_|+\-=?;:'",.¡’•—‘ç<>\{\}\[\]\\\/]/gi, '');
                 var arrDatos = outString.split('\n');
                 var salida='';

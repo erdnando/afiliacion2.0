@@ -39,8 +39,8 @@
 <personales v-bind:open="etapasSolicitud[2].visible" v-bind:etapasSolicitud="etapasSolicitud[1]" v-bind:folio="folio" ></personales>
 <autorizo v-bind:open="etapasSolicitud[3].visible" v-bind:folio="folio"></autorizo>
 <documentos v-bind:open="etapasSolicitud[4].visible" v-bind:folio="folio"></documentos>
-<ref-telefonicas v-bind:open="etapasSolicitud[5].visible" v-bind:folio="folio"></ref-telefonicas>
-<complementarios v-bind:open="etapasSolicitud[6].visible" v-bind:folio="folio"></complementarios>
+<ref-telefonicas v-bind:open="etapasSolicitud[5].visible" v-bind:etapaPersonales="etapasSolicitud[2]" v-bind:folio="folio"></ref-telefonicas>
+<complementarios v-bind:open="etapasSolicitud[6].visible" v-bind:etapaTelefonica="etapasSolicitud[5]" v-bind:folio="folio"></complementarios>
     
   </div>
 </template>

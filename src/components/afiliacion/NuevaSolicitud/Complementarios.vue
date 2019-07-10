@@ -15,24 +15,24 @@
             <v-layout wrap>
 
                <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Folio buro*" hint="Congratulations, your query to buro was successful!" 
-                 ref="objForm.buro"  :rules="[() => !!objForm.buro || 'This field is required']"
+                <v-text-field   prepend-inner-icon="offline_pin" box  color="green" label="Folio buro*" hint="Congratulations, your query to buro was successful!" 
+                 ref="objForm.folioBuro"  :rules="[() => !!objForm.folioBuro || 'This field is required']"
                 :error-messages="errorMessages" required 
-                v-model="objForm.buro"></v-text-field>
+                v-model="objForm.folioBuro"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="Scoring*" hint="It's a great scoring"
+                <v-text-field   prepend-inner-icon="playlist_add_check"  box  label="Scoring*" hint="It's a great scoring"
                 ref="objForm.scoring"  :rules="[() => !!objForm.scoring || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.scoring"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="Case number*" hint="Your credit core code"
-                ref="objForm.casenumber"  :rules="[() => !!objForm.casenumber || 'This field is required']"
+                <v-text-field   prepend-inner-icon="business"  box  label="Case number*" hint="Your credit core code"
+                ref="objForm.numCaso"  :rules="[() => !!objForm.numCaso || 'This field is required']"
                 :error-messages="errorMessages" required  
-                v-model="objForm.casenumber"></v-text-field>
+                v-model="objForm.numCaso"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
@@ -43,21 +43,21 @@
               </v-flex>
 
               <v-flex xs12 sm8 md8>
-                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="RFC*" 
+                <v-text-field   prepend-inner-icon="perm_contact_calendar"  box  label="RFC*" 
                 ref="objForm.rfc"  :rules="[() => !!objForm.rfc || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.rfc"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm4 md4>
-                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Country*" hint="His name, his access" 
+                <v-text-field   prepend-inner-icon="public" box  color="green" label="Country*" hint="His name, his access" 
                  ref="objForm.country"  :rules="[() => !!objForm.country || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.country"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm8 md8>
-                <v-text-field   prepend-inner-icon="how_to_reg"  box  label="CURP*" 
+                <v-text-field   prepend-inner-icon="perm_contact_calendar"  box  label="CURP*" 
                 ref="objForm.curp"  :rules="[() => !!objForm.curp || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.curp"></v-text-field>
@@ -65,16 +65,7 @@
 
 
 
-              <v-flex xs12 sm8 md8>
-                <v-text-field 
-                 prepend-inner-icon="wc"
-                ref="objForm.email" 
-                v-model="objForm.email" 
-                :rules="[() => !!objForm.email || 'This field is required']"
-                :error-messages="errorMessages"
-                required
-                counter maxlength="25" box label="Email*" hint="" ></v-text-field>
-              </v-flex>
+             
 
              <!-- <v-flex xs12 sm7 md7>
                 checkbox1
@@ -101,7 +92,7 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open','etapasSolicitud','folio'],
+     props:['open','etapaTelefonica','folio'],
      data(){
        return{
           objForm:{
@@ -109,13 +100,12 @@ import {bus} from '../../../main.js'
             avance:0,
             color:'orange',
             edoCivil:'Casado',
-            rfc:'ROVE730121PK5',
+            rfc:'',
+            folioBuro:'',
+            numCaso:'',
             country:'MX',
             curp:'',
-            email:'',
-            scoring:'972',
-            casenumber:'10001',
-            buro:'20001'
+            scoring:'972'
           },
           errorMessages: '',
           formHasErrors: false
@@ -123,6 +113,14 @@ import {bus} from '../../../main.js'
      },
      updated(){
        console.log("cargando formulario...");
+        var arrPrecalifica = this.etapaTelefonica.objForm;
+        //console.log(this.etapaTelefonica);
+        
+        this.objForm.rfc = arrPrecalifica.rfc;
+        this.objForm.folioBuro = arrPrecalifica.folioBuro;
+        this.objForm.numCaso = arrPrecalifica.numCaso;
+
+
      },
      computed:{
       
@@ -131,8 +129,7 @@ import {bus} from '../../../main.js'
           edoCivil: this.objForm.edoCivil,
           rfc: this.objForm.rfc,
           country: this.objForm.country,
-          curp: this.objForm.curp,
-          email: this.objForm.email
+          curp: this.objForm.curp
         }
       }
      },
@@ -147,9 +144,6 @@ import {bus} from '../../../main.js'
         this.errorMessages = ''
       },
       curp () {
-        this.errorMessages = ''
-      },
-      email () {
         this.errorMessages = ''
       }
     },
@@ -183,11 +177,11 @@ import {bus} from '../../../main.js'
       updatestatus(){
         this.objForm.avance=0;
         var porcentaje=0;
-          if(this.objForm.edoCivil.toString().length>0)porcentaje+=20;
-          if(this.objForm.rfc.toString().length>0)porcentaje+=20;
-          if(this.objForm.country.toString().length>0)porcentaje+=20;
-          if(this.objForm.curp.toString().length>0)porcentaje+=20;
-          if(this.objForm.email.toString().length>0)porcentaje+=20;
+          if(this.objForm.edoCivil.toString().length>0)porcentaje+=25;
+          if(this.objForm.rfc.toString().length>0)porcentaje+=25;
+          if(this.objForm.country.toString().length>0)porcentaje+=25;
+          if(this.objForm.curp.toString().length>0)porcentaje+=25;
+
        
 
         this.objForm.avance=porcentaje;
