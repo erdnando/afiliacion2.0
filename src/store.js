@@ -1,6 +1,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from "axios";
 
 Vue.use(Vuex)
 
@@ -73,7 +74,58 @@ export  default new Vuex.Store({
              countTotal+= parseInt(state.etapasSolicitud[i].form.avance);
            }
            if(countTotal>=state.etapasSolicitud.length*100){
-                alert("Proceso terminado!");
+                console.log("Proceso terminado!");
+                //TODO
+                //implement axios call in actions section
+
+                var refTelefonicas = state.etapasSolicitud[5].objForm;
+                var personales = state.etapasSolicitud[2].objForm;
+
+                console.log(refTelefonicas); 
+                console.log(personales); 
+                var curpx = (refTelefonicas.rfc+Math.random().toString(36).substring(7).toUpperCase());
+                console.log(curpx);
+              
+                //---------------Axios------------------
+                axios({
+                  method: "post",
+                  url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/capturaCompleta',
+                  timeout: 1000 * 20, // Wait for 20 seconds
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  data: {
+                    _nombre:personales.nombre, 
+                    _paterno:personales.apellidos, 
+                    _materno:"", 
+                    _fnacimiento:personales.fechaDeNacimiento, 
+                    _folio:personales.folio, 
+                    _email:personales.email,
+                    _telefonoCasa:refTelefonicas.cellPhone, 
+                    _rfc:refTelefonicas.rfc, 
+                    _curp:curpx, 
+                    _casenumber:refTelefonicas.numCaso
+                  }
+                })
+                  .then(response => {
+                     console.log("send to core ...");
+                     console.log(response);
+                  })
+                  .catch(error => {
+                    console.log("error en send to core ...");
+                    console.log(error);
+                });
+
+
+
+
+
+
+
+
+
+
+
              }
         }
     },

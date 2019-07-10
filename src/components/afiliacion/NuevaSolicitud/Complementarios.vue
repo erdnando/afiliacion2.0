@@ -15,21 +15,21 @@
             <v-layout wrap>
 
                <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="offline_pin" box  color="green" label="Folio buro*" hint="Congratulations, your query to buro was successful!" 
+                <v-text-field disabled   prepend-inner-icon="offline_pin" box  color="green" label="Folio buro*" hint="Congratulations, your query to buro was successful!" 
                  ref="objForm.folioBuro"  :rules="[() => !!objForm.folioBuro || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.folioBuro"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="playlist_add_check"  box  label="Scoring*" hint="It's a great scoring"
+                <v-text-field  disabled prepend-inner-icon="playlist_add_check"  box  label="Scoring*" hint="It's a great scoring"
                 ref="objForm.scoring"  :rules="[() => !!objForm.scoring || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.scoring"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field   prepend-inner-icon="business"  box  label="Case number*" hint="Your credit core code"
+                <v-text-field  disabled prepend-inner-icon="business"  box  label="Case number*" hint="Your credit core code"
                 ref="objForm.numCaso"  :rules="[() => !!objForm.numCaso || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.numCaso"></v-text-field>
@@ -42,22 +42,22 @@
                 v-model="objForm.edoCivil"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm8 md8>
-                <v-text-field   prepend-inner-icon="perm_contact_calendar"  box  label="RFC*" 
+              <v-flex xs12 sm6 md6>
+                <v-text-field disabled  prepend-inner-icon="perm_contact_calendar"  box  label="RFC*" 
                 ref="objForm.rfc"  :rules="[() => !!objForm.rfc || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.rfc"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm4 md4>
-                <v-text-field   prepend-inner-icon="public" box  color="green" label="Country*" hint="His name, his access" 
+                <v-text-field disabled  prepend-inner-icon="public" box  color="green" label="Country*" hint="His name, his access" 
                  ref="objForm.country"  :rules="[() => !!objForm.country || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.country"></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm8 md8>
-                <v-text-field   prepend-inner-icon="perm_contact_calendar"  box  label="CURP*" 
+              <v-flex xs12 sm6 md6>
+                <v-text-field  disabled prepend-inner-icon="perm_contact_calendar"  box  label="CURP*" 
                 ref="objForm.curp"  :rules="[() => !!objForm.curp || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.curp"></v-text-field>
@@ -114,13 +114,18 @@ import {bus} from '../../../main.js'
      updated(){
        console.log("cargando formulario...");
         var arrPrecalifica = this.etapaTelefonica.objForm;
-        //console.log(this.etapaTelefonica);
+        console.log(this.etapaTelefonica);
         
-        this.objForm.rfc = arrPrecalifica.rfc;
-        this.objForm.folioBuro = arrPrecalifica.folioBuro;
-        this.objForm.numCaso = arrPrecalifica.numCaso;
+         this.objForm.rfc = arrPrecalifica.rfc;
+         this.objForm.folioBuro = arrPrecalifica.folioBuro;
+         this.objForm.numCaso = arrPrecalifica.numCaso;
 
+         
 
+     },
+     beforeUpdate(){
+              console.log("cargando curp...");
+         this.objForm.curp = this.etapaTelefonica.objForm.rfc + this.generaHomoclave();
      },
      computed:{
       
@@ -129,7 +134,10 @@ import {bus} from '../../../main.js'
           edoCivil: this.objForm.edoCivil,
           rfc: this.objForm.rfc,
           country: this.objForm.country,
-          curp: this.objForm.curp
+          curp: this.objForm.curp,
+          folioBuro:this.objForm.folioBuro,
+          scoring:this.objForm.scoring,
+          numCaso:this.objForm.numCaso
         }
       }
      },
@@ -145,9 +153,21 @@ import {bus} from '../../../main.js'
       },
       curp () {
         this.errorMessages = ''
+      },
+      folioBuro () {
+        this.errorMessages = ''
+      },
+      scoring () {
+        this.errorMessages = ''
+      },
+      numCaso () {
+        this.errorMessages = ''
       }
     },
     methods:{
+      generaHomoclave(){
+        return Math.random().toString(36).substring(9).toUpperCase();
+      },
       save(idWin){
         this.formHasErrors = false
         var isError=false;
@@ -165,23 +185,27 @@ import {bus} from '../../../main.js'
           return;
         }
          this.updatestatus();
+
+         console.log("setForm complementarios...");
+         console.log(this.objForm);
+         console.log(idWin);
           var objx={"idWin":idWin,"objForm":this.objForm};
          this.$store.commit('setForm',objx);
-       // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
       close(idWin){
         this.updatestatus();
-        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
         this.$store.commit('closeForm',idWin);
       },
       updatestatus(){
         this.objForm.avance=0;
         var porcentaje=0;
-          if(this.objForm.edoCivil.toString().length>0)porcentaje+=25;
-          if(this.objForm.rfc.toString().length>0)porcentaje+=25;
-          if(this.objForm.country.toString().length>0)porcentaje+=25;
-          if(this.objForm.curp.toString().length>0)porcentaje+=25;
-
+          if(this.objForm.edoCivil.toString().length>0)porcentaje+=14;
+          if(this.objForm.rfc.toString().length>0)porcentaje+=14;
+          if(this.objForm.country.toString().length>0)porcentaje+=14;
+          if(this.objForm.curp.toString().length>0)porcentaje+=14;
+          if(this.objForm.folioBuro.toString().length>0)porcentaje+=14;
+          if(this.objForm.scoring.toString().length>0)porcentaje+=16;
+          if(this.objForm.numCaso.toString().length>0)porcentaje+=14;
        
 
         this.objForm.avance=porcentaje;
