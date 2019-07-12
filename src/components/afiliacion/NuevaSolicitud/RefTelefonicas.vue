@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import {bus} from '../../../main.js'
+//import {bus} from '../../../main.js'
 import axios from "axios";
 
    export default {
@@ -129,42 +129,7 @@ import axios from "axios";
        }
      },
      updated(){
-       console.log("cargando formulario...");
        
-       //console.log(this.objFormAnterior.form.ocrEstructurados);
-      
-        // var arrResultados = this.etapasSolicitud.objForm.ocrEstructurados;
-
-        // if(arrResultados==undefined)return;
-        
-        // var paterno='';
-        // var materno='';
-        // var direccion='';
-        // for(var i=0;i<arrResultados.length;i++){
-        //   if(arrResultados[i].nombre == "Nombre") this.objForm.nombre = arrResultados[i].valor;
-        //   if(arrResultados[i].nombre == "Paterno") paterno = arrResultados[i].valor;
-        //   if(arrResultados[i].nombre == "Materno") materno = arrResultados[i].valor;
-        //   if(arrResultados[i].nombre == "fechaDeNacimiento") this.objForm.fechaDeNacimiento = arrResultados[i].valor;
-        //   if(arrResultados[i].nombre == "sexo") this.objForm.sexo = arrResultados[i].valor;
-        //   if(arrResultados[i].nombre == "tipo") this.objForm.nacionalidad = arrResultados[i].valor;
-        //    if(arrResultados[i].nombre == "calle") direccion += arrResultados[i].valor;
-        //    if(arrResultados[i].nombre == "codigoPostal") direccion += arrResultados[i].valor;
-        //    if(arrResultados[i].nombre == "colonia") direccion += arrResultados[i].valor;
-        //    if(arrResultados[i].nombre == "numeroExt") direccion += arrResultados[i].valor;
-        // }
-        // this.objForm.apellidos = paterno+' '+materno;
-        // this.objForm.direccion = direccion;
-        //valida fecha nac
-       
-      //  try{
-      //   var fechaObtenida = new Date(this.objForm.fechaDeNacimiento);
-      //   if(fechaObtenida.isValid()){
-      //     this.objForm.fechaNac = fechaObtenida;
-      //   }
-      //   }
-      //   catch(e){
-      //       console.log("fecha invalida:" + this.objForm.fechaDeNacimiento);
-      //   }
      },
      computed:{
       
@@ -181,7 +146,7 @@ import axios from "axios";
       homePhone () {
         this.errorMessagesHomePhone = ''
       },
-      homePhone () {
+      cellPhone () {
         this.errorMessagesCellPhone = ''
       },
       fullName () {
@@ -201,7 +166,7 @@ import axios from "axios";
     },
     methods:{
       onering1(){
-        console.log("onering1...");
+        //console.log("onering1...");
         if(this.objForm.homePhone.length<10){
           this.errorMessagesHomePhone='This field is required with 10 digits'
           return
@@ -213,7 +178,7 @@ import axios from "axios";
           this.calling(this.objForm.homePhone,1);
       },
       onering2(){
-        console.log("onering2...");
+       // console.log("onering2...");
         if(this.objForm.cellPhone.length<10){
           this.errorMessagesCellPhone='This field is required with 10 digits'
           return
@@ -277,8 +242,8 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                  console.log("respuesta de estatus...");
-                  console.log(response.data.Status);
+                 // console.log("respuesta de estatus...");
+                 // console.log(response.data.Status);
                    if(response.data.Status == 'Válido'){
                      //intentos = 6;
                      console.log("telefono valido!!!!!");
@@ -329,11 +294,11 @@ import axios from "axios";
 
        //TODO
        //get data from previous steps
-          console.log(this.etapaPersonales.objForm.nombre);
-          console.log(this.etapaPersonales.objForm.apellidos);
-          console.log(this.etapaPersonales.objForm.fechaDeNacimiento);
-          console.log(this.folio);
-          console.log(this.etapaPersonales.objForm.email);
+          // console.log(this.etapaPersonales.objForm.nombre);
+          // console.log(this.etapaPersonales.objForm.apellidos);
+          // console.log(this.etapaPersonales.objForm.fechaDeNacimiento);
+          // console.log(this.folio);
+          // console.log(this.etapaPersonales.objForm.email);
           
           axios({
                 method: "post",
@@ -352,10 +317,10 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                   console.log("precalifica response...");
-                   console.log(response.data.folioBuro);
-                   console.log(response.data.numCaso);
-                   console.log(response.data.rfc);
+                  //  console.log("precalifica response...");
+                  //  console.log(response.data.folioBuro);
+                  //  console.log(response.data.numCaso);
+                  //  console.log(response.data.rfc);
                   this.savePrecalifica(idWin,response.data)
 
                 })
@@ -365,16 +330,16 @@ import axios from "axios";
               });
     },
       save(idWin){
-        console.log("saving ref telefonicas...");
+        //console.log("saving ref telefonicas...");
         this.formHasErrors = false
         var isError=false;
-         console.log(this.form);
+         //console.log(this.form);
         Object.keys(this.form).forEach(f => {
           if (!this.form[f]) {
               this.formHasErrors = true
-              console.log(f);
+             // console.log(f);
               //this.errorMessages = f
-              console.log("-->"+this.formHasErrors);
+             // console.log("-->"+this.formHasErrors);
               
               isError=true;
               return;
@@ -385,12 +350,12 @@ import axios from "axios";
         if(isError){
           return;
           }
-        console.log(this.homePhoneStatus);
+        //console.log(this.homePhoneStatus);
         if(this.homePhoneStatus != "valido" ){
             this.errorMessagesHomePhone='The phone must be validated before';
             return;
         }
-        console.log(this.cellPhoneStatus);
+        //console.log(this.cellPhoneStatus);
         if(this.cellPhoneStatus != "valido"){
              this.errorMessagesCellPhone='The phone must be validated before';
              return;

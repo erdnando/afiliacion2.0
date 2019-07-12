@@ -1,22 +1,75 @@
 <template >
   <div class="hb">
-   
-    <h1 class="subheading grey--text">Home Banking</h1>
-     <v-container fluid class="my-2">
-     contenido
-    </v-container>
+    
+    <v-layout column wrap class="my-1" align-center>
+    
+    
+        <iframe src='https://sminet.com.mx/hbx/Default.aspx' style="width: 100%;height: 996px;"></iframe>
+    
+       <v-card>
+          <v-snackbar
+            v-model="snackbar"
+            :timeout=0
+            :bottom=true
+            :color="colorNotificacion"
+            :left=false
+            :multi-line=true
+            :right=true
+            :top=false
+            :vertical=false
+          >
+            {{ mensajeNotifica }}
+           
+          </v-snackbar>
+        </v-card>
+
+     </v-layout>
+
+    </div>
 
 
-  </div>
+
+
+
+
 </template>
 
 <script>
+
+import {bus} from '../../main.js'
+
    export default {
+    components: {
+      
+    },
+    data(){
+      return {
+        snackbar:true,
+        mensajeNotifica:'',
+        colorNotificacion:'',
+        color:'indigo',
+        urlHB:'https://sminet.com.mx/hbx/Default.aspx'
+      }
+    },
+    methods:{
+      
+    },
+    created(){
+          bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});
+          this.colorNotificacion=this.color;
+          this.snackbar=true;
+          this.mensajeNotifica='Use the following demo credentials: 8700014489 and password: Octopus48 and token 12345678 ';
+           },
+    computed:{
+      
+    }
     
     
   }
 </script>
 
-<style>
-
+<style scoped>
+html{
+  overflow-y:hidden;
+}
 </style>

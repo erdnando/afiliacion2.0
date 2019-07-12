@@ -159,7 +159,7 @@
   },
     methods:{
           docLoaded(arg){
-            console.log("archivo cargado...");
+            //console.log("archivo cargado...");
             if(arg == 'link'){
               setTimeout(function(){ bus.$emit('afiliacion.loading.end',''); }, 2000);
               
@@ -180,7 +180,7 @@
             var armUrl = path.split("\\");
             this.ispdfVisible = true;
             this.urlPDF = this.onedrive+"https://sminet.com.mx/docs/" + armUrl[armUrl.length - 1];
-            console.log(this.urlPDF);
+            //console.log(this.urlPDF);
             //emit para q se gire
             bus.$emit('giraFlipCard', "ok" );
             //bus.$emit('afiliacion.loading.end','');
@@ -257,7 +257,7 @@
         try{
           
           let datos = await axios.get("https://sminet.com.mx/Digital.Docs.Service/Service1.svc/API/select/"+ inputSearch);
-          console.log(datos.data.response.docs);
+          //console.log(datos.data.response.docs);
           var respuestaJson= datos.data.response.docs;
            let indice = 0;
                   for (let id in respuestaJson) {

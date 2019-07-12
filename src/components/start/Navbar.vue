@@ -10,9 +10,9 @@
 
           <v-spacer></v-spacer>
 
-          <v-btn  flat color="grey">
-             <span>Admin</span>
-             <v-icon right>exit_to_app</v-icon>
+          <v-btn @click="goHome"  flat color="grey">
+             <span>Go Home</span>
+             <v-icon right>power_settings_new</v-icon>
           </v-btn>
         </v-toolbar>
 
@@ -91,6 +91,16 @@ export default {
             this.solucion='FINTECH';
             this.version='2.0';
         }
+        },
+        goHome(){
+        console.log("go home");
+         this.drawer=false;
+            this.isLogged=false;
+            this.promotor={};
+            this.modulos= [];
+            this.solucion='FINTECH';
+            this.version='2.0';
+        bus.$emit('afiliacion.goTo','/fintech')
         }
     },
     created(){
@@ -107,6 +117,32 @@ export default {
                 bus.$emit('afiliacion.notifica','Login incorrecto. Verifique sus credenciales para '+ userAccediendo.app,'red');
                 bus.$emit('showDrawer',false);
                 setTimeout(function(){  bus.$emit('afiliacion.goTo','/fintech'); }, 2500);
+            }
+                
+            });
+
+            bus.$on('loginApp',(userAccediendo)=>{
+            //TODO add logic to authenticate
+            if(userAccediendo.app=="HB"){
+                //this.isLogged= true;  <--controla q se vea el menu de la izquierda
+                this.solucion='HomeBanking',
+                this.version='1.0';
+                //this.drawer=false;
+                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+            }
+            else if(userAccediendo.app=="KRECE"){
+                //this.isLogged= true;  <--controla q se vea el menu de la izquierda
+                this.solucion='Krece B2B',
+                this.version='1.0';
+                //this.drawer=false;
+                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+            }
+            else if(userAccediendo.app=="Digital Docs"){
+                //this.isLogged= true;  <--controla q se vea el menu de la izquierda
+                this.solucion='Digital Docs',
+                this.version='1.0';
+                //this.drawer=false;
+                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
             }
                 
             });
@@ -140,12 +176,12 @@ export default {
         });
 
         bus.$on('afiliacion.loading.ini',()=>{
-          console.log('loading......ini');
+          //console.log('loading......ini');
           //if(this.mostrarLoadingAun)
             this.loading=true;
         })
         bus.$on('afiliacion.loading.end',()=>{
-          console.log('loading......end');
+          //console.log('loading......end');
             this.loading=false;
             //this.mostrarLoadingAun=false;
         })

@@ -7,7 +7,7 @@
       <div class="card-carousel--overflow-container">
         <div  class="card-carousel-cards"  :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
           <div class="card-carousel--card "  v-for="item in items" :key="item.id" style="box-shadow: 0 0 11px rgba(33, 33, 33, 0.5)" >
-            <img  src="https://placehold.it/200x200"/>
+            <img width="200px" height="200px" :src="item.logo"/>
             <div v-ripple class="card-carousel--card--footer">
               <p>{{ item.name }}</p>
                <v-layout row>
@@ -15,7 +15,7 @@
                    <p  style="font-size: 10px;height:39px;width:67px;padding:0px!important">{{ item.tag }}</p>
                 </v-flex>
                 <v-flex shrink  pa-0>
-                  <v-btn small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
+                  <v-btn v-bind:disabled="item.deshabilitado" small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
                 </v-flex>
               </v-layout>
             </div>

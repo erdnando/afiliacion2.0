@@ -26,13 +26,12 @@
  data(){
    return {
      carouselItems: [
-        {id:1 , img: 'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg', titulo:"Afiliacion2.0", texto: "Onboarding de clientes y originacion en Banking. Esto es Afiliación 2.0"},
-        {id:2 , img: 'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg',titulo:"Self-service", texto: "Solución self-service permite a los usuarios iniciar su proceso de solicitud de su crédito personal."},
-        {id:3 , img: 'https://cdn.vuetifyjs.com/images/parallax/material2.jpg',titulo:"Krece B2B", texto: "Plataforma que habilita el ecosistema entre Inversionistas y solicitantes en un entorno B2B"},
-        {id:4 , img: 'https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg', titulo:"Home Banking", texto: "El front-end que extiende tu core bancario a tus clientes."},
-        {id:5 , img: 'https://cdn.vuetifyjs.com/images/parallax/material2.jpg', titulo:"Mobile Banking", texto: "Con tu App brinda tus servicios en este mundo movil. (iOS/And)"},
-        {id:6 , img: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg', titulo:"Tu wallet", texto: "App que permite solicitar pagos apegada a CoDi® y codigos QR o mensajes NFC"},
-        {id:7 , img: 'https://cdn.vuetifyjs.com/images/parallax/material2.jpg', titulo:"OCR", texto: "Uso de tecnologia OCR para la extraccion de datos y automatizar procesos."},
+        {id:1 , img: '/images/afiliacion1.jpg', titulo:"Afiliacion2.0", texto: "Onboarding de clientes y originacion en Banking. Esto es Afiliación 2.0"},
+        {id:2 , img: '/images/self.jpg',titulo:"Self-service", texto: "Solución self-service permite a los usuarios iniciar su proceso de solicitud de su crédito personal."},
+        {id:3 , img: '/images/krece2.jpg',titulo:"Krece B2B", texto: "Plataforma que habilita el ecosistema entre Inversionistas y solicitantes en un entorno B2B"},
+        {id:4 , img: '/images/hb2.jpg', titulo:"Home Banking", texto: "El front-end que extiende tu core bancario a tus clientes."},
+        {id:5 , img: '/images/mobileBank4.jpg', titulo:"Mobile Banking", texto: "Con tu App accede a tus servicios del banco. (iOS/And)"},
+        {id:6 , img: '/images/wallet2.jpg', titulo:"Tu wallet", texto: "App que permite solicitar pagos apegada a CoDi® y codigos QR o mensajes NFC"},
       ]
    }
  }

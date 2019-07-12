@@ -136,10 +136,10 @@
               });
     },
     async cmProcess(string64,my_time1,nombre,paterno){
-          console.log("----------CM----------");
-          console.log(this.folio);
-          console.log(this.categoria);
-          console.log("----------CM----------");
+          //console.log("----------CM----------");
+          //console.log(this.folio);
+          //console.log(this.categoria);
+          //console.log("----------CM----------");
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
@@ -159,10 +159,10 @@
                 }
               })
                 .then(response => {
-                  console.log("CM....");
+                  console.log("CM...."+response);
                 })
                 .catch(error => {
-                  console.log("Enviado a CM....Timeout");
+                  console.log("Enviado a CM....Timeout"+error);
                   //console.log(error);
               });
     }

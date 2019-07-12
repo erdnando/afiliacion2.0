@@ -130,7 +130,7 @@ import BandejaSearcher from '@/components/afiliacion/BandejaSearcher'
             this.pageType= modo
         }),
       bus.$on('search',(consulta)=>{
-        console.log("consulta:"+consulta);
+        //console.log("consulta:"+consulta);
         
         if(consulta.trim()==''){
           //  start

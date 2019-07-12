@@ -197,15 +197,15 @@ import {bus} from '../../../main.js'
               if(unique.length>=5){
                 this.canProcess=true;
                 this.porcentaje=100;
-                console.log("Archivos procesados:"+ unique.length);
+                //console.log("Archivos procesados:"+ unique.length);
               }else{
                 this.porcentaje=50;
-                console.log("Archivos procesados:"+ unique.length);
+                //console.log("Archivos procesados:"+ unique.length);
               }
         });
          bus.$on('afiliacion.upload.documento',(data,categoria,blobUrl)=>{
              if(categoria=="1"){
-                console.log("solo para anverso");
+                //console.log("solo para anverso");
                 if(data==null){bus.$emit('afiliacion.loading.end','');return;}
                 if(data.ResultadoOCR==null){bus.$emit('afiliacion.loading.end','');return;}
 
@@ -240,6 +240,7 @@ import {bus} from '../../../main.js'
            });
 
             bus.$on('afiliacion.upload.documento.error',(data,categoria,blobUrl)=>{
+              console.log(data,categoria,blobUrl);
               this.resultadoOCR = "el servicio ha tardado mas de lo esperado. favor de reintentar";
                this.ocrEstructurados=[];
                  bus.$emit('afiliacion.loading.end','');

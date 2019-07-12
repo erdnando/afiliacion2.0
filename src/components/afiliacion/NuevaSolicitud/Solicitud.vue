@@ -57,6 +57,8 @@
             </v-layout>
           </v-container>
           <small>*indicates required field</small>
+          <br>
+          <small>*some data has been pre-filled for the purposes of the demo</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

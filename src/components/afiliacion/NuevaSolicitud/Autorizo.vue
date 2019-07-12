@@ -65,9 +65,9 @@ import VueSignature from 'vue-signature-pad'
         var porcentaje=0;
        
         const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
-        console.log("estatus del objeto firma:");
-        console.log(isEmpty);
-        console.log(data);
+        // console.log("estatus del objeto firma:");
+        // console.log(isEmpty);
+        // console.log(data);
         var pImgS64=data;
 
         //pImgS64= pImgS64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "");
@@ -150,7 +150,7 @@ import VueSignature from 'vue-signature-pad'
     window.addEventListener("resize", this.resizeCanvas);
 
    // this.resizeCanvas();
-     console.log("on resize canvas");
+     //console.log("on resize canvas");
      var canvas = this.$refs.signaturePad.getCanvasRef(); // <---- view NOTA
      console.log(canvas);
         canvas.width = 400;
@@ -159,7 +159,7 @@ import VueSignature from 'vue-signature-pad'
         canvas.width = 450;
         var ratio =  Math.max(window.devicePixelRatio || 1, 1);
         canvas.getContext("2d").scale(ratio, ratio);
-        console.log("despues del get context");
+        //console.log("despues del get context");
     //NOTA NOTA NOTA
     //se añadio esta funcion al componente node en vue-signature-pad,esm y pad.commons
     // getCanvasRef: function getCanvasRef(){

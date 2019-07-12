@@ -15,7 +15,7 @@
             <v-layout wrap>
 
               <v-flex xs12 sm5 md5>
-                <v-text-field autofocus  prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
+                <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
                  ref="objForm.nombre"  :rules="[() => !!objForm.nombre || 'This field is required']"
                 :error-messages="errorMessages" required 
                 v-model="objForm.nombre"></v-text-field>
@@ -89,7 +89,7 @@
 
 
                <v-flex xs12 sm5 md5>
-                <v-text-field  type="email"
+                <v-text-field autofocus type="email"
                  prepend-inner-icon="wc"
                 ref="objForm.email" 
                 v-model="objForm.email" 
@@ -162,7 +162,7 @@ import {bus} from '../../../main.js'
        }
      },
      updated(){
-       console.log("cargando formulario...");
+       //console.log("cargando formulario...");
         var arrResultados = this.etapasSolicitud.objForm.ocrEstructurados;
 
         if(arrResultados==undefined)return;
@@ -187,10 +187,10 @@ import {bus} from '../../../main.js'
         //valida fecha nac
        
        try{
-         console.log(this.fechaNac);
+         //console.log(this.fechaNac);
         var fechaObtenida = new Date(this.fechaNac+"T12:00:00-06:00");
         
-        console.log(fechaObtenida);
+        //console.log(fechaObtenida);
         var year = fechaObtenida.getFullYear();
         var month = fechaObtenida.getMonth()+1;
         var day = fechaObtenida.getDate();
@@ -252,7 +252,7 @@ import {bus} from '../../../main.js'
         Object.keys(this.form).forEach(f => {
           if (!this.form[f]) {
               this.formHasErrors = true
-              console.log("-->"+this.formHasErrors);
+              //console.log("-->"+this.formHasErrors);
               isError=true;
               return;
           }

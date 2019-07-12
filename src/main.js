@@ -9,8 +9,7 @@ import store from './store';
 import VueSignature from 'vue-signature-pad'
 
 
-
-Vue.use(VueAxios, axios, VueSignature );
+Vue.use(VueAxios, axios, VueSignature);
 
 Vue.config.productionTip = false;
 

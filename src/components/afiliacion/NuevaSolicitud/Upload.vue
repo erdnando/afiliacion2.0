@@ -95,7 +95,7 @@
 
     
         //TODO call ocr ws and show results
-        console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
+       // console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
         
         var my_time1 = new Date(); // date object 
         my_time1=my_time1.getTime(); // first time variable
@@ -135,10 +135,10 @@
               });
     },
     async cmProcess(string64,my_time1,nombre,paterno){
-          console.log("----------CM----------");
-          console.log(this.folio);
-          console.log(this.categoria);
-          console.log("----------CM----------");
+          // console.log("----------CM----------");
+          // console.log(this.folio);
+          // console.log(this.categoria);
+          // console.log("----------CM----------");
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',

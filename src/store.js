@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+import {bus} from './main.js'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,9 @@ const etapasSolicitud = () =>{
 export  default new Vuex.Store({
     state:{
         etapasSolicitud : etapasSolicitud(),
-        folioGenerado:''
+        folioGenerado:'',
+        etapaFin:false,
+        mensajeFinalAfiliacion:''
     },
     mutations:{
         generaFolio(state){
@@ -37,10 +40,14 @@ export  default new Vuex.Store({
         closeForm(state, id){
             state.etapasSolicitud[id].visible = false;
         },
+        closeMessageFinal(state, id){
+          state.etapaFin = false;
+      },
         setForm(state,payload){
             var objForm= payload.objForm;
             var idWin= payload.idWin;
             state.etapasSolicitud[idWin].objForm = objForm;
+
             if(objForm.avance==100){
                 state.etapasSolicitud[idWin].iniciarContinuar="filled";
                 state.etapasSolicitud[idWin].form.color='green';
@@ -58,13 +65,13 @@ export  default new Vuex.Store({
                  state.etapasSolicitud[idWin+1].disabled=false;
                 this.objFormAnterior = state.etapasSolicitud[idWin];
              }catch(e){
-               console.log(e);
+               //console.log(e);
              }
            }else{
              try{
                 state.etapasSolicitud[idWin+1].disabled=true;
              }catch(e){
-               console.log(e);
+              // console.log(e);
              }
            }
             state.etapasSolicitud[idWin].visible = false;
@@ -75,18 +82,19 @@ export  default new Vuex.Store({
            }
            if(countTotal>=state.etapasSolicitud.length*100){
                 console.log("Proceso terminado!");
-                //TODO
-                //implement axios call in actions section
+                
 
+             }
+        },
+        capturaCompleta(state){
                 var refTelefonicas = state.etapasSolicitud[5].objForm;
                 var personales = state.etapasSolicitud[2].objForm;
-
-                console.log(refTelefonicas); 
-                console.log(personales); 
+                
+                // console.log(refTelefonicas); 
+                // console.log(personales); 
                 var curpx = (refTelefonicas.rfc+Math.random().toString(36).substring(7).toUpperCase());
-                console.log(curpx);
-              
-                //---------------Axios------------------
+                // console.log(curpx);
+            
                 axios({
                   method: "post",
                   url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/capturaCompleta',
@@ -108,26 +116,26 @@ export  default new Vuex.Store({
                   }
                 })
                   .then(response => {
-                     console.log("send to core ...");
+                     //console.log("send to core ...");
                      console.log(response);
+                     bus.$emit('afiliacion.loading.end','');
+                     //this.$store.commit('setForm',objx);
+                     //show final message
+                     //var msg = response.data;
+                     //msg=msg.replace("<b>","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","")
+                     state.mensajeFinalAfiliacion = "<b>Digital file: "+personales.folio+"</b></br>"+response.data;
+                     state.etapaFin = true;
                   })
                   .catch(error => {
-                    console.log("error en send to core ...");
+                    //console.log("error en send to core ...");
                     console.log(error);
+                    bus.$emit('afiliacion.loading.end','');
+                    state.etapaFin = true;
+                    state.mensajeFinalAfiliacion = "An error has occurred, please try again";
+                    
                 });
+        },
 
-
-
-
-
-
-
-
-
-
-
-             }
-        }
     },
     actions:{
 

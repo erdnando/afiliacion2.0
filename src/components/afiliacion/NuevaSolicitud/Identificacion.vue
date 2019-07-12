@@ -63,6 +63,7 @@
 
 
           </v-container>
+          <small v-show="vistaUploader">*click on the box to select an image of your identification </small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -178,16 +179,16 @@ import {bus} from '../../../main.js'
               if(unique.length>=2){
                 this.canProcess=true;
                 this.porcentaje=100;
-                console.log("Archivos procesados:"+ unique.length);
+               // console.log("Archivos procesados:"+ unique.length);
               }else{
                 this.porcentaje=50;
-                console.log("Archivos procesados:"+ unique.length);
+               // console.log("Archivos procesados:"+ unique.length);
               }
         });
          bus.$on('afiliacion.upload.documento',(data,categoria,blobUrl)=>{
              if(categoria=="1"){
-                console.log("solo para anverso");
-                console.log(data);
+                //console.log("solo para anverso");
+                //console.log(data);
                 if(data==null)return;
                 if(data.ResultadoOCR==null)return;
                 var outString = data.ResultadoOCR.replace(/[`~!@#$%^&*()_|+\-=?;:'",.¡’•—‘ç<>\{\}\[\]\\\/]/gi, '');

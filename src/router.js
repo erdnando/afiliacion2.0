@@ -14,6 +14,8 @@ import Hb from './views/hb/Home.vue';
 import MobileBanking from './views/mobile-banking/Home.vue';
 import Wallet from './views/wallet/Home.vue';
 
+import DS from './views/standalone/ds/Home.vue';
+
 Vue.use(Router);
 
 export default new Router({
@@ -84,6 +86,11 @@ export default new Router({
       path: '/fintech/configuracion',
       name: 'configuracion',
       component: Configuracion
+    },
+    {
+      path: '/fintech/digital-docs',
+      name: 'digital-docs',
+      component: DS
     }
   ]
 });

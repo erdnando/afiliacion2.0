@@ -41,6 +41,7 @@
 <documentos v-bind:open="etapasSolicitud[4].visible" v-bind:folio="folio"></documentos>
 <ref-telefonicas v-bind:open="etapasSolicitud[5].visible" v-bind:etapaPersonales="etapasSolicitud[2]" v-bind:folio="folio"></ref-telefonicas>
 <complementarios v-bind:open="etapasSolicitud[6].visible" v-bind:etapaTelefonica="etapasSolicitud[5]" v-bind:folio="folio"></complementarios>
+<etapa-Fin v-bind:open="etapaFin"></etapa-Fin>
     
   </div>
 </template>
@@ -54,10 +55,11 @@ import Autorizo from '@/components/afiliacion/NuevaSolicitud/Autorizo'
 import Documentos from '@/components/afiliacion/NuevaSolicitud/Documentos'
 import RefTelefonicas from '@/components/afiliacion/NuevaSolicitud/RefTelefonicas'
 import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementarios'
+import EtapaFin from '@/components/afiliacion/NuevaSolicitud/EtapaFin'
 
    export default {
       components: {
-    Solicitud,Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,Complementarios
+    Solicitud,Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,Complementarios,EtapaFin
     },
     data () {
       return {
@@ -139,6 +141,11 @@ import Complementarios from '@/components/afiliacion/NuevaSolicitud/Complementar
       etapasSolicitud:{
         get(){
           return this.$store.state.etapasSolicitud;
+         }
+      },
+      etapaFin:{
+        get(){
+          return this.$store.state.etapaFin;
          }
       }
      },

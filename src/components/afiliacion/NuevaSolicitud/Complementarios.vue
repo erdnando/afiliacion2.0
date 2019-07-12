@@ -112,9 +112,9 @@ import {bus} from '../../../main.js'
        }
      },
      updated(){
-       console.log("cargando formulario...");
+       //console.log("cargando formulario...");
         var arrPrecalifica = this.etapaTelefonica.objForm;
-        console.log(this.etapaTelefonica);
+        //console.log(this.etapaTelefonica);
         
          this.objForm.rfc = arrPrecalifica.rfc;
          this.objForm.folioBuro = arrPrecalifica.folioBuro;
@@ -124,7 +124,7 @@ import {bus} from '../../../main.js'
 
      },
      beforeUpdate(){
-              console.log("cargando curp...");
+             // console.log("cargando curp...");
          this.objForm.curp = this.etapaTelefonica.objForm.rfc + this.generaHomoclave();
      },
      computed:{
@@ -171,11 +171,11 @@ import {bus} from '../../../main.js'
       save(idWin){
         this.formHasErrors = false
         var isError=false;
-         console.log(this.form);
+         //console.log(this.form);
         Object.keys(this.form).forEach(f => {
           if (!this.form[f]) {
               this.formHasErrors = true
-              console.log("-->"+this.formHasErrors);
+              //"-->"+this.formHasErrors);
               isError=true;
               return;
           }
@@ -186,11 +186,14 @@ import {bus} from '../../../main.js'
         }
          this.updatestatus();
 
-         console.log("setForm complementarios...");
-         console.log(this.objForm);
-         console.log(idWin);
           var objx={"idWin":idWin,"objForm":this.objForm};
+
+         // console.log("setForm complementarios...objx");
+          //console.log(objx);
          this.$store.commit('setForm',objx);
+
+          bus.$emit('afiliacion.loading.ini','');
+          this.$store.commit('capturaCompleta');
       },
       close(idWin){
         this.updatestatus();
