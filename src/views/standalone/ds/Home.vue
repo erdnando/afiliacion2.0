@@ -121,19 +121,22 @@
                 <v-card-text>
                   <template>
                       <v-card>
-                        <v-card-title class="indigo white--text headline">
-                          User Directory
-                        </v-card-title>
                         <v-layout justify-space-between pa-3>
                           <v-flex xs5>
+                           <span v-if="hayDatos" id ="contador">{{countDatos}}</span>
                             <v-treeview :active.sync="active" :items="items" expand-icon="image_search" 
                               activatable active-class="primary--text"
                               class="grey lighten-5"  transition>
-                              <template v-slot:prepend="{ item, active }">
+                              <template  v-slot:prepend="{ item, active }">
+                                
                                 <v-icon v-if="!item.children" :color="active ? 'primary' : ''">folder</v-icon>
+                                
                                 <span>{{clean(item.id)}}</span>
                               </template>
                             </v-treeview>
+
+
+
                           </v-flex>
                           <v-flex d-flex text-xs-center>
                             <v-scroll-y-transition mode="out-in">
@@ -248,7 +251,9 @@ import axios from "axios";
          chips: [],
         elementos: [],
         resultados: [],
-        abierto:false
+        abierto:false,
+        hayDatos:false,
+        countDatos:0
       }
     },
     methods:{
@@ -273,10 +278,36 @@ import axios from "axios";
            var arrFileFull = fileSolr.split('\\');
            var file = arrFileFull[arrFileFull.length-1];
            var arrFile = file.split('.');
-          return arrFile[0];
+          return file;//arrFile[0];
+      },
+      busqueda(){
+        bus.$emit('afiliacion.loading.ini','');
+          jsonObj =[];
+          this.resultados = [];
+          var jsonObj = [];
+          var item = {};
+          this.hayDatos=false;
+          this.countDatos=0;
+          //arma request
+          for(var i=0;i<this.chips.length;i++){
+              item ["Q"] = this.chips[i];
+              jsonObj.push(item);
+          }
+
+          jsonObj.reverse();
+          jsonObj.push({'Q':''});
+          console.log("cadena armada...");
+          console.log(jsonObj);
+
+          if(jsonObj.length==1){
+            bus.$emit('afiliacion.loading.end','');
+            return;
+            }
+          
+          //cal ws solr
+          this.consultaSolr(jsonObj);
       },
       async consultaSolr(objConsulta){
-          //console.log(objConsulta);
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
@@ -293,17 +324,18 @@ import axios from "axios";
                    console.log(response.data.response.docs);
                    var arrR= response.data.response.docs;
                   
-                  // for(var i=0;i<arrR.length;i++){
-                  //   console.log( arrR[i].id);
-                  //      arrR[i].id = this.clean( arrR[i].id );
-                  // }
-
                   this.resultados = arrR;
-
+                  if(arrR.length>0){
+                    this.countDatos=arrR.length;
+                    this.hayDatos=true;
+                    }
+                 
+                  bus.$emit('afiliacion.loading.end','');
 
                 })
                 .catch(error => {
                   console.log(error);
+                  bus.$emit('afiliacion.loading.end','');
               });
     },
       async fetchFiles (item) {
@@ -318,23 +350,6 @@ import axios from "axios";
       },
       randomAvatar () {
         this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
-      },
-      busqueda(){
-        jsonObj =[];
-        this.resultados = [];
-        var jsonObj = [];
-         var item = {}
-        for(var i=0;i<this.chips.length;i++){
-            item ["Q"] = this.chips[i];
-            jsonObj.push(item);
-        }
-        jsonObj.push({'Q':''});
-         console.log("armando cadena...");
-        console.log(jsonObj);
-
-        if(jsonObj.length==1)return;
-
-        this.consultaSolr(jsonObj);
       }
     },
     created(){
@@ -383,5 +398,34 @@ import axios from "axios";
 <style scoped>
 html{
   overflow-y:hidden;
+}
+
+#contador {
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    font-size: 14px;
+    top: 4px;
+    /* right: -22px; */
+    left: 33px;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    background-color: #f44336 !important;
+    border-color: #f44336 !important;
 }
 </style>
