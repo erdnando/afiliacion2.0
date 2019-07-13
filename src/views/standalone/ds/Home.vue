@@ -93,24 +93,19 @@
         <template>
         <div>
           <v-toolbar color="indigo" dark tabs>
-            <!-- <v-text-field append-icon="search" class="mx-3" flat label="Search"  solo-inverted></v-text-field> -->
-
-           <template>
-            <v-combobox @keyup.enter="busqueda" style="margin-top: 10px;color:black" autofocus background-color="#8C9EFF"  v-model="chips" :items="elementos" label="Search" chips clearable append-icon="search" solo multiple>
-              <template v-slot:selection="data">
-                <v-chip color="green" :selected="data.selected" close @input="remove(data.item)">
-                  <strong>{{ data.item }}</strong>&nbsp;
-                </v-chip>
-              </template>
-            </v-combobox>
-          </template>
-
-
-
+            <template>
+              <v-combobox @keyup.enter="busqueda" style="margin-top: 10px;color:black" autofocus background-color="#8C9EFF"  v-model="chips" :items="elementos" label="Search" chips clearable append-icon="search" solo multiple>
+                <template v-slot:selection="data">
+                  <v-chip color="green" :selected="data.selected" close @input="remove(data.item)">
+                    <strong>{{ data.item }}</strong>&nbsp;
+                  </v-chip>
+                </template>
+              </v-combobox>
+            </template>
             <template v-slot:extension>
               <v-tabs v-model="tabs" centered color="transparent" slider-color="white">
                 <v-tab >
-                 Search panel
+                Search panel
                 </v-tab>
 
                 <v-tab >
@@ -131,12 +126,12 @@
                         </v-card-title>
                         <v-layout justify-space-between pa-3>
                           <v-flex xs5>
-                            <v-treeview :active.sync="active" :items="items"
-                              :load-children="fetchFiles" :open.sync="open"
+                            <v-treeview :active.sync="active" :items="items" expand-icon="image_search" 
                               activatable active-class="primary--text"
-                              class="grey lighten-5" open-on-click transition>
+                              class="grey lighten-5"  transition>
                               <template v-slot:prepend="{ item, active }">
                                 <v-icon v-if="!item.children" :color="active ? 'primary' : ''">folder</v-icon>
+                                <span>{{clean(item.id)}}</span>
                               </template>
                             </v-treeview>
                           </v-flex>
@@ -251,7 +246,9 @@ import axios from "axios";
         open: [],
         users: [],
          chips: [],
-        elementos: []
+        elementos: [],
+        resultados: [],
+        abierto:false
       }
     },
     methods:{
@@ -270,40 +267,43 @@ import axios from "axios";
         this.chips.splice(this.chips.indexOf(item), 1)
         this.chips = [...this.chips]
       },
-      async consultaSolr(consulta){
+      clean(fileSolr){
+       if(fileSolr == undefined)return;
+
+           var arrFileFull = fileSolr.split('\\');
+           var file = arrFileFull[arrFileFull.length-1];
+           var arrFile = file.split('.');
+          return arrFile[0];
+      },
+      async consultaSolr(objConsulta){
+          //console.log(objConsulta);
           axios({
                 method: "post",
-                url: 'https://sminet.com.mx/OneRingService/Service1.svc/postCall',
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
                 timeout: 1000 * 10, // Wait for 10 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
                 data: {
-                  telefono: telefono
+                  querys: objConsulta
                 }
               })
                 .then(response => {
-                   console.log("SID...");
-                   console.log(response.data.Sid);
-                  console.log("sleeping...");
-                  this.sleep(1500);
-                   console.log("wake up...intentarPedirOneRing intento 0");
-                  this.intentarPedirOneRing(response.data.Sid, tipoTelefono, 0);
+                   console.log("call solr...");
+                   console.log(response.data.response.docs);
+                   var arrR= response.data.response.docs;
+                  
+                  // for(var i=0;i<arrR.length;i++){
+                  //   console.log( arrR[i].id);
+                  //      arrR[i].id = this.clean( arrR[i].id );
+                  // }
+
+                  this.resultados = arrR;
+
 
                 })
                 .catch(error => {
                   console.log(error);
-                  
-                  if(tipoTelefono==1){
-                        this.homePhoneStatus="invalido";
-                        this.loading=false;
-                        this.colorBoton='red white--text'
-                     }
-                     else if(tipoTelefono==2){
-                        this.cellPhoneStatus="invalido";
-                         this.loading2=false;
-                         this.colorBoton2='red white--text'
-                     }
               });
     },
       async fetchFiles (item) {
@@ -320,13 +320,21 @@ import axios from "axios";
         this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
       },
       busqueda(){
-        console.log("buscando...");
-       // console.log(this.chips);
-        var strConsulta='';
+        jsonObj =[];
+        this.resultados = [];
+        var jsonObj = [];
+         var item = {}
         for(var i=0;i<this.chips.length;i++){
-            strConsulta+= this.chips[i]+'-';
+            item ["Q"] = this.chips[i];
+            jsonObj.push(item);
         }
-        console.log(strConsulta);
+        jsonObj.push({'Q':''});
+         console.log("armando cadena...");
+        console.log(jsonObj);
+
+        if(jsonObj.length==1)return;
+
+        this.consultaSolr(jsonObj);
       }
     },
     created(){
@@ -352,7 +360,7 @@ import axios from "axios";
         return [
           {
             name: 'Results',
-            children: this.users
+            children: this.resultados
           }
         ]
       },
