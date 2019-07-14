@@ -118,50 +118,41 @@
           <v-tabs-items v-model="tabs">
             <v-tab-item >
               <v-card>
-                <v-card-text>
+                <v-card-text >
                   <template>
                       <v-card>
                         <v-layout justify-space-between pa-3>
-                          <v-flex xs5>
+                          <v-flex xs5 style="max-width:30%;height: 380px;overflow-y: scroll;">
                            <span v-if="hayDatos" id ="contador">{{countDatos}}</span>
                             <v-treeview :active.sync="active" :items="items" expand-icon="image_search" 
-                              activatable active-class="primary--text"
+                              activatable 
+                              :open.sync="open"
+                              active-class="green--text font-weight-bold"
                               class="grey lighten-5"  transition>
                               <template  v-slot:prepend="{ item, active }">
-                                
-                                <v-icon v-if="!item.children" :color="active ? 'primary' : ''">folder</v-icon>
-                                
-                                <span>{{clean(item.id)}}</span>
+                                <v-icon style="cursor:pointer" v-if="!item.children" :color="active ? 'green' : ''">folder</v-icon>
+                                <span  style="cursor:pointer">{{clean(item.id)}}</span>
                               </template>
                             </v-treeview>
 
-
-
                           </v-flex>
-                          <v-flex d-flex text-xs-center>
+                          <v-flex d-flex text-xs-center style="width:99%;margin: -16px;">
                             <v-scroll-y-transition mode="out-in">
                               <div v-if="!selected" class="title grey--text text--lighten-1 font-weight-light" style="align-self: center;">
-                                Select a User
+                                Select a file
                               </div>
-                              <v-card v-else :key="selected.id" class="pt-4 mx-auto" flat max-width="400">
+                              <v-card v-else :key="selected.id"  flat >
                                 <v-card-text>
-                                  <v-avatar v-if="avatar" size="88">
-                                    <v-img :src="`https://avataaars.io/${avatar}`" class="mb-4"></v-img>
-                                  </v-avatar>
-                                  <h3 class="headline mb-2">{{ selected.name }}</h3>
-                                  <div class="blue--text mb-2">{{ selected.email }}</div>
-                                  <div class="blue--text subheading font-weight-bold">{{ selected.username }}</div>
+                                 <iframe  style="border-style: hidden;height:380px" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
                                 </v-card-text>
+
                                 <v-divider></v-divider>
+
                                 <v-layout tag="v-card-text" text-xs-left wrap>
-                                  <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2>Company:</v-flex>
-                                  <v-flex>{{ selected.company.name }}</v-flex>
-                                  <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2>Website:</v-flex>
-                                  <v-flex>
-                                    <a :href="`//${selected.website}`" target="_blank">{{ selected.website }}</a>
-                                  </v-flex>
-                                  <v-flex tag="strong" xs5 text-xs-right mr-3 mb-2>Phone:</v-flex>
-                                  <v-flex>{{ selected.phone }}</v-flex>
+                                  <v-flex tag="strong" xs12 text-xs-center mr-3 mb-2>Metadata:</v-flex>
+                                  <v-flex  style="font-style: italic;max-width:100%;height: 80px;overflow-y: scroll;">
+                                      <span v-html=markWord(selected.content[0])></span>
+                                     </v-flex>
                                 </v-layout>
                               </v-card>
                             </v-scroll-y-transition>
@@ -253,7 +244,10 @@ import axios from "axios";
         resultados: [],
         abierto:false,
         hayDatos:false,
-        countDatos:0
+        countDatos:0,
+        pdfviewer:'https://drive.google.com/viewerng/viewer?embedded=true&hl=es&url=https://sminet.com.mx/docs/',
+        officeviewer:'https://view.officeapps.live.com/op/view.aspx?src=https://sminet.com.mx/docs/',
+        urlPDF:''
       }
     },
     methods:{
@@ -280,24 +274,49 @@ import axios from "axios";
            var arrFile = file.split('.');
           return file;//arrFile[0];
       },
+      getExtension(fileSolr){
+       if(fileSolr == undefined)return;
+
+          try{
+            var arrFileFull = fileSolr.split('\\');
+            var file = arrFileFull[arrFileFull.length-1];
+            var arrFile = file.split('.');
+          return arrFile[1];
+          }catch(error){
+             console.log(error);
+             return "pdf";
+          }
+          
+      },
+      markWord(contenido){
+        console.log("mark word...");
+        console.log(this.chips);
+        var word="";
+        if(this.chips != undefined){
+          if(this.chips.length>1){
+            word = this.chips[this.chips.length-1];
+            contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
+          }
+        }
+       return contenido;
+      },
       busqueda(){
         bus.$emit('afiliacion.loading.ini','');
           jsonObj =[];
           this.resultados = [];
           var jsonObj = [];
-          var item = {};
+          //var item = {};
           this.hayDatos=false;
           this.countDatos=0;
+          active: [];
+          
           //arma request
           for(var i=0;i<this.chips.length;i++){
-              item ["Q"] = this.chips[i];
-              jsonObj.push(item);
+              jsonObj.push({'Q': this.chips[i]});
           }
 
-          jsonObj.reverse();
-          jsonObj.push({'Q':''});
-          console.log("cadena armada...");
-          console.log(jsonObj);
+          if(jsonObj.length==1)
+            jsonObj.push({'Q':''});
 
           if(jsonObj.length==1){
             bus.$emit('afiliacion.loading.end','');
@@ -307,11 +326,31 @@ import axios from "axios";
           //cal ws solr
           this.consultaSolr(jsonObj);
       },
+      getUrl(param){
+        console.log("url a mostrar...");
+        //D:\solr\example\exampledocs\F1000920-5.pdf
+        console.log(param);
+          return this.pdfviewer+this.clean(param);
+      },
+       docLoaded(arg){
+            //console.log("archivo cargado...");
+            if(arg == 'link'){
+              setTimeout(function(){ bus.$emit('afiliacion.loading.end',''); }, 2000);
+              
+            }
+          },
+      crop(metadata){
+       
+        var metaaux = metadata.replace(/(?:\r\n|\r|\n)/g, '');
+         if(metaaux.length > 400)
+         return metaaux.substring(0,399)+"...";
+         else return metaaux;
+      },
       async consultaSolr(objConsulta){
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
-                timeout: 1000 * 10, // Wait for 10 seconds
+                timeout: 1000 * 20, // Wait for 10 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -381,10 +420,12 @@ import axios from "axios";
       },
       selected () {
         if (!this.active.length) return undefined
-
+        bus.$emit('afiliacion.loading.ini','');
+        console.log("selected...");
+        console.log(this.active);
         const id = this.active[0]
 
-        return this.users.find(user => user.id === id)
+        return this.resultados.find(file => file.id === id)
       }
     },
      watch: {
@@ -427,5 +468,17 @@ html{
     transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     background-color: #f44336 !important;
     border-color: #f44336 !important;
+}
+
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 </style>
