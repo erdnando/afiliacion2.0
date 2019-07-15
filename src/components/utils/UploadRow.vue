@@ -1,10 +1,10 @@
 <template >
-  <div class="Uploader">
+  <div class="UploadRow">
     <v-layout row  justify-center>
       <v-layout row>
-            <v-flex  xs12 style="margin-left: -8px;margin-right: 35px;">
+            <v-flex  xs12 style="">
             <div v-ripple>
-                <div class="image-info" v-if="img">
+                <div class="image-info" v-if="img" style="text-align: -webkit-center;">
                 <b>Before: </b>
                 <span>{{ original.size }}</span>
                 <span class="separator"> | </span>
@@ -13,14 +13,15 @@
                 </div>
                 <div class="text-center " style="cursor:pointer;">
                 <img  @click="upload" alt="" 
-                      style="object-fit: contain;max-width:400px;border-radius: 3px;width:400px;height:300px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
-                      width="400px" height="300px" :src="img">
+                      style="object-fit: contain;max-width:200px;border-radius: 6px;width:200px;height:150px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
+                      width="200px" height="150px" :src="img">
             </div>
             </div>
             </v-flex>
         </v-layout>
 
-        <compressor class="compressor" :done="getFiles" :scale="scale" :quality="quality"  ref="compressor"></compressor>
+        <file-uploader class="compressor" :done="getFiles" :scale="scale" :quality="quality"  ref="compressor"></file-uploader>
+
         <div class="checkbox" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
             <input type="checkbox" v-model="originalSize">
             <span>Responsive Image?</span>
@@ -39,12 +40,12 @@
 
 <script>
   import axios from "axios";
-  import {bus} from '../../../main.js'
-  import Compressor from '@/components/afiliacion/NuevaSolicitud/Compressor'
+  import {bus} from '../../main.js'
+  import FileUploader from '@/components/utils/FileUploader'
 
    export default {
        components: {
-        Compressor
+        FileUploader
     },
      props:['categoria','folio','imagenFondo'],
      data(){
@@ -78,67 +79,37 @@
        upload () {
        
         let compressor = this.$refs.compressor.$el
+        console.log(compressor);
         compressor.click()
       },
       getFiles(obj){
-        if(obj.compressed.width==0){
-            if(this.scale==100){
-            this.scale=99;
-          }else{
-            this.scale=100;
-          }
-          return;
-          }
-        this.img = obj.compressed.blob
-        this.original = obj.original
-        this.compressed = obj.compressed
+        console.log("regreso del compresor...");
+      console.log(obj);
+
+      //this.obj.base64;
+      //this.obj.file.lastModifiedDate;
+      //this.obj.file.name;
+      //this.obj.file.size;
+      //this.obj.file.type;
+      //this.obj.size;
+      //this.obj.name;
 
     
         //TODO call ocr ws and show results
-       // console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
+        console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
         
         var my_time1 = new Date(); // date object 
         my_time1=my_time1.getTime(); // first time variable
         //TODO emit when the image is loaded
         bus.$emit('afiliacion.upload.categoria',this.categoria);
-        this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
+         this.cmProcess(obj.base64,my_time1,this.categoria,'');
        
       },
-      async ocrProcess(string64,my_time1,blobUrl){
-          axios({
-                method: "post",
-                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
-                timeout: 1000 * 45, // Wait for 45 seconds
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                data: {
-                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
-                  tipoCred: '1'
-                }
-              })
-                .then(response => {
-                  //console.log(response.data);
-
-                  var my_time2 = new Date(); // date object 
-                  my_time2=my_time2.getTime(); // second time variable
-                  var diff = ( my_time2-my_time1); // difference in time 
-                  console.log("Procesado en:"+  parseFloat(diff/1000));
-                  bus.$emit('afiliacion.upload.documento',response.data,this.categoria,blobUrl);
-                  //avoid to load trash to cm in test mode
-                  this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
-
-                })
-                .catch(error => {
-                  console.log(error);
-                  bus.$emit('afiliacion.upload.documento.error');
-              });
-    },
     async cmProcess(string64,my_time1,nombre,paterno){
-          // console.log("----------CM----------");
-          // console.log(this.folio);
-          // console.log(this.categoria);
-          // console.log("----------CM----------");
+          //console.log("----------CM----------");
+          //console.log(this.folio);
+          //console.log(this.categoria);
+          //console.log("----------CM----------");
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
@@ -161,7 +132,7 @@
                   console.log("CM...."+response);
                 })
                 .catch(error => {
-                  console.log("Enviado a CM....Timeout "+error);
+                  console.log("Enviado a CM....Timeout"+error);
                   //console.log(error);
               });
     }

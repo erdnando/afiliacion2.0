@@ -223,7 +223,7 @@ import axios from "axios";
           var basicAuth = 'Basic ' + btoa(username + ':' + password);
          return;
 
-          var jsonP="";
+          var jsonP="{}";
           axios({
                 method: "post",
                 url: 'http://74.208.98.86:7006/krecekiodev/api/altausuario/',

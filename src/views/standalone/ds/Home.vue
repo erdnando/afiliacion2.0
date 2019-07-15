@@ -171,13 +171,48 @@
             <v-tab-item >
               <v-card>
                 <v-card-text>
-                  tab2
+                  <!-- tab2 -->
+                 <v-card >
+                    <v-card-title class="indigo lighten">
+                      <!-- <span class="headline white--text">Documents</span> -->
+                       <v-btn @click="generarFolio" color="green" >Generate digital file</v-btn>
+                      <v-spacer></v-spacer>
+                       <span class="headline orange--text" >&nbsp;&nbsp;{{folio}}</span>
+                       
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container fluid style="margin-top: -40px;">
+
+                        <!-- caerga de imagenes-->
+                        <v-layout row inline v-show="vistaUploader">
+                          <v-flex  md4 lg4 xl4 style="" >
+                            <upload-row categoria="11" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" ></upload-row>
+                          </v-flex>
+                          <v-flex  md4 lg4 xl4>
+                            <upload-row categoria="12" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
+                          </v-flex>
+
+                          <v-flex  md4 lg4 xl4>
+                            <upload-row categoria="13" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
+                          </v-flex>
+
+                        </v-layout>
+                       
+                      </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                     
+                    </v-card-actions>
+                  </v-card>
+                  <!-- tab2 -->
                 </v-card-text>
               </v-card>
             </v-tab-item>
           </v-tabs-items>
         </div>
       </template>
+
+
     </v-dialog>
   </v-layout>
 
@@ -221,9 +256,12 @@
 
 import {bus} from '../../../main.js'
 import axios from "axios";
-
+import UploadRow from '@/components/utils/UploadRow'
 
    export default {
+     components: {
+    UploadRow
+    },
     data(){
       return {
         dialog:true,
@@ -247,7 +285,12 @@ import axios from "axios";
         countDatos:0,
         pdfviewer:'https://drive.google.com/viewerng/viewer?embedded=true&hl=es&url=https://sminet.com.mx/docs/',
         officeviewer:'https://view.officeapps.live.com/op/view.aspx?src=https://sminet.com.mx/docs/',
-        urlPDF:''
+        urlPDF:'',
+        subtitulo:'Load the images and then process them (jpg,png,bmp)',
+        folio:'',
+        vistaUploader:true,
+         fondoAnverso:'https://placehold.it/200x150',
+          fondoReverso:'https://placehold.it/200x150',
       }
     },
     methods:{
@@ -271,7 +314,7 @@ import axios from "axios";
 
            var arrFileFull = fileSolr.split('\\');
            var file = arrFileFull[arrFileFull.length-1];
-           var arrFile = file.split('.');
+           //var arrFile = file.split('.');
           return file;//arrFile[0];
       },
       getExtension(fileSolr){
@@ -296,6 +339,9 @@ import axios from "axios";
           if(this.chips.length>1){
             word = this.chips[this.chips.length-1];
             contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
+          }else{
+             word = this.chips[0];
+            contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
           }
         }
        return contenido;
@@ -308,8 +354,8 @@ import axios from "axios";
           //var item = {};
           this.hayDatos=false;
           this.countDatos=0;
-          active: [];
-          
+          this.active= [];
+  
           //arma request
           for(var i=0;i<this.chips.length;i++){
               jsonObj.push({'Q': this.chips[i]});
@@ -362,6 +408,14 @@ import axios from "axios";
                    console.log("call solr...");
                    console.log(response.data.response.docs);
                    var arrR= response.data.response.docs;
+
+                   //remove records without extension
+                   for(var i = arrR.length - 1; i >= 0; i--) {
+                      if( !this.tieneExtension(arrR[i].id)) {
+                          arrR.splice(i, 1);
+                      }
+                  }
+
                   
                   this.resultados = arrR;
                   if(arrR.length>0){
@@ -377,6 +431,21 @@ import axios from "axios";
                   bus.$emit('afiliacion.loading.end','');
               });
     },
+    tieneExtension(valor){
+       var arrPath = valor.split('.');
+      if(arrPath.length==1) return false;
+      
+      var ext=arrPath[arrPath.length-1].toUpperCase();
+      console.log(ext);
+       if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS'){
+          return true;
+       }
+       else{
+          console.log("extension no soportada");
+          return false;
+       }
+      
+    },
       async fetchFiles (item) {
         // Remove in 6 months and say
         // you've made optimizations! :)
@@ -389,6 +458,10 @@ import axios from "axios";
       },
       randomAvatar () {
         this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
+      },
+      generarFolio(){
+        this.$store.commit('generaFolio');
+       this.folio = this.$store.state.folioGenerado;
       }
     },
     created(){
@@ -419,13 +492,19 @@ import axios from "axios";
         ]
       },
       selected () {
-        if (!this.active.length) return undefined
+        if (!this.active.length) return undefined;
         bus.$emit('afiliacion.loading.ini','');
         console.log("selected...");
         console.log(this.active);
         const id = this.active[0]
 
-        return this.resultados.find(file => file.id === id)
+       var seleccionado =this.resultados.find(file => file.id === id);
+       if(seleccionado == undefined){
+         bus.$emit('afiliacion.loading.end','');
+         return undefined;
+ 
+       }
+        return seleccionado;//this.resultados.find(file => file.id === id)
       }
     },
      watch: {
@@ -440,7 +519,6 @@ import axios from "axios";
 html{
   overflow-y:hidden;
 }
-
 #contador {
     color: #fff;
     display: -webkit-box;
@@ -469,16 +547,29 @@ html{
     background-color: #f44336 !important;
     border-color: #f44336 !important;
 }
-
-
 ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 10px;
 }
-
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background-color: rgba(0,0,0,.5);
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
+.uploader-example {
+    width: 880px;
+    padding: 15px;
+    margin: 40px auto 0;
+    font-size: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+  }
+  .uploader-example .uploader-btn {
+    margin-right: 4px;
+  }
+  .uploader-example .uploader-list {
+    max-height: 440px;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 </style>
