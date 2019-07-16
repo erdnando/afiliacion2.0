@@ -83,7 +83,7 @@
         @params {String} imgUrl
       */
       drawImage(imgUrl) {
-        // Recreate Canvas Element
+         // Recreate Canvas Element
         let canvas = document.createElement('canvas')
         this.canvas = canvas
         // Set Canvas Context
@@ -92,7 +92,7 @@
         let img = new Image()
         img.src = imgUrl
 
-         if(width==0)width=400;
+        if(width==0)width=400;
         if(height==0)height=300;
 
         if(width==0)return;
@@ -146,27 +146,43 @@
         console.log("filweonload..");
         // The File
         let { file } = this
-        // Make a fileInfo Object
-        // let fileInfo = {
-        //   name: file.name,
-        //   type: file.type,
-        //   size: Math.round(file.size / 1000)+' kB',
-        //   base64: this.reader.result,
-        //   file: file
-        // }
-  
-        // Push it to the state
-        //this.result = fileInfo;
 
-        //TODO add base64 to ws CM
-        // console.log(this.result.base64);
-        let objToPass = {
-            base64: this.reader.result,
-            name: file.name,
-            sizw:Math.round(file.size / 1000)+' kB',
-            file: this.buildFile(this.reader.result, file.name)
+        // Make a fileInfo Object  <--compressor
+        let fileInfo = {
+          name: file.name,
+          type: file.type,
+          size: Math.round(file.size / 1000)+' kB',
+          base64: this.reader.result,
+          file: file
         }
-        this.done(objToPass);
+        console.log("fileInfo...");
+        console.log(fileInfo);
+        // Push it to the state
+        this.result = fileInfo; //compressor
+
+        if(fileInfo.type =='image/png' || fileInfo.type =='image/jpg' || fileInfo.type =='image/jpeg'){
+          console.log("es imagen...");
+          //si es imagen ir a drawImage
+          // DrawImage
+          this.drawImage(this.result.base64)   // <--compressor
+        }else{
+           console.log("es archivo dif a imagen...");
+           //si es otro tipo de archivo 
+          //continuar y terminar
+            let objToPass = {
+                base64: this.reader.result,
+                name: file.name,
+                size:Math.round(file.size / 1000)+' kB',
+                file: this.buildFile(this.reader.result, file.name),
+                compressed: {
+                    base64: this.reader.result,
+                    name: file.name,
+                    width:400
+                  }
+            }
+            this.done(objToPass);
+        }
+       
 
       },
       // Convert Base64 to Blob

@@ -177,7 +177,8 @@
                       <!-- <span class="headline white--text">Documents</span> -->
                        <v-btn @click="generarFolio" color="green" >Generate digital file</v-btn>
                       <v-spacer></v-spacer>
-                       <span class="headline orange--text" >&nbsp;&nbsp;{{folio}}</span>
+                       <span class="headline orange--text" >&nbsp;&nbsp;{{folio}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <upload-row v-show="vistaUploader" v-bind:folio="folio"  style="" ></upload-row>
                        
                     </v-card-title>
                     <v-card-text>
@@ -186,15 +187,15 @@
                         <!-- caerga de imagenes-->
                         <v-layout row inline v-show="vistaUploader">
                           <v-flex  md4 lg4 xl4 style="" >
-                            <upload-row categoria="11" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" ></upload-row>
+                            <!-- <upload-row v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" ></upload-row> -->
                           </v-flex>
-                          <v-flex  md4 lg4 xl4>
+                          <!-- <v-flex  md4 lg4 xl4>
                             <upload-row categoria="12" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
                           </v-flex>
 
                           <v-flex  md4 lg4 xl4>
                             <upload-row categoria="13" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
-                          </v-flex>
+                          </v-flex> -->
 
                         </v-layout>
                        
@@ -288,7 +289,8 @@ import UploadRow from '@/components/utils/UploadRow'
         urlPDF:'',
         subtitulo:'Load the images and then process them (jpg,png,bmp)',
         folio:'',
-        vistaUploader:true,
+        categoria:1,
+        vistaUploader:false,
          fondoAnverso:'https://placehold.it/200x150',
           fondoReverso:'https://placehold.it/200x150',
       }
@@ -335,12 +337,18 @@ import UploadRow from '@/components/utils/UploadRow'
         console.log("mark word...");
         console.log(this.chips);
         var word="";
+
+        if(contenido != undefined)return;
+
+
         if(this.chips != undefined){
           if(this.chips.length>1){
             word = this.chips[this.chips.length-1];
+            if(contenido  != undefined || word  != undefined)
             contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
           }else{
              word = this.chips[0];
+              if(contenido  != undefined || word  != undefined)
             contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
           }
         }
@@ -437,7 +445,7 @@ import UploadRow from '@/components/utils/UploadRow'
       
       var ext=arrPath[arrPath.length-1].toUpperCase();
       console.log(ext);
-       if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS'){
+       if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS' || ext =='JPEG'){
           return true;
        }
        else{
@@ -462,6 +470,7 @@ import UploadRow from '@/components/utils/UploadRow'
       generarFolio(){
         this.$store.commit('generaFolio');
        this.folio = this.$store.state.folioGenerado;
+       this.vistaUploader=true;
       }
     },
     created(){

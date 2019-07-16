@@ -24,6 +24,7 @@ export  default new Vuex.Store({
     state:{
         etapasSolicitud : etapasSolicitud(),
         folioGenerado:'',
+        folioGeneradoCategoria:0,
         etapaFin:false,
         mensajeFinalAfiliacion:''
     },
@@ -33,6 +34,11 @@ export  default new Vuex.Store({
           var randomValue= Math.floor(Math.random() * 99999999) + 10090000;
           state.folioGenerado=newFolio+randomValue;
           state.etapasSolicitud = etapasSolicitud()
+
+          state.folioGeneradoCategoria =0;
+        },
+        generaIdCategoria(state){
+          state.folioGeneradoCategoria =state.folioGeneradoCategoria+1;
         },
         openForm(state, id){
             state.etapasSolicitud[id].visible = true;

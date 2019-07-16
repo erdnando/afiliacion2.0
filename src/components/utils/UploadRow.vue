@@ -4,18 +4,12 @@
       <v-layout row>
             <v-flex  xs12 style="">
             <div v-ripple>
-                <div class="image-info" v-if="img" style="text-align: -webkit-center;">
-                <b>Before: </b>
-                <span>{{ original.size }}</span>
-                <span class="separator"> | </span>
-                <b>After: </b>
-                <span>{{ compressed.size }}</span>
-                </div>
+               
                 <div class="text-center " style="cursor:pointer;">
-                <img  @click="upload" alt="" 
-                      style="object-fit: contain;max-width:200px;border-radius: 6px;width:200px;height:150px;box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 10px -5px, rgba(0, 0, 0, 0.14) 0px 16px 24px 2px, rgba(0, 0, 0, 0.12) 0px 6px 30px 5px !important;" 
-                      width="200px" height="150px" :src="img">
-            </div>
+                  <img  @click="upload" alt="" 
+                        style="height: 40px;background-color: orange;box-shadow: rgba(10, 0, 0, 0.2) 10px 8px 10px -5px, rgba(0, 0, 0, 0.44) 10px 16px 18px 2px, rgba(0, 0, 0, 0.42) 0px 0px 30px 0px !important;border-radius: 20px;border-color: darkorange;border-width: 2px;border-style: solid;!important;" 
+                        :src="imagenFondo">
+                </div>
             </div>
             </v-flex>
         </v-layout>
@@ -47,24 +41,27 @@
        components: {
         FileUploader
     },
-     props:['categoria','folio','imagenFondo'],
+     props:['folio'],
      data(){
        return{
           originalSize: true,
           original: {},
           compressed: {},
-          img:'',
           quality:60,
-          scale:100,
+          scale:100
        }
      },
      mounted() {
-        this.img=this.imagenFondo;
+        //this.img=this.imagenFondo;
 
+       this.$store.commit('generaIdCategoria');
+       this.categoria = this.$store.state.folioGeneradoCategoria;
          
     },
      computed:{
-     
+      imagenFondo () {
+       return require('../../assets/addFile.png')
+       }
        
      },
       created(){
@@ -83,49 +80,55 @@
         compressor.click()
       },
       getFiles(obj){
+         if(obj.compressed.width==0){
+            if(this.scale==100){
+            this.scale=99;
+          }else{
+            this.scale=100;
+          }
+          return;
+          }
         console.log("regreso del compresor...");
-      console.log(obj);
-
-      //this.obj.base64;
-      //this.obj.file.lastModifiedDate;
-      //this.obj.file.name;
-      //this.obj.file.size;
-      //this.obj.file.type;
-      //this.obj.size;
-      //this.obj.name;
-
-    
+        console.log(obj);
+      
         //TODO call ocr ws and show results
         console.log("Anexando archivo al CM :"+this.folio + "-"+this.categoria);
         
         var my_time1 = new Date(); // date object 
         my_time1=my_time1.getTime(); // first time variable
+
         //TODO emit when the image is loaded
         bus.$emit('afiliacion.upload.categoria',this.categoria);
-         this.cmProcess(obj.base64,my_time1,this.categoria,'');
+
+         //this.cmProcess(obj.base64, my_time1, obj.file.name);
+         this.cmProcess(obj.compressed.base64, my_time1, obj.compressed.name);
+
+         this.categoria++;
+         console.log("el id de categoria ahora es:");
+         console.log(this.categoria);
        
       },
-    async cmProcess(string64,my_time1,nombre,paterno){
-          //console.log("----------CM----------");
-          //console.log(this.folio);
-          //console.log(this.categoria);
+    async cmProcess(string64, my_time1, nombre){
+          console.log("----------CM----------");
+          console.log(string64);
+          console.log(this.folio);
+          console.log(this.categoria);
+          console.log(nombre);
+
+          var arr64 = string64.split(',');
           //console.log("----------CM----------");
           axios({
                 method: "post",
-                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
-                timeout: 13500 * 1, // Wait for 13.5 seconds
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
+                timeout: 53500 * 1, // Wait for 13.5 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
                 data: {
-                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+                  pImgS64: arr64[1],
                   idTramite: this.folio,
                   categoria: this.categoria,
-                  lang: 'eng',
-                  contraste: '200',
-                  ext: '',
-                  nombre: nombre,
-                  paterno: paterno
+                  nombre: nombre
                 }
               })
                 .then(response => {

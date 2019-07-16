@@ -86,10 +86,10 @@
         let img = new Image()
         img.src = imgUrl
 
-         if(width==0)width=400;
+        if(width==0)width=400;
         if(height==0)height=300;
 
-if(width==0)return;
+        if(width==0)return;
 
         // Image Size After Scaling
         let scale = parseInt(this.scale) / 100
