@@ -121,7 +121,7 @@
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
-                timeout: 53500 * 1, // Wait for 13.5 seconds
+                timeout: 153500 * 1, // Wait for 13.5 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
