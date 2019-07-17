@@ -88,7 +88,7 @@
           }
           return;
           }
-        console.log("regreso del compresor...");
+        //console.log("regreso del compresor...");
         console.log(obj);
       
         //TODO call ocr ws and show results
@@ -102,15 +102,16 @@
 
          //this.cmProcess(obj.base64, my_time1, obj.file.name);
          this.cmProcess(obj.compressed.base64, my_time1, obj.compressed.name);
-
+         this.$store.commit('adddigitalFile',"File added: "+this.folio + "-"+this.categoria + " ("+ obj.compressed.name+")" );
          this.categoria++;
-         console.log("el id de categoria ahora es:");
-         console.log(this.categoria);
+         //console.log("el id de categoria ahora es:");
+         //console.log(this.categoria);
+         
        
       },
     async cmProcess(string64, my_time1, nombre){
           console.log("----------CM----------");
-          console.log(string64);
+          //console.log(string64);
           console.log(this.folio);
           console.log(this.categoria);
           console.log(nombre);

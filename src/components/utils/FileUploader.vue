@@ -64,8 +64,8 @@
 
         console.log(file);
         // Validation
-        let type = this.file.type
-        let valid = type.indexOf("image") !== -1
+        //let type = this.file.type
+        //let valid = type.indexOf("image") !== -1
 
         //TODO add validacion para los documentos soportados.....
         //if(!valid) throw "File Type Is Not Supported. Upload an image instead"

@@ -139,7 +139,32 @@
                           <v-flex d-flex text-xs-center style="width:99%;margin: -16px;">
                             <v-scroll-y-transition mode="out-in">
                               <div v-if="!selected" class="title grey--text text--lighten-1 font-weight-light" style="align-self: center;">
-                                Select a file
+                                <!-- Select a file -->
+                               <v-card>
+                                  <v-img
+                                    class="white--text"
+                                    height="200px"
+                                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                  >
+                                    <v-container fill-height fluid>
+                                      <v-layout fill-height>
+                                        <v-flex xs12 align-end flexbox>
+                                          <span class="headline">Digital docs</span>
+                                        </v-flex>
+                                      </v-layout>
+                                    </v-container>
+                                  </v-img>
+                                  <v-card-title>
+                                    <div>
+                                      <span >You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents (try with the digital file F1000920)</span><br>
+                                      <span></span><br>
+                                      <span class="grey--text">To create a digital file go to the file upload tab</span>
+                                    </div>
+                                  </v-card-title>
+                                  <v-card-actions>
+                                    
+                                  </v-card-actions>
+                                </v-card>
                               </div>
                               <v-card v-else :key="selected.id"  flat >
                                 <v-card-text>
@@ -178,7 +203,7 @@
                        <v-btn @click="generarFolio" color="green" >Generate digital file</v-btn>
                       <v-spacer></v-spacer>
                        <span class="headline orange--text" >&nbsp;&nbsp;{{folio}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <upload-row v-show="vistaUploader" v-bind:folio="folio"  style="" ></upload-row>
+                        <upload-row class="heart" v-show="vistaUploader" v-bind:folio="folio"  style="" ></upload-row>
                        
                     </v-card-title>
                     <v-card-text>
@@ -186,8 +211,18 @@
 
                         <!-- caerga de imagenes-->
                         <v-layout row inline v-show="vistaUploader">
-                          <v-flex  md4 lg4 xl4 style="" >
-                            <!-- <upload-row v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" ></upload-row> -->
+                          <v-flex  md12 lg12 xl12 style="" >
+                           <v-card style="margin-top:14px">
+                                <v-card-title class="subheading font-weight-bold">Content (wait for indexing...)</v-card-title>
+                                <v-divider></v-divider>
+
+                                <v-list dense v-for="item in filesAdded" :key="item">
+                                  <v-list-tile>
+                                    <v-list-tile-content class="align-start">{{ item }}</v-list-tile-content>
+                                  </v-list-tile>
+
+                                </v-list>
+                              </v-card>
                           </v-flex>
                           <!-- <v-flex  md4 lg4 xl4>
                             <upload-row categoria="12" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
@@ -471,6 +506,8 @@ import UploadRow from '@/components/utils/UploadRow'
         this.$store.commit('generaFolio');
        this.folio = this.$store.state.folioGenerado;
        this.vistaUploader=true;
+       this.$store.state.filesAdded= [];
+       this.$store.state.folioGeneradoCategoria =0;
       }
     },
     created(){
@@ -514,6 +551,9 @@ import UploadRow from '@/components/utils/UploadRow'
  
        }
         return seleccionado;//this.resultados.find(file => file.id === id)
+      },
+      filesAdded(){
+        return this.$store.state.filesAdded;
       }
     },
      watch: {
@@ -581,4 +621,16 @@ html{
     overflow-x: hidden;
     overflow-y: auto;
   }
+
+  .heart {
+	font-size: 150px;
+	color: #e00;
+	animation: beat .75s infinite alternate;
+	transform-origin: center;
+}
+
+/* Heart beat animation */
+@keyframes beat{
+	to { transform: scale(1.1); }
+}
 </style>

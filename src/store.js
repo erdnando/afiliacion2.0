@@ -26,7 +26,8 @@ export  default new Vuex.Store({
         folioGenerado:'',
         folioGeneradoCategoria:0,
         etapaFin:false,
-        mensajeFinalAfiliacion:''
+        mensajeFinalAfiliacion:'',
+        filesAdded : ['vbvbvvb']
     },
     mutations:{
         generaFolio(state){
@@ -140,6 +141,9 @@ export  default new Vuex.Store({
                     state.mensajeFinalAfiliacion = "An error has occurred, please try again";
                     
                 });
+        },
+        adddigitalFile(state, msg){
+          state.filesAdded.push(msg);
         },
 
     },
