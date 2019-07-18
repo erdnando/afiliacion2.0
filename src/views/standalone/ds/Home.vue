@@ -88,9 +88,9 @@
     </v-layout>
 
 
-    <v-layout row  justify-center>
-    <v-dialog v-model="buscador" persistent max-width="900" style="border-radius: 7px!important;">
-        <template>
+    <v-layout row  justify-center >
+    <v-dialog  v-model="buscador" persistent max-width="900" >
+        <template >
         <div>
           <v-toolbar color="indigo" dark tabs>
             <template>
@@ -281,6 +281,7 @@
 
     </v-dialog>
   </v-layout>
+ 
 
      <v-card>
       <v-snackbar
@@ -683,4 +684,27 @@ html{
 @keyframes beat{
 	to { transform: scale(1.1); }
 }
+
+.v-dialog__content {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    left: 0;
+    pointer-events: none;
+    position: fixed;
+    -webkit-transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    width: 100%;
+    z-index: 6;
+    outline: none;
+    top: -50px;
+}
+
 </style>
