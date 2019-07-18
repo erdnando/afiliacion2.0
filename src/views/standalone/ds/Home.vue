@@ -101,6 +101,8 @@
                   </v-chip>
                 </template>
               </v-combobox>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <v-btn @click="close" color="orange" style="height: 46px;">Close</v-btn>
             </template>
             <template v-slot:extension>
               <v-tabs v-model="tabs" centered color="transparent" slider-color="white">
@@ -108,14 +110,19 @@
                 Search panel
                 </v-tab>
 
-                <v-tab >
+                <v-tab>
                   Upload new files
+                </v-tab>
+
+                <v-tab>
+                  How it works!
                 </v-tab>
               </v-tabs>
             </template>
           </v-toolbar>
 
           <v-tabs-items v-model="tabs">
+
             <v-tab-item >
               <v-card>
                 <v-card-text >
@@ -136,11 +143,11 @@
                             </v-treeview>
 
                           </v-flex>
-                          <v-flex d-flex text-xs-center style="width:99%;margin: -16px;">
+                          <v-flex d-flex text-xs-center style="margin: -16px;max-width: 70%;">
                             <v-scroll-y-transition mode="out-in">
                               <div v-if="!selected" class="title grey--text text--lighten-1 font-weight-light" style="align-self: center;">
                                 <!-- Select a file -->
-                               <v-card>
+                               <v-card style="margin-left: 20px;">
                                   <v-img
                                     class="white--text"
                                     height="200px"
@@ -156,7 +163,7 @@
                                   </v-img>
                                   <v-card-title>
                                     <div>
-                                      <span >You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents (try with the digital file F1000920)</span><br>
+                                      <span v-html="instruccion1"></span><br>
                                       <span></span><br>
                                       <span class="grey--text">To create a digital file go to the file upload tab</span>
                                     </div>
@@ -168,14 +175,14 @@
                               </div>
                               <v-card v-else :key="selected.id"  flat >
                                 <v-card-text>
-                                 <iframe  style="border-style: hidden;height:380px" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
+                                 <iframe  style="border-style: hidden;height:380px;width:100;" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
                                 </v-card-text>
 
                                 <v-divider></v-divider>
 
                                 <v-layout tag="v-card-text" text-xs-left wrap>
                                   <v-flex tag="strong" xs12 text-xs-center mr-3 mb-2>Metadata:</v-flex>
-                                  <v-flex  style="font-style: italic;max-width:100%;height: 80px;overflow-y: scroll;">
+                                  <v-flex id="metadatax"  style="font-style: italic;max-width:100%;height: 80px;overflow-y: scroll;width: 400px;">
                                       <span v-html=markWord(selected.content[0])></span>
                                      </v-flex>
                                 </v-layout>
@@ -185,10 +192,6 @@
                         </v-layout>
                       </v-card>
                     </template>
-
-
-
-
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -213,7 +216,7 @@
                         <v-layout row inline v-show="vistaUploader">
                           <v-flex  md12 lg12 xl12 style="" >
                            <v-card style="margin-top:14px">
-                                <v-card-title class="subheading font-weight-bold">Content (wait for indexing...)</v-card-title>
+                                <v-card-title class="subheading font-weight-bold">Content (large files >6mb can take up to 5 minutes to index)</v-card-title>
                                 <v-divider></v-divider>
 
                                 <v-list dense v-for="item in filesAdded" :key="item">
@@ -224,14 +227,6 @@
                                 </v-list>
                               </v-card>
                           </v-flex>
-                          <!-- <v-flex  md4 lg4 xl4>
-                            <upload-row categoria="12" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
-                          </v-flex>
-
-                          <v-flex  md4 lg4 xl4>
-                            <upload-row categoria="13" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" ></upload-row>
-                          </v-flex> -->
-
                         </v-layout>
                        
                       </v-container>
@@ -244,6 +239,41 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+
+             <v-tab-item >
+              <v-card>
+                <v-card-text >
+                  <template>
+                      <v-card style="margin-left: 20px;">
+                                  <v-img
+                                    contain :aspect-ratio="16/9"
+                                    height="265px"
+                                    :src="inverted"
+                                  >
+                                    <v-container fill-height fluid>
+                                      <v-layout fill-height>
+                                       
+                                      </v-layout>
+                                    </v-container>
+                                  </v-img>
+                                  <v-card-title>
+                                    <div>
+                                      <span>
+                                        We use inverted index. Most of the search engines are using an inverted index data structure to achieve better search performance. In the inverted index, all the search terms will be having associated document ids. Once the user issues a query, it will search for the terms and the associated documents. It is the optimized way to get fast search results from the search engine.
+                                        </span><br>
+                                      <span></span><br>
+                                      <span class="grey--text">We can to integrate to your content managment too!</span>
+                                    </div>
+                                  </v-card-title>
+                                  <v-card-actions>
+                                    
+                                  </v-card-actions>
+                                </v-card>
+                    </template>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+
           </v-tabs-items>
         </div>
       </template>
@@ -280,16 +310,6 @@
 
 <script>
 
- const avatars = [
-    '?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban',
-    '?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Gray02&clotheType=ShirtScoopNeck&eyeType=EyeRoll&eyebrowType=RaisedExcited&facialHairColor=Red&facialHairType=BeardMagestic&hairColor=Red&hatColor=White&mouthType=Twinkle&skinColor=DarkBrown&topType=LongHairBun',
-    '?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Black&clotheType=ShirtVNeck&eyeType=Surprised&eyebrowType=Angry&facialHairColor=Blonde&facialHairType=Blank&hairColor=Blonde&hatColor=PastelOrange&mouthType=Smile&skinColor=Black&topType=LongHairNotTooLong',
-    '?accessoriesType=Round&avatarStyle=Circle&clotheColor=PastelOrange&clotheType=Overall&eyeType=Close&eyebrowType=AngryNatural&facialHairColor=Blonde&facialHairType=Blank&graphicType=Pizza&hairColor=Black&hatColor=PastelBlue&mouthType=Serious&skinColor=Light&topType=LongHairBigHair',
-    '?accessoriesType=Kurt&avatarStyle=Circle&clotheColor=Gray01&clotheType=BlazerShirt&eyeType=Surprised&eyebrowType=Default&facialHairColor=Red&facialHairType=Blank&graphicType=Selena&hairColor=Red&hatColor=Blue02&mouthType=Twinkle&skinColor=Pale&topType=LongHairCurly'
-  ]
-
-  const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-
 import {bus} from '../../../main.js'
 import axios from "axios";
 import UploadRow from '@/components/utils/UploadRow'
@@ -307,8 +327,7 @@ import UploadRow from '@/components/utils/UploadRow'
         mensajeNotifica:'',
         colorNotificacion:'',
         botonDeshabilitado:false,
-        tabs: null,
-        text: 'Lorem ipseiusmod tempor incididunt ut labore et dolore magna aliis nisi ut aliquip ex ea commodo consequat.',
+        tabs: 0,
         active: [],
         avatar: null,
         open: [],
@@ -316,18 +335,21 @@ import UploadRow from '@/components/utils/UploadRow'
          chips: [],
         elementos: [],
         resultados: [],
+        lblResultados:'Results',
         abierto:false,
         hayDatos:false,
         countDatos:0,
         pdfviewer:'https://drive.google.com/viewerng/viewer?embedded=true&hl=es&url=https://sminet.com.mx/docs/',
+        pdfviewermine:'https://sminet.com.mx/fintech.viewer/viewer.html?file=https://sminet.com.mx/docs/',
         officeviewer:'https://view.officeapps.live.com/op/view.aspx?src=https://sminet.com.mx/docs/',
         urlPDF:'',
         subtitulo:'Load the images and then process them (jpg,png,bmp)',
         folio:'',
         categoria:1,
         vistaUploader:false,
-         fondoAnverso:'https://placehold.it/200x150',
-          fondoReverso:'https://placehold.it/200x150',
+        fondoAnverso:'https://placehold.it/200x150',
+        fondoReverso:'https://placehold.it/200x150',
+        instruccion1:'You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents after an enter (try with the digital file <SPAN class="font-weight-bold">F1000920</SPAN>)'
       }
     },
     methods:{
@@ -373,7 +395,7 @@ import UploadRow from '@/components/utils/UploadRow'
         console.log(this.chips);
         var word="";
 
-        if(contenido != undefined)return;
+        if(contenido == undefined)return;
 
 
         if(this.chips != undefined){
@@ -383,10 +405,11 @@ import UploadRow from '@/components/utils/UploadRow'
             contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
           }else{
              word = this.chips[0];
-              if(contenido  != undefined || word  != undefined)
-            contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
+              if(contenido  != undefined && word  != undefined)
+                 contenido=contenido.toUpperCase().replace(word.toUpperCase(),"<strong>"+word.toUpperCase()+"</strong>");
           }
         }
+
        return contenido;
       },
       busqueda(){
@@ -398,6 +421,7 @@ import UploadRow from '@/components/utils/UploadRow'
           this.hayDatos=false;
           this.countDatos=0;
           this.active= [];
+          this.tabs=0;
   
           //arma request
           for(var i=0;i<this.chips.length;i++){
@@ -418,8 +442,30 @@ import UploadRow from '@/components/utils/UploadRow'
       getUrl(param){
         console.log("url a mostrar...");
         //D:\solr\example\exampledocs\F1000920-5.pdf
-        console.log(param);
+        //F0101701412-1.pdf&word=erdnando
+
+
+        if(param.toUpperCase().endsWith("PDF")){
+            var word="";
+
+            if(this.chips != undefined){
+              if(this.chips.length>1){
+                word = this.chips[this.chips.length-1];
+              }else{
+                word = this.chips[0];
+              }
+            }
+
+            if(word != '' || word != undefined)
+              return this.pdfviewermine+this.clean(param)+"&word="+word.trim();
+            else
+              return this.pdfviewermine+this.clean(param);
+        }else{
           return this.pdfviewer+this.clean(param);
+        }
+
+
+
       },
        docLoaded(arg){
             //console.log("archivo cargado...");
@@ -461,10 +507,18 @@ import UploadRow from '@/components/utils/UploadRow'
 
                   
                   this.resultados = arrR;
+
                   if(arrR.length>0){
+                    console.log("con datos");
                     this.countDatos=arrR.length;
                     this.hayDatos=true;
-                    }
+                    this.lblResultados= 'Results';
+                  }
+                  else{
+                    console.log("sin datos");
+                    this.lblResultados= 'No Results or wait';
+                   
+                  }
                  
                   bus.$emit('afiliacion.loading.end','');
 
@@ -499,9 +553,6 @@ import UploadRow from '@/components/utils/UploadRow'
           .then(json => (item.children.push(...json)))
           .catch(err => console.warn(err))
       },
-      randomAvatar () {
-        this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
-      },
       generarFolio(){
         this.$store.commit('generaFolio');
        this.folio = this.$store.state.folioGenerado;
@@ -526,25 +577,29 @@ import UploadRow from '@/components/utils/UploadRow'
         })
     },
     computed:{
-         section1 () {
-       return require('../../../assets/digital.jpg')
+        section1 () {
+        return require('../../../assets/digital.jpg')
+       },
+       inverted () {
+        return require('../../../assets/inverted.png')
        },
        items () {
         return [
           {
-            name: 'Results',
+            name: this.lblResultados,
             children: this.resultados
           }
         ]
       },
       selected () {
         if (!this.active.length) return undefined;
+
         bus.$emit('afiliacion.loading.ini','');
-        console.log("selected...");
-        console.log(this.active);
+        
         const id = this.active[0]
 
        var seleccionado =this.resultados.find(file => file.id === id);
+
        if(seleccionado == undefined){
          bus.$emit('afiliacion.loading.end','');
          return undefined;
@@ -555,12 +610,7 @@ import UploadRow from '@/components/utils/UploadRow'
       filesAdded(){
         return this.$store.state.filesAdded;
       }
-    },
-     watch: {
-      selected: 'randomAvatar'
-    },
-    
-    
+    }
   }
 </script>
 

@@ -13,7 +13,7 @@
                 <v-btn  class="green lighten-1"  dark large @click="invite" style="margin-top:70px">
                   Create an entry pass to Krece
                 </v-btn>
-                <v-text-field autofocus  box type="email" style="background-color:ghostwhite;max-height:55px;width:304px"
+                <v-text-field autofocus @keyup.enter="invite"  box type="email" style="background-color:ghostwhite;max-height:55px;width:304px"
                   prepend-inner-icon="email"
                   ref="email" 
                   v-model="email" 
@@ -205,6 +205,7 @@ import axios from "axios";
     },
     methods:{
       invite(){
+         bus.$emit('afiliacion.loading.ini','');
          this.formHasErrors = false
         //var isError=false;
        
@@ -214,38 +215,32 @@ import axios from "axios";
           }
           else{
           console.log("fail calling ws...");
+           bus.$emit('afiliacion.loading.end','');
           }
       },
        async callKreceApi(){
-
-          var username = 'Kr3c3k1o_2018';
-          var password = 'Credit0_F4cil1t02018';
-          var basicAuth = 'Basic ' + btoa(username + ':' + password);
-         return;
-
-          var jsonP="{}";
-          axios({
+           axios({
                 method: "post",
-                url: 'http://74.208.98.86:7006/krecekiodev/api/altausuario/',
-                timeout: 45 * 10, // Wait for 10 seconds
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/kreceInvite',
+                timeout: 1000 * 10, // Wait for 10 seconds
                 headers: {
-                  "Content-Type": "application/json",
-                  'Authorization': + basicAuth 
+                   "Content-Type": "application/json"
                 },
-                data: jsonP
+                data: {
+                  'email': this.email.trim()
+                }
               })
                 .then(response => {
-                   console.log("response krece api...");
                    console.log(response);
-                  
-
+                   bus.$emit('afiliacion.notifica','Invitación generada. Revise su correo: '+ this.email,'indigo');
+                   this.email="";
+                     bus.$emit('afiliacion.loading.end','');
+                   
                 })
                 .catch(error => {
-                  console.log("error krece api...");
                   console.log(error);
-                  
-                 
-              });
+                    bus.$emit('afiliacion.loading.end','');
+                });
     },
       validaSesion(){
         //TODO generar validacion de la sesion
