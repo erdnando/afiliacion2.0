@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+    <token id="button_skip">OMITIR</token>
+    <token id="button_ready">LISTO</token>
+    <token id="button_start">COMENZAR</token>
+    <token id="button_repeat">REPETIR</token>
+    <token id="button_finish">FINALIZAR</token>
+    <token id="button_next">SIGUIENTE</token>
+    <token id="button_back">VOLVER</token>
+    <token id="registration_tips_title">Consejos de registro</token>
+    <token id="registration_tips_detail">Evita contraluces, lugares oscuros y&#10;asegúrate de ver tu cara bien</token>
+    <token id="face_movement_tips_title">Mueve tu cara</token>
+    <token id="face_movement_tips_detail">Para un registro óptimo, imita los&#10;movimientos mirando al frente</token>
+    <token id="start_extractor_title">Coloca tu cara dentro del círculo,&#10;pulsa comenzar e imita al modelo</token>
+    <token id="extracting_title">Permanece quieto, con tu cara&#10;en el centro del círculo</token>
+    <token id="results_message_low">Te recomendamos que&#10;repitas el registro</token>
+    <token id="results_message_good">El registro es bueno,&#10;pero puedes mejorarlo</token>
+    <token id="results_message_excellent">La calidad del registro es&#10;excelente. ¡Enhorabuena!</token>
+    <token id="results_quality_message">(Calidad del registro)</token>
+    <token id="results_quality_low">Regular</token>
+    <token id="results_quality_good">Bueno</token>
+    <token id="results_quality_excellent">Excelente</token>
+    <token id="error_message_face">Coloca tu cara en el&#10;centro del círculo</token>
+    <token id="error_message_start">Colócate dentro del círculo</token>
+    <token id="error_message_away">Aleja el dispositivo</token>
+    <token id="error_message_closer">Acerca tu cara</token>
+    <token id="error_message_liveness">Comprobando foto</token>
+    <token id="qr_scan">Coloca el QR dentro&#10;del círculo</token>
+    <token id="qr_not_valid">QR no válido</token>
+    <token id="qr_success">"QR escaneado con éxito. Accede&#10;a tu PC/MAC para continuar"</token>
+    <token id="message_blink">¡Parpadea!</token>
+    <token id="tutorial1_tip">Parpadea</token>
+    <token id="tutorial1_tip_detail">Aumenta la seguridad validando el acceso con un parpadeo</token>
+    <token id="tutorial2_tip">Permanece quieto</token>
+    <token id="tutorial2_tip_detail">Coloca tu cara dentro del círculo y permanece quieto sin mover el dispositivo</token>
+    <token id="tutorial3_tip">¡Parpadea!</token>
+    <token id="tutorial3_tip_detail">Parpadea justo antes de que las persianas se cierren completamente</token>
+</translations>

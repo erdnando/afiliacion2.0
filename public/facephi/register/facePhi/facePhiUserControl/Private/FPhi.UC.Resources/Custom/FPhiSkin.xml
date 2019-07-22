@@ -1,0 +1,14 @@
+<Config>
+  <MainButton>
+    <BackgroundColor>#0ba3c7</BackgroundColor>
+    <ForegroundColor>#ffffff</ForegroundColor>
+  </MainButton>
+  <AlternativeButton>
+    <BackgroundColor>#A4A3A3</BackgroundColor>
+    <ForegroundColor>#ffffff</ForegroundColor>
+  </AlternativeButton>
+  <Font>
+    <FontName>Raleway</FontName>
+  </Font>
+  <ShowLogo>true</ShowLogo>
+</Config>

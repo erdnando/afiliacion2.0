@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>    
+    <token id="button_skip">SKIP</token>
+    <token id="button_ready">READY</token>
+    <token id="button_start">START</token>
+    <token id="button_repeat">REPEAT</token>
+    <token id="button_finish">FINISH</token>
+    <token id="button_next">NEXT</token>
+    <token id="button_back">BACK</token>
+    <token id="registration_tips_title">Registration tips</token>
+    <token id="registration_tips_detail">Avoid backlighting, dark spaces and&#10;be sure to see your face well</token>
+    <token id="face_movement_tips_title">Move your face</token>
+    <token id="face_movement_tips_detail">For optimum registration, imitate the&#10;movements looking ahead</token>
+    <token id="start_extractor_title">Put your face inside the shape,&#10;press to start and emulate the model</token>
+    <token id="extracting_title">Hold position, with your face&#10;in the center of the shape</token>
+    <token id="results_message_low">We recommend to repeat the&#10;enrollment</token>
+    <token id="results_message_good">The registration is good,&#10;but you can improve it</token>
+    <token id="results_message_excellent">The quality of the registration&#10;is excellent. Congratulations!</token>
+    <token id="results_quality_message">(Registration quality)</token>
+    <token id="results_quality_low">Poor</token>
+    <token id="results_quality_good">Good</token>
+    <token id="results_quality_excellent">Excellent</token>
+    <token id="error_message_face">Put your face in the&#10;center of the shape</token>
+    <token id="error_message_start">Tap start to begin</token>
+    <token id="error_message_away">Away device</token>
+    <token id="error_message_closer">Move your device closer</token>
+    <token id="error_message_liveness">Checking liveness</token>
+    <token id="qr_scan">Place the QR in the&#10;center of the shape</token>
+    <token id="qr_not_valid">QR not valid</token>
+    <token id="qr_success">Scanning successfully. Access&#10;to your PC/MAC to continue</token>
+    <token id="message_blink">Blink!</token>
+    <token id="tutorial1_tip">Blink</token>
+    <token id="tutorial1_tip_detail">Increase security by validating access with a blink</token>
+    <token id="tutorial2_tip">Hold position</token>
+    <token id="tutorial2_tip_detail">Place your face inside the shape and hold position without moving your device</token>
+    <token id="tutorial3_tip">Blink!</token>
+    <token id="tutorial3_tip_detail">Blink just before the shutters close</token>
+</translations>

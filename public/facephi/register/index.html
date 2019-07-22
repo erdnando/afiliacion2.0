@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Facephi :: FacePhi Beyond Biometrics
+</title><meta name="description" /><meta name="author" content="Tres Tristes Tigres" />
+    <script src="./js/pages/FPhiMobile.js" type="text/javascript"></script>
+    
+
+  <script src="./js/jquery/jquery-1.10.2.min.js" type="text/javascript" ></script>
+  <script src="./js/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
+  <script src="./js/base.js" type="text/javascript" ></script>
+  <script src="./js/jquery/jsonvalid.js" type="text/javascript"></script>
+  
+  
+  <script src="./facePhi/facePhiUserControl/Private/FPhiUserControl.js" type="text/javascript"></script>
+  <script src="./facePhi/facePhiUserControl/FPhiRegister.js"  type="text/javascript"></script>
+  <script src="./js/pages/FPhiRegistro.js"  type="text/javascript"></script>
+  
+
+  <link href="./js/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" type="text/css" />
+  <link href="./css/skins/facephi/estilos530.css" rel="stylesheet" type="text/css"/>
+  <link href="./img/skins/facephi/favicon.ico"  rel="shortcut icon" type="image/x-icon" />
+  <link href="./img/skins/facephi/favicon.ico" rel="icon"  type="image/x-icon" />
+
+</head>
+<body onunload="" onload="return ValidateFields()">
+    <form method="post" action="./index.html" id="formMain">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTIyNzQ3MzczMA9kFgJmD2QWAgIDD2QWAgIBD2QWBGYPFgIeCWlubmVyaHRtbAUMRXNwYSYjMjQxO29sZAIDDxYCHgVzdHlsZQU/YmFja2dyb3VuZDp1cmwoLi4vLi4vLi4vaW1nL3NraW5zL2ZhY2VwaGkvbG9nby5wbmcpIG5vLXJlcGVhdDs7ZGRO13ucH3+xJBjn1qzcVdyA0G+nUJIM8Rc5u3QDPZqT0Q==" />
+</div>
+
+<script type="text/javascript">
+	//<![CDATA[
+	var theForm = document.forms['formMain'];
+	if (!theForm) {
+		theForm = document.formMain;
+	}
+	function __doPostBack(eventTarget, eventArgument) {
+		if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+			theForm.__EVENTTARGET.value = eventTarget;
+			theForm.__EVENTARGUMENT.value = eventArgument;
+			theForm.submit();
+		}
+	}
+	//]]>
+</script>
+
+
+<script>
+function GetURLParameter(sParam)
+	{
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) 
+		{
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) 
+			{
+				return sParameterName[1];
+			}
+		}
+	}
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="82F4AA1C" />
+</div>
+ 
+        
+
+        <div id="contenedor">
+            
+        <!--==== Cabecera -->
+        <header>
+
+            <!-- Topbar -->
+       
+
+            <!-- End Topbar -->
+    
+        
+
+        </header>
+			<!--====End Cabecera -->
+			
+            <div id="cuerpo" class="clearfix">
+                
+                <div id="Body_divContent" class="mainImage">
+            
+					<div id="step1" class="container">
+                            
+                                    <!--
+                            <div class="row row-margin-left row-top-smallest">
+                                <div class="col-md-12">
+                                    <input name="ctl00$Body$TextBoxUserName" type="text" id="Body_TextBoxUserName" onfocus="OnFocus1(this)" class="field" onblur="OnBlur1(this)" value="Usuario" />
+                                </div>
+							</div>
+
+                            <div class="row row-margin-left row-separator">
+                                <div class="col-md-12">
+                                    <input name="ctl00$Body$TextBoxName" type="text" id="Body_TextBoxName" onfocus="OnFocus2(this)" class="field" onblur="OnBlur2(this)" value="Nombre" />
+                                </div>
+							</div>
+                                    
+                            <div class="row row-margin-left row-separator">
+                               <div class="col-md-12">
+                                    <input name="ctl00$Body$TextBoxSurname" type="text" id="Body_TextBoxSurname" onfocus="OnFocus3(this)" class="field" onblur="OnBlur3(this)" value="Apellidos" />
+                               </div>
+							</div>
+                                    
+                            <div class="row row-margin-left row-separator">
+                                <div class="col-md-12">
+                                    <input name="ctl00$Body$TextBoxPassword" type="password" id="Body_TextBoxPassword" onfocus="OnFocus4(this)" class="field" placeholder="Password" />
+                                    <span id="labelPassword" class="help-block">Introduzca el password de 4 dígitos.</span>
+                                </div>
+							</div>
+                        
+                            <div class="row row-margin-left row-separator">
+                                <div class="col-md-12">
+                                    <input id="CheckTerms" name="CheckTerms" onclick="OnCheckTermsClick(this)" type="checkbox"/>
+                                    <label id="lblTerms">He leído y acepto los </label>
+                                    <a href="registro.aspx" onclick="return ShowPopUpLegal();" target="_blank">términos y condiciones.</a>
+                                </div>
+							</div>
+                        
+                            <div class="row row-centered row-separator">
+                                <div class="col-md-8 col-md-push-2">
+                                    <label id="Body_lblTermsHelp" class="termsHidden">Antes de continuar con el registro debes aceptar nuestros términos y condiciones.
+                                    </label>
+                                </div>
+							</div>
+
+							<div class="row row-centered row-top-smallest row-bottom-small">
+								<div class="col-md-12">
+									<button class="btn0 buttonColor0" onclick="return ValidateFields();">Registrar</button>
+                                </div>
+							</div>-->
+					</div>
+
+                    <div id="step2" class="container none" style="margin-top: -39px;margin-left: -9px;"> 
+                        <div class="row row-top-smallest row-bottom-smallest">
+                            <div id="silverControl" class="row-centered borderControl" style="border-color: black;">
+                                <div id="webUserControl" class="nofont"></div>
+				            </div>
+			            </div>  
+		            </div>
+                </div>
+                
+              
+                 <!-- Modal Popup 1 -->
+                <div id="facePhiPop1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <img src="img/skins/facephi/logoPop.png" width="30px" alt="" class="modal-title fleft"/>
+                        <h4 class="modal-title">Información al usuario y prestación del consentimiento.</h4>
+                      </div>
+                      <div class="modal-body">
+                            <p>La toma de fotografías constituye un tratamiento de datos de carácter personal definido en el artículo 3 c) de la Ley 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal como “operaciones y procedimientos técnicos de carácter automatizado o no, que permitan la recogida, grabación, conservación, elaboración, modificación, bloqueo y cancelación, así como las cesiones de datos que resulten de comunicaciones, consultas, interconexiones y transferencias”</p>
+                            <p>El artículo 6. 1 de la citada Ley Orgánica establece el régimen general para el tratamiento de datos de carácter personal, que exige el <strong>consentimiento inequívoco del afectado.</strong></p>
+                            <p>El Reglamento (UE) 2016/679 cuya entrada en vigor será en mayo de 2018 exigirá que la petición de consentimiento como base legal para el procesado de datos debe ser más clara y rigurosa. Debe ser proporcionado de manera libre, específica, informada y sin ambigüedades.</p>
+                            <p>«La persona concernida (cuyos datos sean solicitados) tendrá que dar un consentimiento claro y afirmativo al procesado de sus datos privados, dar consentimiento entraña un paso activo por parte del individuo”</p>
+                            <p><strong>Facephi Biometría S.A.</strong>, en cumplimiento de sus objetivos de claridad, cumplimiento normativo, ética empresarial y políticas de buen gobierno corporativo, adelantándose a las exigencias del Reglamento de Protección de Datos (UE) 2016/679, solicita, por medio de este cuestionario, su consentimiento claro e inequívoco, a la obtención por nuestra parte, de sus datos biométricos para los únicos fines de desarrollo, comprobación, monitoreo de esta aplicación.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn0 buttonColor5" onclick="document.getElementById('response').value = 3;"  data-dismiss="modal">Aceptar</button>
+                        <button type="button" class="btn0 buttonColor5" onclick="document.getElementById('response').value = 4;"  data-dismiss="modal">Cancelar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+               
+                
+                <input id="exception" name="exception" type="hidden" />
+                <input id="hostid" name="hostid" type="hidden" />
+                <input id="userPicture" name="userPicture" type="hidden" />
+                <input id="response" name="response" type="hidden" />
+                <input id="is32" name="is32" type="hidden" />
+                <input id="osName" name="osName" type="hidden" />
+                <input type="hidden" name="ctl00$Body$template" id="Body_template" />
+                <input type="hidden" name="ctl00$Body$hdnLang" id="Body_hdnLang" value="es" />
+                <input type="hidden" name="ctl00$Body$hdnStep" id="Body_hdnStep" value="1" />
+                
+
+	    </div> <!-- === End Cuerpo ==-->
+	</div> <!-- === End Contenedor ==-->
+     
+
+
+        <footer>
+            <!-- === Copyright === -->
+            
+            <!--/copyright--> 
+        </footer>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                
+                tttjs.init({
+                    idioma: 'es'
+                });
+            });
+
+        </script>
+
+
+    </form>
+</body>
+</html>

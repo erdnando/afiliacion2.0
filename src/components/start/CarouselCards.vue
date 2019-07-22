@@ -15,7 +15,7 @@
                    <p  style="font-size: 10px;height:39px;width:67px;padding:0px!important">{{ item.tag }}</p>
                 </v-flex>
                 <v-flex shrink  pa-0>
-                  <v-btn v-bind:disabled="item.deshabilitado" small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Acceder</v-btn>
+                  <v-btn v-bind:disabled="item.deshabilitado" small :color="item.color" :to="item.ruta" style="color:white;height:25px;margin-top: -2px;right: -14px;font-size: 11px">Access</v-btn>
                 </v-flex>
               </v-layout>
             </div>

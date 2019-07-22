@@ -1,0 +1,100 @@
+<Config>
+	<TextES>	
+		<Start>COMENZAR</Start>
+		<Cancel>CANCELAR</Cancel>
+		<Next>SIGUIENTE</Next>
+		<Improve>MEJORA</Improve>
+		<Finish>FINALIZAR</Finish>
+		<Tips>CONSEJOS</Tips>
+    <ImproveRegister>MEJORA DEL REGISTRO</ImproveRegister>
+    <RegisterQuality>CALIDAD DEL REGISTRO</RegisterQuality>
+    <Register>REGISTRO</Register>
+    <RegisterFinish>COMPLETADO</RegisterFinish>
+    <Tip1>Asegúrate de ver tu cara correctamente</Tip1>
+    <Tip2>Evita contraluces y lugares oscuros</Tip2>
+    <Tip3>Durante el registro</Tip3>
+    <Tip4>imita los movimientos del modelo</Tip4>
+    <Tip5>Coloca tu cara dentro del círculo y pulsa Comenzar</Tip5>
+    <Excellent>Excelente</Excellent>
+    <Good>Bueno</Good>
+    <Improvable>Mejorable</Improvable>
+    <ImproveLink>Mejorar</ImproveLink>
+    <WarningFaceOut>Colócate dentro del círculo</WarningFaceOut>
+    <WarningFaceTooFar>Colócate dentro del círculo</WarningFaceTooFar>
+    <Blink>Parpadea</Blink>
+    <PhotoDetected>Fotografía detectada</PhotoDetected>
+    <FaceNotDetected>Cara no detectada</FaceNotDetected>
+    <LivenessError>Permanece quieto y parpadea cuando accedas la próxima vez</LivenessError>
+    <LivenessErrorGlasses>Si llevas gafas, evita los reflejos cuando accedas la próxima vez</LivenessErrorGlasses>
+    <LivenessErrorDark>Busca un lugar iluminado y sin contraluces cuando accedas la próxima vez</LivenessErrorDark>
+    <LivenessErrorPerformance>El funcionamiento de su PC es más lento de lo esperado</LivenessErrorPerformance>
+    <Timeout>Has excedido el tiempo permitido</Timeout>
+    <Retry>REINTENTAR</Retry>
+    <TutorialHeader>DETECTOR DE FOTOGRAFÍAS</TutorialHeader>
+    <Tutorial1>Evita el fraude mediante fotografías.</Tutorial1>
+    <Tutorial2>¿Quieres saber como utilizarlo?</Tutorial2>
+    <Tutorial3>Paso 1</Tutorial3>
+    <Tutorial4>Centra tu rostro</Tutorial4>
+    <Tutorial5>dentro del círculo</Tutorial5>
+    <Tutorial6>Paso 2</Tutorial6>
+    <Tutorial7>Permanece quieto</Tutorial7>
+    <Tutorial8>frente a la cámara</Tutorial8>
+    <Tutorial9>Paso 3</Tutorial9>
+    <Tutorial10>Parpadea cuando las persianas</Tutorial10>
+    <Tutorial11>estén a la altura de los ojos</Tutorial11>
+    <TutorialButton1>No, gracias</TutorialButton1>
+    <TutorialButton2>Saber más</TutorialButton2>
+    <TutorialButton3>Siguiente ></TutorialButton3>
+    <TutorialButton4>Finalizar</TutorialButton4>
+    <TutorialBlink>Parpadea</TutorialBlink>
+	</TextES>
+  <TextEN>
+    <Start>START</Start>
+    <Cancel>CANCEL</Cancel>
+    <Next>NEXT</Next>
+    <Improve>IMPROVED</Improve>
+    <Finish>FINISH</Finish>
+    <Tips>TIPS</Tips>
+    <ImproveRegister>REGISTER IMPROVE</ImproveRegister>
+    <RegisterQuality>REGISTER QUALITY</RegisterQuality>
+    <Register>REGISTER</Register>
+    <RegisterFinish>FINISHED</RegisterFinish>
+    <Tip1>The face must be always visible</Tip1>
+    <Tip2>Avoid backlightings and dark scenarios</Tip2>
+    <Tip3>Follow the model</Tip3>
+    <Tip4>during registration</Tip4>
+    <Tip5>Put your face into the shape and click Start</Tip5>
+    <Excellent>Excellent</Excellent>
+    <Good>Good</Good>
+    <Improvable>Improvable</Improvable>
+    <ImproveLink>Improve</ImproveLink>
+    <WarningFaceOut>Place your face inside the circle</WarningFaceOut>
+    <WarningFaceTooFar>Place your face inside the circle</WarningFaceTooFar>
+    <Blink>Blink</Blink>
+    <PhotoDetected>Photo detected</PhotoDetected>
+    <FaceNotDetected>Face not detected</FaceNotDetected>
+    <LivenessError>Please, remain still and blink next time</LivenessError>
+    <LivenessErrorGlasses>If you are wearing glasses, avoid the reflections next time</LivenessErrorGlasses>
+    <LivenessErrorDark>Look for an illuminated place with no backlighting next time</LivenessErrorDark>
+    <LivenessErrorPerformance>Your pc performance is lower than expected</LivenessErrorPerformance>
+    <Timeout>Information: Maximum time allowed exceeded</Timeout>
+    <Retry>RETRY</Retry>
+    <TutorialHeader>LIVENESS DETECTOR</TutorialHeader>
+    <Tutorial1>Avoid the photograph fraud</Tutorial1>
+    <Tutorial2>Want to know more about it?</Tutorial2>
+    <Tutorial3>Step 1</Tutorial3>
+    <Tutorial4>Place your face</Tutorial4>
+    <Tutorial5>inside the circle</Tutorial5>
+    <Tutorial6>Step 2</Tutorial6>
+    <Tutorial7>Stand still</Tutorial7>
+    <Tutorial8>in front of the camera</Tutorial8>
+    <Tutorial9>Step 3</Tutorial9>
+    <Tutorial10>Blink when the blinds</Tutorial10>
+    <Tutorial11>reach the eyes</Tutorial11>
+    <TutorialButton1>No, thanks</TutorialButton1>
+    <TutorialButton2>More info</TutorialButton2>
+    <TutorialButton3>Next ></TutorialButton3>
+    <TutorialButton4>Finish</TutorialButton4>
+    <TutorialBlink>Blink</TutorialBlink>
+  </TextEN>
+</Config>

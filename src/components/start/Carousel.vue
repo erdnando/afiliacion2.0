@@ -26,12 +26,12 @@
  data(){
    return {
      carouselItems: [
-        {id:1 , img: '/images/afiliacion1.jpg', titulo:"Afiliacion2.0", texto: "Onboarding de clientes y originacion en Banking. Esto es Afiliación 2.0"},
-        {id:2 , img: '/images/self.jpg',titulo:"Self-service", texto: "Solución self-service permite a los usuarios iniciar su proceso de solicitud de su crédito personal."},
-        {id:3 , img: '/images/krece2.jpg',titulo:"Krece B2B", texto: "Plataforma que habilita el ecosistema entre Inversionistas y solicitantes en un entorno B2B"},
-        {id:4 , img: '/images/hb2.jpg', titulo:"Home Banking", texto: "El front-end que extiende tu core bancario a tus clientes."},
-        {id:5 , img: '/images/mobileBank4.jpg', titulo:"Mobile Banking", texto: "Con tu App accede a tus servicios del banco. (iOS/And)"},
-        {id:6 , img: '/images/wallet2.jpg', titulo:"Tu wallet", texto: "App que permite solicitar pagos apegada a CoDi® y codigos QR o mensajes NFC"},
+        {id:1 , img: '/images/afiliacion1.jpg', titulo:"Afiliacion2.0", texto: "Onboarding and origination in Banking. This is Afiliación 2.0"},
+        {id:2 , img: '/images/self.jpg',titulo:"Self-service", texto: "Self-service solution that allows users to start their personal credit application process themselves."},
+        {id:3 , img: '/images/krece2.jpg',titulo:"Krece B2B", texto: "Platform that enables the ecosystem between Investors and applicants in a B2B environment."},
+        {id:4 , img: '/images/hb2.jpg', titulo:"Home Banking", texto: "The front-end that extends your banking core to your clients."},
+        {id:5 , img: '/images/mobileBank4.jpg', titulo:"Mobile Banking", texto: "With your App access your bank services. (iOS / And)"},
+        {id:6 , img: '/images/wallet2.jpg', titulo:"Tu wallet", texto: "App that allows you to request payments attached to CoDi® and QR codes or NFC messages"},
       ]
    }
  }

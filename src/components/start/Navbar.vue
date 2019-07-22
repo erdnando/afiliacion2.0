@@ -11,8 +11,8 @@
           <v-spacer></v-spacer>
 
           <v-btn @click="goHome"  flat color="grey">
-             <span>Go Home</span>
-             <v-icon right>power_settings_new</v-icon>
+             <span>Home</span>
+             <v-icon right>home</v-icon>
           </v-btn>
         </v-toolbar>
 

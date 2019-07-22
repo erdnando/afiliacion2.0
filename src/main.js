@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.css'
 import Vue from 'vue';
 import './plugins/vuetify';
 import App from './App.vue';
@@ -16,6 +17,7 @@ Vue.config.productionTip = false;
 export var bus =new Vue();
 
 new Vue({
+  iconfont: 'fa',
   store,
   router,
   render: h => h(App)

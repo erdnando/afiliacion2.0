@@ -1,0 +1,115 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Facephi :: FacePhi Beyond Biometrics
+</title><meta name="description" /><meta name="author" content="Tres Tristes Tigres" />
+    <script src="./js/pages/FPhiMobile.js" type="text/javascript"></script>
+    
+    
+    <script src="./js/jquery/jquery-1.10.2.min.js"  type="text/javascript" ></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./js/base.js" type="text/javascript"></script>
+    <!--<script src="./js/google/googleAnalytics.js" type="text/javascript"></script>-->
+    <script src="./js/jquery/jsonvalid.js" type="text/javascript"></script>
+    
+    
+    <script src="./facePhi/facePhiUserControl/Private/FPhiUserControl.js" type="text/javascript"></script>
+    <script src="./facePhi/facePhiUserControl/FPhiAuthentication.js" type="text/javascript"></script>
+    <script src="./js/pages/FPhiIndex.js" type="text/javascript"></script>
+    
+
+    <link href="./js/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" type="text/css" />
+    <link href="./css/skins/facephi/estilos530.css" rel="stylesheet" type="text/css"/>
+    <link href="./img/skins/facephi/favicon.ico"  rel="shortcut icon" type="image/x-icon" />
+    <link href="./img/skins/facephi/favicon.ico" rel="icon"  type="image/x-icon" />
+
+</head>
+<body onunload="" onload="checkUser()">
+    <form method="post" action="./index.html" id="formMain">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTc1NTAxNzYwNA9kFgJmD2QWAgIDD2QWAgIBD2QWBmYPFgIeCWlubmVyaHRtbAUMRXNwYSYjMjQxO29sZAIDDxYCHgVzdHlsZQU/YmFja2dyb3VuZDp1cmwoLi4vLi4vLi4vaW1nL3NraW5zL2ZhY2VwaGkvbG9nby5wbmcpIG5vLXJlcGVhdDs7ZAIED2QWBmYPFgIeB1Zpc2libGVoZAIEDxYCHwEFEnZpc2liaWxpdHk6IGhpZGRlbhYCAgEPFgIeBWNsYXNzBQxkYXRhQmFzZUhlcmUWAgIBDxYCHwAFa0xhIGJhc2UgZGUgZGF0b3MgaGEgc2lkbyBhY3R1YWxpemFkYSBhIDI5LzExLzIwMTcuIFJlZyYjMjM3O3N0cmVzZSBkZSBudWV2byBzaSB0b2RhdiYjMjM3O2Egbm8gbG8gaGEgaGVjaG8uZAIFDxYCHwMFG2JvcmRlckNvbnRyb2xMaXZlbmVzc0Nocm9tZWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgEFFWN0bDAwJEJvZHkkcGhvdG9DaGVja1n0+LFq/LY4nhGbeHAp63mpjwwipB33NPoyFinolqdY" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['formMain'];
+if (!theForm) {
+    theForm = document.formMain;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+<script>
+function GetURLParameter(sParam)
+	{
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) 
+		{
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) 
+			{
+				return sParameterName[1];
+			}
+		}
+	}
+</script>
+
+
+<div class="aspNetHidden">
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="90059987" />
+</div>
+ 
+        
+
+    <div id="contenedor">
+        <!--==== Cabecera -->
+        <header>
+       
+        </header>
+			
+	 <!--====End Cabecera -->
+       <div id="cuerpo" class="clearfix">
+       
+                <!--=== Entrada ===-->
+	            <div id="Body_divContent" >
+	                
+                    <div id="controlSection" class="container none">  
+                        <div class="row row-top-smallest ">
+                            <div id="silverControl" class="row-centered borderControl">
+                                <div id="webUserControl" class="nofont"></div>
+				            </div>
+                           
+			            </div>
+		            </div>
+	            </div>
+                           
+                <input type="hidden" name="ctl00$Body$hdnLang" id="Body_hdnLang" value="es" />
+                <input id="template" name="template" type="hidden" />
+                <input id="response" name="response" type="hidden" />
+                <input id="is32" name="is32" type="hidden" />
+                <input id="osName" name="osName" type="hidden" />
+                <input id="exception" name="exception" type="hidden" />
+                <input id="image" name="image" type="hidden" />
+                <input id="mode" name="mode" type="hidden" />  <!-- 0: Authenticate  1: Retrain -->
+                <input id="userPicture" name="userPicture" type="hidden" />
+                
+
+	    </div> <!-- === End Cuerpo ==-->
+	</div> <!-- === End Contenedor ==-->
+    
+    </form>
+</body>
+</html>
