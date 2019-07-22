@@ -9,14 +9,26 @@ Vue.use(Vuex)
 
 const etapasSolicitud = () =>{
     return [
-        {id:0, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Solicitud', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
-        {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Identificacion', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personales', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-        {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Autorizo', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Documentos', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Ref.Telefonicas', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-        {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complementa', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
+        {id:0, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
+        {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+        {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+        {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
           ]
+}
+
+const etapasSolicitudClear = () =>{
+  return [
+      {id:0, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
+      {id:1, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:2, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+      {id:3, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:4, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:5, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+      {id:6, form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
+        ]
 }
 
 
@@ -49,6 +61,7 @@ export  default new Vuex.Store({
         },
         closeMessageFinal(state, id){
           state.etapaFin = false;
+         
       },
         setForm(state,payload){
             var objForm= payload.objForm;
@@ -132,6 +145,17 @@ export  default new Vuex.Store({
                      //msg=msg.replace("<b>","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","")
                      state.mensajeFinalAfiliacion = "<b>Digital file: "+personales.folio+"</b></br>"+response.data;
                      state.etapaFin = true;
+
+
+
+                    //clear state to start again
+                    // var newFolio= 'F0';
+                    // var randomValue= Math.floor(Math.random() * 99999999) + 10090000;
+                    // state.folioGenerado=newFolio+randomValue;
+                    // this.etapasSolicitud = etapasSolicitudClear();
+                    // state.folioGeneradoCategoria =0;
+
+
                   })
                   .catch(error => {
                     //console.log("error en send to core ...");

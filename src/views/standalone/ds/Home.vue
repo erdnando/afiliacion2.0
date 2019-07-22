@@ -67,7 +67,7 @@
       </section>
 
      </v-container>
-     <v-layout row justify-center>
+     <!-- <v-layout row justify-center>
         <v-dialog :persistent=true v-model="dialog" width="500">
           <v-card>
             <v-card-title  class="headline grey lighten-2" primary-title>
@@ -83,6 +83,63 @@
                 Aceptar
               </v-btn>
             </v-card-actions>
+          </v-card>
+        </v-dialog>
+    </v-layout> -->
+     <v-layout row justify-center>
+        <v-dialog :persistent=true v-model="dialogFacePhi" width="460px" height="600px" >
+          <v-card>
+            <v-card-title  class="headline grey lighten-2" primary-title>
+             Enter your credentials
+            </v-card-title>
+            <v-card-text>
+              <!-- stepper-->
+                 <v-stepper v-model="e1">
+                        <v-stepper-header>
+                          <v-stepper-step color="green" :complete="e1 > 1" step="1">Commercial</v-stepper-step>
+                          <v-divider></v-divider>
+                          <v-stepper-step color="green" :complete="e1 > 2" step="2">Face biometrics</v-stepper-step>
+                        </v-stepper-header>
+
+                        <v-stepper-items>
+                          <v-stepper-content step="1" style="width:440px;height:400px">
+                            <v-card class="mb-5" color="white lighten-1"  style="height:304px;width:390px">
+                              <!-- Paso 1 -->
+                              <v-form @submit.prevent="validateStep1"
+                                  ref="form" v-model="valid" lazy-validation>
+                                  <p style="text-align: justify;margin-right: 5px;">
+                                    You are about to enter a demo application.<br>
+                                    <br>The presentations are for demonstrative use.
+                                    <br>Information about your location and behavior in the application will be collected.
+                                    <br>
+                                    <br>Please enter your email registered in the biometric:
+                                    </p>
+                                  <v-text-field autofocus v-model="emailAuth" :rules="emailRules" style="width: 95%;"  label="E-mail"  required></v-text-field>
+                                </v-form>
+                                <!-- Paso 1 -->
+                              </v-card>
+                            <v-btn :disabled="!valid"  color="green" @click="validateStep1" style="position: absolute;right:14px;margin-top: -29px;">Continue</v-btn>
+                            <v-btn  flat style="position: absolute;right: 123px;margin-top: -29px;" @click="gotoHome">Cancel</v-btn>
+                          </v-stepper-content>
+
+                          <v-stepper-content step="2" style="width: 470px;height:400px" >
+                            <v-card class="mb-5" color="white lighten-1"  style="height:440px;width:423px;overflow: hidden;">
+                              <!-- Paso 2 -->
+                                    <iframe v-bind:src="urlFacePhiAuth" id="iframex" sandbox="allow-same-origin allow-scripts" style="height: 440px;width:579px;top:-70px;overflow: hidden;position:absolute;right:-60px;zoom: 0.89;-moz-transform: scale(0.89);-moz-transform-origin: 0 0;-o-transform: scale(0.89);-o-transform-origin: 0 0;-webkit-transform: scale(0.89);-webkit-transform-origin: 0 0;"></iframe>
+                                <!-- Paso 2 -->
+                              </v-card>
+                              
+                              <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
+                               <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
+                          </v-stepper-content>
+ 
+                        
+                        </v-stepper-items>
+                      </v-stepper>
+              <!-- stepper-->
+            </v-card-text>
+            <v-divider></v-divider>
+           
           </v-card>
         </v-dialog>
     </v-layout>
@@ -306,6 +363,9 @@
     </v-card>
 
     
+
+     <v-btn id="btnLogin" color="primary" flat  @click="login" style="visibility: hidden;">Accept</v-btn>
+     <input type="hidden" id="facephifield" v-model="facephiID" name="facephifield">
   </div>
 </template>
 
@@ -321,7 +381,7 @@ import UploadRow from '@/components/utils/UploadRow'
     },
     data(){
       return {
-        dialog:true,
+        dialogFacePhi: true,
         buscador: false,
         search:'',
         snackbar:false,
@@ -350,7 +410,16 @@ import UploadRow from '@/components/utils/UploadRow'
         vistaUploader:false,
         fondoAnverso:'https://placehold.it/200x150',
         fondoReverso:'https://placehold.it/200x150',
-        instruccion1:'You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents after an enter (try with the digital file <SPAN class="font-weight-bold">F1000920</SPAN>)'
+        instruccion1:'You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents after an enter (try with the digital file <SPAN class="font-weight-bold">F1000920</SPAN>)',
+        urlFacePhiBase:'',
+        e1: 0,
+        valid: true,
+        emailAuth: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        facephiID:''
       }
     },
     methods:{
@@ -363,7 +432,32 @@ import UploadRow from '@/components/utils/UploadRow'
       login(){
         this.dialog = false;
         // implementacion en navbar
-        bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"Digital Docs"});
+        //bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"Digital Docs"});
+         this.dialogFacePhi = false;
+        bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"Digital Docs","drawer":false,"solucion":"Document Solutions","version":"1.0"});
+      },
+      validateStep1 () {
+        if (this.$refs.form.validate()) {
+          //this.snackbar = true
+          this.e1 = '2';
+          this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+          var divMsg = document.getElementById('divMsg');
+          divMsg.style.color='black';
+          divMsg.innerText=this.emailAuth;
+          
+          var iframe = document.getElementById('iframex');
+          
+          iframe.contentWindow.location.reload();
+        }
+      },
+      gotoHome(){
+         this.dialogFacePhi=false
+          bus.$emit('afiliacion.goTo','/fintech')
+
+      },
+      back(){
+         this.e1 = '1';
       },
        remove (item) {
         this.chips.splice(this.chips.indexOf(item), 1)
@@ -573,11 +667,15 @@ import UploadRow from '@/components/utils/UploadRow'
         })
 
         bus.$on('afiliacion.goTo',(ruta)=>{
+           console.log("desde ds:" + ruta);
            this.$router.push(ruta);
 
         })
     },
     computed:{
+        urlFacePhiAuth () {
+          return this.urlFacePhiBase + this.emailAuth.trim()
+          },
         section1 () {
         return require('../../../assets/digital.jpg')
        },
@@ -612,7 +710,30 @@ import UploadRow from '@/components/utils/UploadRow'
         return this.$store.state.filesAdded;
       }
     }
-  }
+
+   }
+
+
+ window.facephiAuthOK = function() { 
+     var iframe = document.getElementById('iframex');
+     iframe.src="";
+    document.getElementById('btnLogin').click();
+    };
+
+
+  window.facephiAuthKO = function () {
+    console.log(".......invalid::::::::");
+     var divMsg = document.getElementById('divMsg');
+    var arrMsg = divMsg.innerText.split(' ');
+          divMsg.innerText = arrMsg[0] +" :Failed authentication";
+          divMsg.style.color='red'
+           var iframe = document.getElementById('iframex');
+          iframe.contentWindow.location.reload();
+          //
+         
+  };
+
+
 </script>
 
 <style scoped>
@@ -706,5 +827,6 @@ html{
     outline: none;
     top: -50px;
 }
+
 
 </style>

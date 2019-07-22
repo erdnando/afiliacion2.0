@@ -6,7 +6,7 @@
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Phone references</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Enter phone numbers and wait for your validation</span>
+           <span class="subtitle " style="color:floralwhite;margin-top: 5px;" >&nbsp;&nbsp; Enter phone numbers and wait for your validation</span>
             <v-spacer></v-spacer>
           <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
@@ -83,7 +83,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat color="blue darken-1"  @click="close(5)">Close</v-btn>
-          <v-btn flat color="blue darken-1" :disabled="!todoOK"  @click="save(5)">Save</v-btn>
+          <v-btn flat color="blue darken-1" :disabled="!todoOK"  @click="save(5)">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-//import {bus} from '../../../main.js'
+import {bus} from '../../../main.js'
 import axios from "axios";
 
    export default {
@@ -299,7 +299,7 @@ import axios from "axios";
           // console.log(this.etapaPersonales.objForm.fechaDeNacimiento);
           // console.log(this.folio);
           // console.log(this.etapaPersonales.objForm.email);
-          
+          bus.$emit('afiliacion.loading.ini','');
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/precalifica',
@@ -322,11 +322,11 @@ import axios from "axios";
                   //  console.log(response.data.numCaso);
                   //  console.log(response.data.rfc);
                   this.savePrecalifica(idWin,response.data)
-
+                   bus.$emit('afiliacion.loading.end','');
                 })
                 .catch(error => {
                   console.log(error);
-                  
+                  bus.$emit('afiliacion.loading.end','');
               });
     },
       save(idWin){
@@ -377,6 +377,7 @@ import axios from "axios";
         
         var objx={"idWin":idWin,"objForm":this.objForm};
         this.$store.commit('setForm',objx);
+        bus.$emit('afiliacion.loading.end','');
       },
       close(idWin){
         this.updatestatus();

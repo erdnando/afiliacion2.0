@@ -5,7 +5,7 @@
     <v-dialog v-model="open" persistent max-width="900" >
       <v-card  color="white" ref="form">
         <v-card-title class="indigo lighten">
-          <span class="headline white--text">I agree with the use of my data</span>
+          <span class="headline white--text" >I agree with the use of my data</span>
            <v-spacer></v-spacer>
           <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>
@@ -23,7 +23,7 @@
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="undo()">Undo</v-btn>
           <v-btn color="blue darken-1" flat @click="close(3)">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="save(3)">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click="save(3)">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import {bus} from '../../../main.js'
+//import {bus} from '../../../main.js'
 import VueSignature from 'vue-signature-pad'
  import axios from "axios"
 
    export default {
      props:['open','folio'],
       components: {
-        VueSignature,axios
+        VueSignature
     },
      data(){
        return{
@@ -119,11 +119,11 @@ import VueSignature from 'vue-signature-pad'
                 }
               })
                 .then(response => {
-                  console.log("CM....");
+                  console.log(response);
                 })
                 .catch(error => {
                   console.log("Enviado a CM....timeout");
-                  //console.log(error);
+                  console.log(error);
               });
     },
     resizeCanvas() {

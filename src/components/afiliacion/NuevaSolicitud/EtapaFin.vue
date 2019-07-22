@@ -6,9 +6,9 @@
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Your request has been approved</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Thanks for using our service </span>
+           <span class="subtitle"  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Thanks for using our service </span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text style="text-align: -webkit-center;">
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm12 md12>
@@ -53,6 +53,8 @@ import {bus} from '../../../main.js'
     methods:{
       close(){
          this.$store.commit('closeMessageFinal');
+         this.$router.push('/fintech');
+         bus.$emit('showDrawer',false);
       }
     },
   }

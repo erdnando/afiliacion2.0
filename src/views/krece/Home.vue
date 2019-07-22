@@ -129,22 +129,62 @@
 
      </v-container>
 
-     <v-layout row justify-center>
-        <v-dialog :persistent=true v-model="dialog" width="500">
+    
+
+    <v-layout row justify-center>
+        <v-dialog :persistent=true v-model="dialogFacePhi" width="460px" height="600px" >
           <v-card>
             <v-card-title  class="headline grey lighten-2" primary-title>
-              Ingrese sus credenciales
+             Enter your credentials
             </v-card-title>
             <v-card-text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <!-- stepper-->
+                 <v-stepper v-model="e1">
+                        <v-stepper-header>
+                          <v-stepper-step color="green" :complete="e1 > 1" step="1">Commercial</v-stepper-step>
+                          <v-divider></v-divider>
+                          <v-stepper-step color="green" :complete="e1 > 2" step="2">Face biometrics</v-stepper-step>
+                        </v-stepper-header>
+
+                        <v-stepper-items>
+                          <v-stepper-content step="1" style="width:440px;height:400px">
+                            <v-card class="mb-5" color="white lighten-1"  style="height:304px;width:390px">
+                              <!-- Paso 1 -->
+                              <v-form @submit.prevent="validateStep1"
+                                  ref="form" v-model="valid" lazy-validation>
+                                  <p style="text-align: justify;margin-right: 5px;">
+                                    You are about to enter a demo application.<br>
+                                    <br>The presentations are for demonstrative use.
+                                    <br>Information about your location and behavior in the application will be collected.
+                                    <br>
+                                    <br>Please enter your email registered in the biometric:
+                                    </p>
+                                  <v-text-field autofocus v-model="emailAuth" :rules="emailRules" style="width: 95%;"  label="E-mail"  required></v-text-field>
+                                </v-form>
+                                <!-- Paso 1 -->
+                              </v-card>
+                            <v-btn :disabled="!valid"  color="green" @click="validateStep1" style="position: absolute;right:14px;margin-top: -29px;">Continue</v-btn>
+                            <v-btn  flat style="position: absolute;right: 123px;margin-top: -29px;" @click="gotoHome">Cancel</v-btn>
+                          </v-stepper-content>
+
+                          <v-stepper-content step="2" style="width: 470px;height:400px" >
+                            <v-card class="mb-5" color="white lighten-1"  style="height:440px;width:423px;overflow: hidden;">
+                              <!-- Paso 2 -->
+                                    <iframe v-bind:src="urlFacePhiAuth" id="iframex" sandbox="allow-same-origin allow-scripts" style="height: 440px;width:579px;top:-70px;overflow: hidden;position:absolute;right:-60px;zoom: 0.89;-moz-transform: scale(0.89);-moz-transform-origin: 0 0;-o-transform: scale(0.89);-o-transform-origin: 0 0;-webkit-transform: scale(0.89);-webkit-transform-origin: 0 0;"></iframe>
+                                <!-- Paso 2 -->
+                              </v-card>
+                              
+                              <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
+                               <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
+                          </v-stepper-content>
+ 
+                        
+                        </v-stepper-items>
+                      </v-stepper>
+              <!-- stepper-->
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" flat  @click="login">
-                Aceptar
-              </v-btn>
-            </v-card-actions>
+           
           </v-card>
         </v-dialog>
     </v-layout>
@@ -171,7 +211,8 @@
       </v-snackbar>
     </v-card>
 
-    
+     <v-btn id="btnLogin" color="primary" flat  @click="login" style="visibility: hidden;">Accept</v-btn>
+     <input type="hidden" id="facephifield" v-model="facephiID" name="facephifield">
   </div>
 </template>
 
@@ -183,7 +224,7 @@ import axios from "axios";
    export default {
     data(){
       return {
-        dialog: true,
+        dialogFacePhi: true,
         snackbar:false,
         mensajeNotifica:'',
         colorNotificacion:'',
@@ -200,7 +241,16 @@ import axios from "axios";
             const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             return pattern.test(value) || 'Invalid e-mail.'
           }
-        }
+        },
+        urlFacePhiBase:'',
+        e1: 0,
+        valid: true,
+        emailAuth: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        facephiID:''
       }
     },
     methods:{
@@ -248,11 +298,34 @@ import axios from "axios";
         return false;
       },
       login(){
-        this.dialog = false;
+        this.dialogFacePhi = false;
         //in navbar is its implementation
-        bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"KRECE"});
-      }
-    },
+        //bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"KRECE"});
+         bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"KRECE","drawer":false,"solucion":"KRECE","version":"1.0"});
+      },
+     validateStep1 () {
+        if (this.$refs.form.validate()) {
+          //this.snackbar = true
+          this.e1 = '2';
+          this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+          var divMsg = document.getElementById('divMsg');
+          divMsg.style.color='black';
+          divMsg.innerText=this.emailAuth;
+          
+          var iframe = document.getElementById('iframex');
+          iframe.contentWindow.location.reload();
+        }
+      },
+      gotoHome(){
+        console.log("cancelling...");
+         this.dialogFacePhi=false
+          //bus.$emit('afiliacion.goTo','/fintech');
+           this.$router.push('/fintech');
+      },
+      back(){
+         this.e1 = '1';
+      },
     created(){
       bus.$on('afiliacion.notifica',(msg, color)=>{
             this.colorNotificacion=color;
@@ -264,15 +337,39 @@ import axios from "axios";
            this.$router.push(ruta);
 
         });
+    }
     },
     computed:{
+       urlFacePhiAuth () {
+          return this.urlFacePhiBase + this.emailAuth.trim()
+          },
          section1 () {
        return require('../../assets/krece1.jpg')
        }
     }
-    
-    
   }
+   
+
+
+  window.facephiAuthOK = function() { 
+    console.log("valido:::::::::::.");
+     var iframe = document.getElementById('iframex');
+     iframe.src="";
+    document.getElementById('btnLogin').click();
+    };
+
+
+  window.facephiAuthKO = function () {
+    console.log(".......invalid::::::::");
+     var divMsg = document.getElementById('divMsg');
+    var arrMsg = divMsg.innerText.split(' ');
+          divMsg.innerText = arrMsg[0] +" :Failed authentication";
+          divMsg.style.color='red'
+           var iframe = document.getElementById('iframex');
+          iframe.contentWindow.location.reload();
+          
+         
+  };
 </script>
 
 <style scoped>

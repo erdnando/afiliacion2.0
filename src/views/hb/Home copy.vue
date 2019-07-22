@@ -191,7 +191,8 @@ import {bus} from '../../main.js'
       login(){
         this.dialog = false;
         //in navbar is its implementation
-        bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});
+        //bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});
+         bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"HB","drawer":false,"solucion":"AFILIACION","version":"2.0"});
       }
     },
     created(){
@@ -204,6 +205,7 @@ import {bus} from '../../main.js'
         })
 
         bus.$on('afiliacion.goTo',(ruta)=>{
+           console.log("desde una copia afiliacion:" + ruta);
            this.$router.push(ruta);
 
         })

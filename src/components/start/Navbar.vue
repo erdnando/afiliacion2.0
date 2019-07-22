@@ -22,7 +22,8 @@
              <v-list class="pa-1">
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                    <img v-bind:src="promotor.foto">
+                    <!-- <img v-bind:src="promotor.foto"> -->
+                    <v-icon color="white" style="margin-left:-1px;">how_to_reg</v-icon>
                     </v-list-tile-avatar>
         
                     <v-list-tile-content>
@@ -49,7 +50,7 @@
          <v-dialog v-model="loading"  persistent width="300">
       <v-card color="primary" dark>
         <v-card-text>
-          loading...
+          Processing...
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
         </v-card-text>
       </v-card>
@@ -81,7 +82,7 @@ export default {
     },
     methods:{
         validaExit(modulo){
-        if(modulo=="Salir"){
+        if(modulo=="Exit"){
             //TODO
             //add confirmation before exit
             this.drawer=false;
@@ -94,30 +95,39 @@ export default {
         },
         goHome(){
         console.log("go home");
-         this.drawer=false;
+            this.drawer=false;
             this.isLogged=false;
             this.promotor={};
             this.modulos= [];
             this.solucion='FINTECH';
             this.version='2.0';
-        bus.$emit('afiliacion.goTo','/fintech')
+            console.log("before move");
+        //bus.$emit('afiliacion.goTo','/fintech')
+         this.$router.push('/fintech');
         }
     },
     created(){
     
         bus.$on('login',(userAccediendo)=>{
-            //TODO add logic to authenticate
-            if(userAccediendo.user=="admin"){
+
                 this.isLogged= true;
-                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+                bus.$emit('afiliacion.notifica','Accesing to solution '+ userAccediendo.app,'indigo');
                 bus.$emit('loadDrawer', userAccediendo)
-                bus.$emit('showDrawer',true);
-            }else{
-                this.isLogged= false;
-                bus.$emit('afiliacion.notifica','Login incorrecto. Verifique sus credenciales para '+ userAccediendo.app,'red');
-                bus.$emit('showDrawer',false);
-                setTimeout(function(){  bus.$emit('afiliacion.goTo','/fintech'); }, 2500);
-            }
+                bus.$emit('showDrawer',userAccediendo.drawer);
+                this.solucion=userAccediendo.solucion,
+                this.version=userAccediendo.version;
+            //TODO add logic to authenticate
+            // if(userAccediendo.user=="admin"){
+            //     this.isLogged= true;
+            //     bus.$emit('afiliacion.notifica','Accesing to solution '+ userAccediendo.app,'indigo');
+            //     bus.$emit('loadDrawer', userAccediendo)
+            //     bus.$emit('showDrawer',true);
+            // }else{
+            //     this.isLogged= false;
+            //     bus.$emit('afiliacion.notifica','Login incorrecto. Verifique sus credenciales para '+ userAccediendo.app,'red');
+            //     bus.$emit('showDrawer',false);
+            //     setTimeout(function(){  bus.$emit('afiliacion.goTo','/fintech'); }, 2500);
+            // }
                 
             });
 
@@ -128,42 +138,42 @@ export default {
                 this.solucion='HomeBanking',
                 this.version='1.0';
                 //this.drawer=false;
-                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+                bus.$emit('afiliacion.notifica','Accessing the solution '+ userAccediendo.app,'indigo');
             }
             else if(userAccediendo.app=="KRECE"){
                 //this.isLogged= true;  <--controla q se vea el menu de la izquierda
                 this.solucion='Krece B2B',
                 this.version='1.0';
                 //this.drawer=false;
-                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+                bus.$emit('afiliacion.notifica','Accessing the solution '+ userAccediendo.app,'indigo');
             }
             else if(userAccediendo.app=="Digital Docs"){
                 //this.isLogged= true;  <--controla q se vea el menu de la izquierda
                 this.solucion='Digital Docs',
                 this.version='1.0';
                 //this.drawer=false;
-                bus.$emit('afiliacion.notifica','Accediendo a la solución '+ userAccediendo.app,'indigo');
+                bus.$emit('afiliacion.notifica','Accessing the solution '+ userAccediendo.app,'indigo');
             }
                 
             });
 
         bus.$on('loadDrawer',(userAccediendo)=>{
         //TODO add logic to get modules based in user and app
-        console.log(userAccediendo);
+        //console.log(userAccediendo);
         this.modulos= [
             { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/fintech/afiliacion' },
-            { clave:'02' , allow:'rw' , modulo: 'Mis solicitudes', icon: 'library_books',ruta:'/fintech/afiliacion/solicitudes' },
-            { clave:'03' , allow:'rw' , modulo: 'Nueva solicitud', icon: 'library_add',ruta:'/fintech/afiliacion/nuevasolicitud' },
-            { clave:'04' , allow:'rw' , modulo: 'Documentos digitales', icon: 'how_to_vote',ruta:'/fintech/afiliacion/documentos' },
+            { clave:'02' , allow:'rw' , modulo: 'My applications', icon: 'library_books',ruta:'/fintech/afiliacion/solicitudes' },
+            { clave:'03' , allow:'rw' , modulo: 'New application', icon: 'library_add',ruta:'/fintech/afiliacion/nuevasolicitud' },
+            { clave:'04' , allow:'rw' , modulo: 'Digital docs', icon: 'how_to_vote',ruta:'/fintech/afiliacion/documentos' },
             // { clave:'05' , allow:'rw' , modulo: 'Asistencia', icon: 'report_problem',ruta:'/fintech/asistencia' },
             // { clave:'06' , allow:'rw' , modulo: 'Configuración', icon: 'settings',ruta:'/fintech/configuracion' },
-            { clave:'07' , allow:'rw' , modulo: 'Salir', icon: 'power_settings_new',ruta:'/fintech' }
+            { clave:'07' , allow:'rw' , modulo: 'Exit', icon: 'power_settings_new',ruta:'/fintech' }
             ];
             this.solucion='AFILIACION',
             this.version='2.0',
         this.promotor={
                 id:10001,
-                nombre:'Admin Arriaga Jimenez',
+                nombre:userAccediendo.user,
                 foto:'https://randomuser.me/api/portraits/men/85.jpg',
                 rol:1,
                 tienda:'55'

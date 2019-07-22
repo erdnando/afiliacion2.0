@@ -55,7 +55,8 @@ import {bus} from '../../main.js'
       
     },
     created(){
-          bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});
+         // bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});
+           bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"HB","drawer":false,"solucion":"Home Banking","version":"1.0"});
           this.colorNotificacion=this.color;
           this.snackbar=true;
           this.mensajeNotifica='Use the following demo credentials: 8700014489 and password: Octopus48 and token 12345678 ';

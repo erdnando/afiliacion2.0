@@ -6,7 +6,7 @@
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Your query to buro was successful!</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Continue with missing information</span>
+           <span class="subtitle "  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Continue with missing information</span>
             <v-spacer></v-spacer>
           <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>

@@ -119,7 +119,7 @@
      </v-container>
 
      <v-layout row justify-center>
-        <v-dialog :persistent=true v-model="dialog" width="460px" height="600px" >
+        <v-dialog :persistent=true v-model="dialogFacePhi" width="460px" height="600px" >
           <v-card>
             <v-card-title  class="headline grey lighten-2" primary-title>
              Enter your credentials
@@ -128,23 +128,30 @@
               <!-- stepper-->
                  <v-stepper v-model="e1">
                         <v-stepper-header>
-                          <v-stepper-step color="green" :complete="e1 > 1" step="1">Commercial data</v-stepper-step>
+                          <v-stepper-step color="green" :complete="e1 > 1" step="1">Commercial</v-stepper-step>
                           <v-divider></v-divider>
                           <v-stepper-step color="green" :complete="e1 > 2" step="2">Face biometrics</v-stepper-step>
                         </v-stepper-header>
 
                         <v-stepper-items>
-                          <v-stepper-content step="1" style="width:520px;height:400px">
-                            <v-card class="mb-5" color="white lighten-1"  style="height:304px;width:457px">
+                          <v-stepper-content step="1" style="width:440px;height:400px">
+                            <v-card class="mb-5" color="white lighten-1"  style="height:304px;width:390px">
                               <!-- Paso 1 -->
-                              <v-form
+                              <v-form @submit.prevent="validateStep1"
                                   ref="form" v-model="valid" lazy-validation>
-                                  <v-text-field v-model="emailAuth" :rules="emailRules"  label="E-mail"  required></v-text-field>
+                                  <p style="text-align: justify;margin-right: 5px;">
+                                    You are about to enter a demo application.<br>
+                                    <br>The presentations are for demonstrative use.
+                                    <br>Information about your location and behavior in the application will be collected.
+                                    <br>
+                                    <br>Please enter your email registered in the biometric:
+                                    </p>
+                                  <v-text-field autofocus v-model="emailAuth" :rules="emailRules" style="width: 95%;"  label="E-mail"  required></v-text-field>
                                 </v-form>
                                 <!-- Paso 1 -->
                               </v-card>
                             <v-btn :disabled="!valid"  color="green" @click="validateStep1" style="position: absolute;right:14px;margin-top: -29px;">Continue</v-btn>
-                            <v-btn  flat style="position: absolute;right: 123px;margin-top: -29px;" @click="dialogFacePhi=false">Cancel</v-btn>
+                            <v-btn  flat style="position: absolute;right: 123px;margin-top: -29px;" @click="gotoHome">Cancel</v-btn>
                           </v-stepper-content>
 
                           <v-stepper-content step="2" style="width: 470px;height:400px" >
@@ -153,8 +160,11 @@
                                     <iframe v-bind:src="urlFacePhiAuth" id="iframex" sandbox="allow-same-origin allow-scripts" style="height: 440px;width:579px;top:-70px;overflow: hidden;position:absolute;right:-60px;zoom: 0.89;-moz-transform: scale(0.89);-moz-transform-origin: 0 0;-o-transform: scale(0.89);-o-transform-origin: 0 0;-webkit-transform: scale(0.89);-webkit-transform-origin: 0 0;"></iframe>
                                 <!-- Paso 2 -->
                               </v-card>
+                              
+                              <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
+                               <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
                           </v-stepper-content>
-
+ 
                         
                         </v-stepper-items>
                       </v-stepper>
@@ -198,7 +208,7 @@ import {bus} from '../../main.js'
    export default {
     data(){
       return {
-        dialog: true,
+        dialogFacePhi: true,
         snackbar:false,
         mensajeNotifica:'',
         colorNotificacion:'',
@@ -222,7 +232,9 @@ import {bus} from '../../main.js'
         bus.$emit('afiliacion.goTo','/fintech/afiliacion/nuevasolicitud');
       },
       gotoHome(){
+         this.dialogFacePhi=false
           bus.$emit('afiliacion.goTo','/fintech')
+
       },
       validaSesion(){
         //TODO generar validacion de la sesion
@@ -230,19 +242,30 @@ import {bus} from '../../main.js'
         return false;
       },
       login(){
-        this.dialog = false;
-        bus.$emit('login', {"user":"admin","pwd":"12345","app":"AFILIACION"});
+        //navbar 109
+        this.dialogFacePhi = false;
+        bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"AFILIACION","drawer":true,"solucion":"AFILIACION","version":"2.0"});
       },
       validateStep1 () {
         if (this.$refs.form.validate()) {
           //this.snackbar = true
           this.e1 = '2';
           this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+          var divMsg = document.getElementById('divMsg');
+          divMsg.style.color='black';
+          divMsg.innerText=this.emailAuth;
+          
           var iframe = document.getElementById('iframex');
           
           iframe.contentWindow.location.reload();
         }
       },
+      back(){
+         this.e1 = '1';
+        //   var iframe = document.getElementById('iframex');
+        //  iframe.src="";
+      }
     },
     created(){
       bus.$on('afiliacion.notifica',(msg, color)=>{
@@ -253,9 +276,9 @@ import {bus} from '../../main.js'
             if(color=='red') this.botonDeshabilitado=false;
             else this.botonDeshabilitado=true;
         })
-
+                
         bus.$on('afiliacion.goTo',(ruta)=>{
-          console.log("move to:" + ruta);
+          console.log("desde home afiliacion:" + ruta);
            this.$router.push(ruta);
 
         })
@@ -273,12 +296,7 @@ import {bus} from '../../main.js'
   }
 
 
-  window.facephiAuthOK = function() {
-    console.log("recibiendo datos de facephi resultado:OK");
-    //document.getElementById("facephifield").value=id;
-    console.log(document.getElementById("facephifield"));
-    console.log("---------------------------------------------------------");
-    //console.log(id);
+  window.facephiAuthOK = function() { 
      var iframe = document.getElementById('iframex');
      iframe.src="";
     document.getElementById('btnLogin').click();
@@ -286,13 +304,15 @@ import {bus} from '../../main.js'
 
 
   window.facephiAuthKO = function () {
-          //console.log("recibiendo datos de facephi en facephiAuthKO resultado: "+id);
-         // document.getElementById("facephifield").value=id;
-          // console.log(document.getElementById("facephifield"));
-          // console.log("---------------------------------------------------------");
-          // console.log(id);
+    console.log(".......invalid::::::::");
+     var divMsg = document.getElementById('divMsg');
+    var arrMsg = divMsg.innerText.split(' ');
+          divMsg.innerText = arrMsg[0] +" :Failed authentication";
+          divMsg.style.color='red'
            var iframe = document.getElementById('iframex');
           iframe.contentWindow.location.reload();
+          //
+         
   };
 
 

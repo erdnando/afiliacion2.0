@@ -6,7 +6,7 @@
       <v-card >
         <v-card-title class="indigo lighten">
           <span class="headline white--text">Card ID</span>
-          <span class="subtitle orange--text" >&nbsp;&nbsp;{{subtitulo}}</span>
+          <span class="subtitle " style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp;{{subtitulo}}</span>
           <v-spacer></v-spacer>
           <span class="body-2 white--text">{{folio}}</span>
         </v-card-title>

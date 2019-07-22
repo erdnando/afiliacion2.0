@@ -6,7 +6,7 @@
       <v-card color="white" ref="form">
         <v-card-title class="indigo lighten">
           <span class="headline white--text">New application</span>
-           <span class="subtitle orange--text"  >&nbsp;&nbsp; Verify the data, save and continue with other sections </span>
+           <span class="subtitle"  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Verify the data, save and continue with other sections </span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -63,7 +63,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat color="blue darken-1"  @click="close(0)">Close</v-btn>
-          <v-btn flat color="blue darken-1"  @click="save(0)">Save</v-btn>
+          <v-btn flat color="blue darken-1"  @click="save(0)">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
