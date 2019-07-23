@@ -35,7 +35,7 @@
     <div class="text-xs-center">
       <v-dialog v-model="dialogFacePhi" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn color="red lighten-2" dark v-on="on"> Click Me</v-btn>
+          <!-- <v-btn color="red lighten-2" dark v-on="on"> Click Me</v-btn> -->
         </template>
                 <v-stepper v-model="e1">
                         <v-stepper-header>

@@ -52,7 +52,9 @@ import {bus} from '../../main.js'
       }
     },
     methods:{
-      
+      loadComplete(){
+        console.log("complete....");
+      }
     },
     created(){
          // bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"HB"});

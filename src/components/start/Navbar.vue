@@ -116,6 +116,14 @@ export default {
                 bus.$emit('showDrawer',userAccediendo.drawer);
                 this.solucion=userAccediendo.solucion,
                 this.version=userAccediendo.version;
+
+
+
+                if(userAccediendo.drawer==false){
+                    this.isLogged=false;
+                    this.promotor={};
+                    this.modulos= [];
+                }
             //TODO add logic to authenticate
             // if(userAccediendo.user=="admin"){
             //     this.isLogged= true;
@@ -182,7 +190,7 @@ export default {
         });
 
         bus.$on('showDrawer',(valor)=>{
-            this.drawer=valor;
+            this.drawer=valor; 
         });
 
         bus.$on('afiliacion.loading.ini',()=>{
