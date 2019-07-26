@@ -16,14 +16,16 @@
 
 
 
-
+ <!-- :rules="[() => !!objForm.homePhone || 'This field is required with 10 digits']" -->
+ <!-- :error-messages="errorMessagesHomePhone"  -->
               <v-flex xs12 sm7 md7>
                 <v-text-field autofocus mask="phone"  
                 prepend-inner-icon="local_phone"
                 box  color="green" label="Home homePhone*" 
-                 ref="objForm.homePhone"  :rules="[() => !!objForm.homePhone || 'This field is required with 10 digits']"
-                :error-messages="errorMessagesHomePhone" 
-                required 
+                 ref="objForm.homePhone"  
+                
+                
+                 
                 v-model="objForm.homePhone"
                 hint="Remember that the number must be 10 digits">
                 </v-text-field>
@@ -41,7 +43,7 @@
                 box  color="green" label="Cell Phone*" 
                 ref="objForm.cellPhone"  :rules="[() => !!objForm.cellPhone || 'This field is required with 10 digits']"
                  :error-messages="errorMessagesCellPhone" 
-                 required  
+                   
                 v-model="objForm.cellPhone"
                 hint="Remember that the number must be 10 digits">
                 </v-text-field>
@@ -123,7 +125,7 @@ import axios from "axios";
           loading2: false,
            colorBoton:'indigo white--text',
            colorBoton2:'indigo white--text',
-           todoOK : false,
+           todoOK : true,
       marker: true,
 
        }
@@ -333,33 +335,27 @@ import axios from "axios";
         //console.log("saving ref telefonicas...");
         this.formHasErrors = false
         var isError=false;
-         //console.log(this.form);
-        Object.keys(this.form).forEach(f => {
-          if (!this.form[f]) {
-              this.formHasErrors = true
-             // console.log(f);
-              //this.errorMessages = f
-             // console.log("-->"+this.formHasErrors);
-              
-              isError=true;
-              return;
-          }
-          //this.$refs[f].validate(true);
-        });
+
+        // Object.keys(this.form).forEach(f => {
+        //   if (!this.form[f]) {
+        //       this.formHasErrors = true
+        //       isError=true;
+        //       return;
+        //   }
+        // });
 
         if(isError){
           return;
-          }
-        //console.log(this.homePhoneStatus);
-        if(this.homePhoneStatus != "valido" ){
-            this.errorMessagesHomePhone='The phone must be validated before';
-            return;
         }
-        //console.log(this.cellPhoneStatus);
-        if(this.cellPhoneStatus != "valido"){
-             this.errorMessagesCellPhone='The phone must be validated before';
-             return;
-        }
+        // if(this.homePhoneStatus != "valido" ){
+        //     this.errorMessagesHomePhone='The phone must be validated before';
+        //     return;
+        // }
+
+        // if(this.cellPhoneStatus != "valido"){
+        //      this.errorMessagesCellPhone='The phone must be validated before';
+        //      return;
+        // }
 
         
          this.updatestatus();

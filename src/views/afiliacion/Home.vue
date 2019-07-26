@@ -269,6 +269,7 @@ import {bus} from '../../main.js'
     },
     created(){
       bus.$on('afiliacion.notifica',(msg, color)=>{
+        console.log("en notifica..");
             this.colorNotificacion=color;
             this.snackbar=true;
             this.mensajeNotifica=msg;

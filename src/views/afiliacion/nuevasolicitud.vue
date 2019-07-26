@@ -7,7 +7,7 @@
 
               <v-hover >
                 <v-card slot-scope="{hover}" class="mx-auto" color="grey lighten-4"  max-width="160" >
-                  <v-img :aspect-ratio="2/2" src="https://cdn.vuetifyjs.com/images/cards/kitchen.png">
+                  <v-img :aspect-ratio="2/2" :src="etapa.logo">
                     <v-expand-transition>
                       <div v-if="hover" v-bind:style="{ background: etapa.form.color }" class="d-flex transition-fast-in-fast-out  darken-2 v-card--reveal headline white--text" 
                       style="height: 100%;">

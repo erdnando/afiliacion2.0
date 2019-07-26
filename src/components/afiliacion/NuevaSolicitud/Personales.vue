@@ -90,13 +90,13 @@
 
                <v-flex xs12 sm5 md5>
                 <v-text-field autofocus type="email"
-                 prepend-inner-icon="wc"
+                 prepend-inner-icon="wc" background-color="orange" 
                 ref="objForm.email" 
                 v-model="objForm.email" 
                 :rules="[rules.required, rules.email]"
                 :error-messages="errorMessages"
                 required
-                counter maxlength="25" box label="Email*" hint="" ></v-text-field>
+                counter maxlength="55" box label="Email*" hint="" ></v-text-field>
               </v-flex>
 
 

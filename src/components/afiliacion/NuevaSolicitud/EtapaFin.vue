@@ -4,7 +4,7 @@
     <v-layout row  justify-center>
     <v-dialog v-model="open" persistent max-width="900" style="border-radius: 7px!important;">
       <v-card color="white" ref="form">
-        <v-card-title class="indigo lighten">
+        <v-card-title class="green lighten">
           <span class="headline white--text">Your request has been approved</span>
            <span class="subtitle"  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Thanks for using our service </span>
         </v-card-title>

@@ -282,7 +282,11 @@ import axios from "axios";
               })
                 .then(response => {
                    console.log(response);
-                   bus.$emit('afiliacion.notifica','Invitación generada. Revise su correo: '+ this.email,'indigo');
+                   //bus.$emit('afiliacion.notifica','Invitación generada. Revise su correo: '+ this.email,'indigo');
+                    this.colorNotificacion="green";
+                    this.snackbar=true;
+                    this.mensajeNotifica='Invitación generada. Revise su correo: '+ this.email; 
+
                    this.email="";
                      bus.$emit('afiliacion.loading.end','');
                    
@@ -328,6 +332,7 @@ import axios from "axios";
       },
     created(){
       bus.$on('afiliacion.notifica',(msg, color)=>{
+        console.log("aca si..");
             this.colorNotificacion=color;
             this.snackbar=true;
             this.mensajeNotifica=msg; 

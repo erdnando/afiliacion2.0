@@ -33,7 +33,7 @@
                 ></v-text-field>
               </v-flex>
 
-              <v-flex xs12 sm6 md6>
+              <!-- <v-flex xs12 sm6 md6>
                 <v-text-field 
                 ref="objForm.origen" 
                 v-model="objForm.origen" 
@@ -41,7 +41,7 @@
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" box label="Origin*" hint="" ></v-text-field>
-              </v-flex>
+              </v-flex> -->
 
              <v-flex xs12 sm6 md6>
                 <v-text-field 
