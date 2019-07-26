@@ -9,25 +9,25 @@ Vue.use(Vuex)
 
 const etapasSolicitud = () =>{
     return [
-        {id:0, logo:require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
-        {id:1, logo: require('../src/assets/cardid.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:2, logo:require('../src/assets/personal.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-        {id:3, logo:require('../src/assets/firma1.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:4, logo:require('../src/assets/documentos.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-        {id:5, logo:require('../src/assets/phone.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-        {id:6, logo:require('../src/assets/finish.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
+        {id:0, logo:'/images/solicitud.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
+        {id:1, logo:'/images/cardid.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:2, logo:'/images/personal.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+        {id:3, logo:'/images/firma1.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:4, logo:'/images/documentos.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+        {id:5, logo:'/images/phone.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+        {id:6, logo:'/images/finish.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
           ]
 }
 
 const etapasSolicitudClear = () =>{
   return [
-      {id:0, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
-      {id:1, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-      {id:2, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-      {id:3, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-      {id:4, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
-      {id:5, logo: require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
-      {id:6, logo:require('../src/assets/solicitud.jpg'), form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
+      {id:0, logo: '/images/solicitud.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:false,  nombre:'Application', value: 0, query: false, show: true, barra: 'orange' ,visible:false ,objForm:{}  },
+      {id:1, logo: '/images/cardid.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Id card', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:2, logo: '/images/personal.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Personal data', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+      {id:3, logo: '/images/firma1.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'I Agree', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:4, logo: '/images/documentos.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Files', value: 0, query: false, show: true, barra: 'orange',visible: false ,objForm:{} },
+      {id:5, logo: '/images/phone.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Phone ref', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} },
+      {id:6, logo: '/images/finish.jpg', form:{'color':'orange','avance':'0'}, iniciarContinuar:'START', disabled:true,  nombre:'Complement', value: 0, query: false, show: true, barra: 'orange' ,visible: false,objForm:{} }
         ]
 }
 
