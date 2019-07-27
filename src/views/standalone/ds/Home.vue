@@ -410,7 +410,7 @@ import UploadRow from '@/components/utils/UploadRow'
         vistaUploader:false,
         fondoAnverso:'https://placehold.it/200x150',
         fondoReverso:'https://placehold.it/200x150',
-        instruccion1:'You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents after an enter (try with the digital file <SPAN class="font-weight-bold">F1000920</SPAN>)',
+        instruccion1:'You can enter a query based on your digital file identifier or simply search for keywords within the indexed documents after an enter (try with the digital file <SPAN class="font-weight-bold">F080564859</SPAN>)',
         urlFacePhiBase:'',
         e1: 0,
         valid: true,

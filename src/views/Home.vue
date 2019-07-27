@@ -15,7 +15,7 @@
                     </v-flex>
                     <v-flex xs12 md1>
                       <div class="text-xs-center" style="margin-top: 14px;">
-                         <v-btn color="indigo"  dark @click="openModalFacePhi" >Request access</v-btn>
+                         <v-btn color="red"   dark @click="openModalFacePhi" >Request access</v-btn>
                          
                         </div>
                     </v-flex>
@@ -33,7 +33,7 @@
 
 
     <div class="text-xs-center">
-      <v-dialog v-model="dialogFacePhi" width="500">
+      <v-dialog :persistent=true  v-model="dialogFacePhi" width="500">
         <template v-slot:activator="{ on }">
           <!-- <v-btn color="red lighten-2" dark v-on="on"> Click Me</v-btn> -->
         </template>
@@ -252,4 +252,16 @@ document.getElementById("divStep2").style.display = "block";
  #display{
    overflow:hidden;
  }
+
+  .heart {
+	font-size: 150px;
+	color: #e00;
+	animation: beat .75s infinite alternate;
+	transform-origin: center;
+}
+
+/* Heart beat animation */
+@keyframes beat{
+	to { transform: scale(1.1); }
+}
 </style>
