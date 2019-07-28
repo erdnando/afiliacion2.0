@@ -117,26 +117,12 @@ export default {
                 this.solucion=userAccediendo.solucion,
                 this.version=userAccediendo.version;
 
-
-
                 if(userAccediendo.drawer==false){
                     this.isLogged=false;
                     this.promotor={};
                     this.modulos= [];
                 }
-            //TODO add logic to authenticate
-            // if(userAccediendo.user=="admin"){
-            //     this.isLogged= true;
-            //     bus.$emit('afiliacion.notifica','Accesing to solution '+ userAccediendo.app,'indigo');
-            //     bus.$emit('loadDrawer', userAccediendo)
-            //     bus.$emit('showDrawer',true);
-            // }else{
-            //     this.isLogged= false;
-            //     bus.$emit('afiliacion.notifica','Login incorrecto. Verifique sus credenciales para '+ userAccediendo.app,'red');
-            //     bus.$emit('showDrawer',false);
-            //     setTimeout(function(){  bus.$emit('afiliacion.goTo','/fintech'); }, 2500);
-            // }
-                
+            
             });
 
             bus.$on('loginApp',(userAccediendo)=>{

@@ -131,6 +131,7 @@
                               
                               <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
                                <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
+                                <v-btn  flat style="position: absolute;right:88px;margin-top: -160px;" @click="login">Omit</v-btn>
                           </v-stepper-content>
  
                         
@@ -435,21 +436,56 @@ import UploadRow from '@/components/utils/UploadRow'
         //bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"Digital Docs"});
          this.dialogFacePhi = false;
         bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"Digital Docs","drawer":false,"solucion":"Document Solutions","version":"1.0"});
+         var iframe = document.getElementById('iframex');
+       iframe.src="";
       },
       validateStep1 () {
         if (this.$refs.form.validate()) {
-          //this.snackbar = true
-          this.e1 = '2';
-          this.urlFacePhiBase='/facephi/auth/index.html?name=';
+          this.validaMailInDB();
 
-          var divMsg = document.getElementById('divMsg');
-          divMsg.style.color='black';
-          divMsg.innerText=this.emailAuth;
-          
-          var iframe = document.getElementById('iframex');
-          
-          iframe.contentWindow.location.reload();
+
+         
         }
+      },
+      validaMailInDB(){
+
+         axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
+                timeout: 2000 * 1, // Wait for 2 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  mail: this.emailAuth
+                }
+              })
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data == 'OK'){
+                       //this.snackbar = true
+                    this.e1 = '2';
+                    this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+                    var divMsg = document.getElementById('divMsg');
+                    divMsg.style.color='black';
+                    divMsg.innerText=this.emailAuth;
+                    
+                    var iframe = document.getElementById('iframex');
+                    
+                    iframe.contentWindow.location.reload();
+                  }
+                  else {
+                    //bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
+                    this.snackbar = true;
+                    this.colorNotificacion="red";
+                    this.mensajeNotifica='Email not found. Please register before using this application.';
+                    }
+                })
+                .catch(error => {
+                  console.log(error);
+              });
+          
       },
       gotoHome(){
          this.dialogFacePhi=false
@@ -458,6 +494,9 @@ import UploadRow from '@/components/utils/UploadRow'
       },
       back(){
          this.e1 = '1';
+      },
+      omit(){
+         this.login();
       },
        remove (item) {
         this.chips.splice(this.chips.indexOf(item), 1)
@@ -657,14 +696,14 @@ import UploadRow from '@/components/utils/UploadRow'
       }
     },
     created(){
-      bus.$on('afiliacion.notifica',(msg, color)=>{
-            this.colorNotificacion=color;
-            this.snackbar=true;
-            this.mensajeNotifica=msg;
+      // bus.$on('afiliacion.notifica',(msg, color)=>{
+      //       this.colorNotificacion=color;
+      //       this.snackbar=true;
+      //       this.mensajeNotifica=msg;
 
-            if(color=='red') this.botonDeshabilitado=false;
-            else this.botonDeshabilitado=true;
-        })
+      //       if(color=='red') this.botonDeshabilitado=false;
+      //       else this.botonDeshabilitado=true;
+      //   })
 
         bus.$on('afiliacion.goTo',(ruta)=>{
            console.log("desde ds:" + ruta);

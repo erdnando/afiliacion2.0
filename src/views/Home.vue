@@ -125,6 +125,7 @@
 import CarouselCards from '@/components/start/CarouselCards'
 import Carousel from '@/components/start/Carousel'
 import LandingPage from '@/components/start/LandingPage'
+import axios from "axios";
 
    export default {
     components: {
@@ -201,13 +202,40 @@ import LandingPage from '@/components/start/LandingPage'
       },
        validateStep1 () {
         if (this.$refs.form.validate()) {
-          this.snackbar = true
-          this.e1 = '2';
-          this.urlFacePhiBase='/facephi/register/index.html?name=';
-          var iframe = document.getElementById('iframex');
-          iframe.contentWindow.location.reload();
-         
+            this.validaMailInDB();
+            
         }
+      },
+      validaMailInDB(){
+
+         axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
+                timeout: 2000 * 1, // Wait for 2 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  mail: this.emailAuth
+                }
+              })
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data == 'OK'){
+                      this.snackbar = true
+                      this.e1 = '2';
+                      this.urlFacePhiBase='/facephi/register/index.html?name=';
+                      var iframe = document.getElementById('iframex');
+                      iframe.contentWindow.location.reload();
+                  }
+                  else {
+                    bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
+                    }
+                })
+                .catch(error => {
+                  console.log(error);
+              });
+          
       },
       validaStep2(){
           this.e1 = '3';

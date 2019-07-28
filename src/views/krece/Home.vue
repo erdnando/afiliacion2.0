@@ -176,6 +176,7 @@
                               
                               <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
                                <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
+                                <v-btn  flat style="position: absolute;right:88px;margin-top: -160px;" @click="login">Omit</v-btn>
                           </v-stepper-content>
  
                         
@@ -306,20 +307,52 @@ import axios from "axios";
         //in navbar is its implementation
         //bus.$emit('loginApp', {"user":"admin","pwd":"12345","app":"KRECE"});
          bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"KRECE","drawer":false,"solucion":"KRECE","version":"1.0"});
+          var iframe = document.getElementById('iframex');
+       iframe.src="";
       },
      validateStep1 () {
         if (this.$refs.form.validate()) {
-          //this.snackbar = true
-          this.e1 = '2';
-          this.urlFacePhiBase='/facephi/auth/index.html?name=';
-
-          var divMsg = document.getElementById('divMsg');
-          divMsg.style.color='black';
-          divMsg.innerText=this.emailAuth;
-          
-          var iframe = document.getElementById('iframex');
-          iframe.contentWindow.location.reload();
+          this.validaMailInDB();
         }
+      },
+      validaMailInDB(){
+
+         axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
+                timeout: 2000 * 1, // Wait for 2 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  mail: this.emailAuth
+                }
+              })
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data == 'OK'){
+                      
+                      this.e1 = '2';
+                      this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+                      var divMsg = document.getElementById('divMsg');
+                      divMsg.style.color='black';
+                      divMsg.innerText=this.emailAuth;
+                      
+                      var iframe = document.getElementById('iframex');
+                      iframe.contentWindow.location.reload();
+                  }
+                  else {
+                    this.snackbar = true;
+                    this.colorNotificacion="red";
+                    this.mensajeNotifica='Email not found. Please register before using this application.';
+                    //bus.$emit('afiliacion.notifica.krece','Email not found. Please register before using this application.');
+                    }
+                })
+                .catch(error => {
+                  console.log(error);
+              });
+          
       },
       gotoHome(){
         console.log("cancelling...");
@@ -331,12 +364,15 @@ import axios from "axios";
          this.e1 = '1';
       },
     created(){
-      bus.$on('afiliacion.notifica',(msg, color)=>{
-        console.log("aca si..");
-            this.colorNotificacion=color;
-            this.snackbar=true;
-            this.mensajeNotifica=msg; 
-        });
+      // bus.$on('afiliacion.notifica.krece',(msg)=>{
+      //   console.log("en notifica..");
+      //       this.colorNotificacion="green";
+      //       this.snackbar=true;
+      //       this.mensajeNotifica=msg;
+
+      //       if(color=='red') this.botonDeshabilitado=false;
+      //       else this.botonDeshabilitado=true;
+      //   })
 
         bus.$on('afiliacion.goTo',(ruta)=>{
            this.$router.push(ruta);

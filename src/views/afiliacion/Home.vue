@@ -163,6 +163,7 @@
                               
                               <div id="divMsg" style="position: absolute;right:-144pxpx;margin-top: -153px;">{{emailAuth}}</div>
                                <v-btn  flat style="position: absolute;right:0px;margin-top: -160px;" @click="back">Back</v-btn>
+                                <v-btn  flat style="position: absolute;right:88px;margin-top: -160px;" @click="login">Omit</v-btn>
                           </v-stepper-content>
  
                         
@@ -204,6 +205,7 @@
 
 <script>
 import {bus} from '../../main.js'
+import axios from "axios";
 
    export default {
     data(){
@@ -245,26 +247,56 @@ import {bus} from '../../main.js'
         //navbar 109
         this.dialogFacePhi = false;
         bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"AFILIACION","drawer":true,"solucion":"AFILIACION","version":"2.0"});
+      
+       var iframe = document.getElementById('iframex');
+       iframe.src="";
       },
       validateStep1 () {
+        
         if (this.$refs.form.validate()) {
-          //this.snackbar = true
-          this.e1 = '2';
-          this.urlFacePhiBase='/facephi/auth/index.html?name=';
-
-          var divMsg = document.getElementById('divMsg');
-          divMsg.style.color='black';
-          divMsg.innerText=this.emailAuth;
+          console.log("antes de llamada ws..");
           
-          var iframe = document.getElementById('iframex');
+          this.validaMailInDB();
           
-          iframe.contentWindow.location.reload();
         }
+      },
+      validaMailInDB(){
+
+         axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
+                timeout: 2000 * 1, // Wait for 2 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  mail: this.emailAuth
+                }
+              })
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data == 'OK'){
+                      this.e1 = '2';
+                      this.urlFacePhiBase='/facephi/auth/index.html?name=';
+
+                      var divMsg = document.getElementById('divMsg');
+                      divMsg.style.color='black';
+                      divMsg.innerText=this.emailAuth;
+                      
+                      var iframe = document.getElementById('iframex');
+                      iframe.contentWindow.location.reload(); 
+                  }
+                  else {
+                    bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
+                    }
+                })
+                .catch(error => {
+                  console.log(error);
+              });
+          
       },
       back(){
          this.e1 = '1';
-        //   var iframe = document.getElementById('iframex');
-        //  iframe.src="";
       }
     },
     created(){
@@ -292,8 +324,6 @@ import {bus} from '../../main.js'
           return this.urlFacePhiBase + this.emailAuth.trim()
           },
     }
-    
-    
   }
 
 
