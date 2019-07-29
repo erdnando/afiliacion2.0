@@ -438,13 +438,11 @@ import UploadRow from '@/components/utils/UploadRow'
         bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"Digital Docs","drawer":false,"solucion":"Document Solutions","version":"1.0"});
          var iframe = document.getElementById('iframex');
        iframe.src="";
+       this.botonDeshabilitado=true;
       },
       validateStep1 () {
         if (this.$refs.form.validate()) {
           this.validaMailInDB();
-
-
-         
         }
       },
       validaMailInDB(){
@@ -574,7 +572,7 @@ import UploadRow from '@/components/utils/UploadRow'
           this.consultaSolr(jsonObj);
       },
       getUrl(param){
-        console.log("url a mostrar...");
+        console.log("url a mostrar..."+param);
         //D:\solr\example\exampledocs\F1000920-5.pdf
         //F0101701412-1.pdf&word=erdnando
 
@@ -589,8 +587,9 @@ import UploadRow from '@/components/utils/UploadRow'
                 word = this.chips[0];
               }
             }
-
-            if(word != '' || word != undefined)
+            console.log("aqui....");
+console.log(word);
+            if(word != '' && word != undefined)
               return this.pdfviewermine+this.clean(param)+"&word="+word.trim();
             else
               return this.pdfviewermine+this.clean(param);
