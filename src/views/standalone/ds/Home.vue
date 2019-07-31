@@ -588,7 +588,7 @@ import UploadRow from '@/components/utils/UploadRow'
               }
             }
             console.log("aqui....");
-console.log(word);
+            console.log(word);
             if(word != '' && word != undefined)
               return this.pdfviewermine+this.clean(param)+"&word="+word.trim();
             else
@@ -615,6 +615,7 @@ console.log(word);
          else return metaaux;
       },
       async consultaSolr(objConsulta){
+        console.log(objConsulta);
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',

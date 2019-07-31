@@ -70,8 +70,9 @@
                               </v-card>
                             <div id="divStep2" style="display:none">
                            <v-btn color="green" @click="validaStep2" style="position: absolute;right:14px;margin-top: -29px;">Continue</v-btn>
-                            <v-btn flat style="position: absolute;right: 123px;margin-top: -29px;" @click="dialogFacePhi=false">Cancel</v-btn>
+                           
                             </div>
+                             <v-btn flat style="position: absolute;right: 123px;margin-top: -29px;" @click="dialogFacePhi=false">Cancel</v-btn>
 
                           </v-stepper-content>
 
@@ -113,7 +114,27 @@
     </div>
 
 
-
+ <v-card>
+      <v-snackbar
+        v-model="snackbar"
+        :bottom=false
+        :color="colorNotificacion"
+        :left=false
+        :multi-line=true
+        :right=true
+        :timeout=3000
+        :top=false
+        :vertical=false
+      >
+        {{ mensajeNotifica }}
+        <v-btn
+          flat
+          @click="snackbar = false"
+        >
+          Cerrar
+        </v-btn>
+      </v-snackbar>
+    </v-card>
 
   </div>
 
@@ -126,6 +147,7 @@ import CarouselCards from '@/components/start/CarouselCards'
 import Carousel from '@/components/start/Carousel'
 import LandingPage from '@/components/start/LandingPage'
 import axios from "axios";
+import {bus} from '../main.js'
 
    export default {
     components: {
@@ -168,7 +190,10 @@ import axios from "axios";
           checkbox: false,
           urlFacePhiBase:'',
            dialogFacePhi: false,
-           facephiID:''
+           facephiID:'',
+           snackbar:false,
+           colorNotificacion:'red',
+           mensajeNotifica:'',
       }
     },
     computed:{
@@ -203,11 +228,12 @@ import axios from "axios";
        validateStep1 () {
         if (this.$refs.form.validate()) {
             this.validaMailInDB();
+           
             
         }
       },
       validaMailInDB(){
-
+         bus.$emit('afiliacion.loading.ini','');
          axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
@@ -216,24 +242,29 @@ import axios from "axios";
                   "Content-Type": "application/json"
                 },
                 data: {
-                  mail: this.emailAuth
+                  mail: this.emailRegister
                 }
               })
                 .then(response => {
                   console.log(response.data);
                   if(response.data == 'OK'){
-                      this.snackbar = true
+                       this.snackbar=true;
+                    this.mensajeNotifica='Email found. Please register with other email'; 
+                  }
+                  else {
+                    
+                    this.snackbar = false
                       this.e1 = '2';
                       this.urlFacePhiBase='/facephi/register/index.html?name=';
                       var iframe = document.getElementById('iframex');
                       iframe.contentWindow.location.reload();
-                  }
-                  else {
-                    bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
                     }
+
+                     bus.$emit('afiliacion.loading.end','');
                 })
                 .catch(error => {
                   console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
               });
           
       },
