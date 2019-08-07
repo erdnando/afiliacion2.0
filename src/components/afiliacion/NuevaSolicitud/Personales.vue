@@ -15,17 +15,19 @@
             <v-layout wrap>
 
               <v-flex xs12 sm5 md5>
+                
+
                 <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
                  ref="objForm.nombre"  :rules="[() => !!objForm.nombre || 'This field is required']"
                 :error-messages="errorMessages" required 
-                v-model="objForm.nombre"></v-text-field>
+                :value="objForm.nombre" @change="updateName"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="how_to_reg"  box  label="Last name*" 
                 ref="objForm.apellidos"  :rules="[() => !!objForm.apellidos || 'This field is required']"
                 :error-messages="errorMessages" required  
-                v-model="objForm.apellidos"></v-text-field>
+                :value="objForm.apellidos" @change="updateApellidos"></v-text-field>
               </v-flex>
 
 
@@ -147,6 +149,7 @@
             email:'',
             color:'orange'
           },
+          asignados:false,
           errorMessages: '',
           formHasErrors: false,
           modalFecha: false,
@@ -163,6 +166,8 @@
      },
      updated(){
        //console.log("cargando formulario...");
+        if(this.asignados)return;
+        
         var arrResultados = this.etapasSolicitud.objForm.ocrEstructurados;
 
         if(arrResultados==undefined)return;
@@ -203,6 +208,8 @@
         catch(e){
             console.log("fecha invalida:" + this.fechaNac);
         }
+
+        this.asignados=true;
      },
      computed:{
       
@@ -263,6 +270,7 @@
         }
          this.updatestatus();
           var objx={"idWin":idWin,"objForm":this.objForm};
+          console.log(objx);
          this.$store.commit('setForm',objx);
        // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
@@ -285,7 +293,16 @@
         this.objForm.avance=porcentaje;
         if(porcentaje>=100) this.objForm.color='green';
         else this.objForm.color='orange';
-      }
+      },
+      updateName (valor) {
+      console.log(valor);
+      this.objForm.nombre=valor;
+
+
+    },
+    updateApellidos(valor){
+      this.objForm.apellidos=valor;
+    }
     },
   
   }

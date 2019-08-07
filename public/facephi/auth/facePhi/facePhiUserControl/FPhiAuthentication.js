@@ -38,7 +38,8 @@ facePhiUserControl.events.UserControlLoaded = function () {
 
 // Extraction finished: check if template is generated and send it to server 
 facePhiUserControl.events.ExtractionFinished = function (extractionResult) {
-
+console.log("en ExtractionFinished...");
+console.log(extractionResult.Template);
     if (extractionResult.Template) {
 //https://sminet.com.mx/facephihtml5auth/index.html?name=erdnando@gmail.com
         //$('#template').val(extractionResult.Template);
@@ -82,6 +83,10 @@ facePhiUserControl.events.ExtractionFinished = function (extractionResult) {
 
 		
 	
+    }
+    else{
+        console.log("invalido por null,..");
+        window.parent.facephiAuthKO();
     }
     
 };

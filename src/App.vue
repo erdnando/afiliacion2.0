@@ -24,3 +24,12 @@ export default {
   }
 }
 </script>
+
+<style >
+
+/* 
+.v-dialog{
+    position: absolute!important;
+    top: 20px!important;
+} */
+</style>

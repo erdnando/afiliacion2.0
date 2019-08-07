@@ -1,8 +1,8 @@
 <template >
-  <div class="afiliacion">
+  <div class="afiliacion" >
    
     
-     <v-container fluid >
+     <v-container fluid  >
      
        <section>
         <v-parallax :src="section1" height="420">
@@ -119,7 +119,7 @@
      </v-container>
 
      <v-layout row justify-center>
-        <v-dialog :persistent=true v-model="dialogFacePhi" width="460px" height="600px" >
+        <v-dialog :persistent=true v-model="dialogFacePhi" width="460px"  >
           <v-card>
             <v-card-title  class="headline grey lighten-2" primary-title>
              Enter your credentials
@@ -349,8 +349,13 @@ import axios from "axios";
 
 </script>
 
-<style scoped>
-html{
-  overflow-y:hidden;
+<style >
+ /* html{
+   overflow-y:hidden; 
+}  */
+
+.v-dialog{
+    position: absolute;
+    top: 20px!important;
 }
 </style>
