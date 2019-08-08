@@ -61,7 +61,7 @@ import {bus} from '../../main.js'
            bus.$emit('login', {"user":this.emailAuth,"pwd":"************","app":"HB","drawer":false,"solucion":"Home Banking","version":"1.0"});
           this.colorNotificacion=this.color;
           this.snackbar=true;
-          this.mensajeNotifica='Use the following demo credentials: 8700014489 and password: Octopus48 and token 12345678 ';
+          this.mensajeNotifica='Use the following demo credentials: 8700014534 and password: Welcome9 and token 12345678 ';
            },
     computed:{
       

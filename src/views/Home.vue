@@ -237,7 +237,7 @@ import {bus} from '../main.js'
          axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
-                timeout: 2000 * 1, // Wait for 2 seconds
+                timeout: 12000 * 1, // Wait for 2 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },

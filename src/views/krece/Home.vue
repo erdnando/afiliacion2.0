@@ -278,7 +278,8 @@ import axios from "axios";
                    "Content-Type": "application/json"
                 },
                 data: {
-                  'email': this.email.trim()
+                  'email': this.email.trim(),
+                  'phone': '0000000000'
                 }
               })
                 .then(response => {
@@ -316,11 +317,11 @@ import axios from "axios";
         }
       },
       validaMailInDB(){
-
+         bus.$emit('afiliacion.loading.ini','');
          axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
-                timeout: 2000 * 1, // Wait for 2 seconds
+                timeout: 12000 * 1, // Wait for 2 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -338,11 +339,12 @@ import axios from "axios";
                       var divMsg = document.getElementById('divMsg');
                       divMsg.style.color='black';
                       divMsg.innerText=this.emailAuth;
-                      
+                      bus.$emit('afiliacion.loading.end','');
                       var iframe = document.getElementById('iframex');
                       iframe.contentWindow.location.reload();
                   }
                   else {
+                    bus.$emit('afiliacion.loading.end','');
                     this.snackbar = true;
                     this.colorNotificacion="red";
                     this.mensajeNotifica='Email not found. Please register before using this application.';
@@ -350,6 +352,7 @@ import axios from "axios";
                     }
                 })
                 .catch(error => {
+                  bus.$emit('afiliacion.loading.end','');
                   console.log(error);
               });
           

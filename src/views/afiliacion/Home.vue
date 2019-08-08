@@ -261,11 +261,11 @@ import axios from "axios";
         }
       },
       validaMailInDB(){
-
+         bus.$emit('afiliacion.loading.ini','');
          axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
-                timeout: 2000 * 1, // Wait for 2 seconds
+                timeout: 12000 * 1, // Wait for 2 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -282,15 +282,17 @@ import axios from "axios";
                       var divMsg = document.getElementById('divMsg');
                       divMsg.style.color='black';
                       divMsg.innerText=this.emailAuth;
-                      
+                      bus.$emit('afiliacion.loading.end','');
                       var iframe = document.getElementById('iframex');
                       iframe.contentWindow.location.reload(); 
                   }
                   else {
+                    bus.$emit('afiliacion.loading.end','');
                     bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
                     }
                 })
                 .catch(error => {
+                  bus.$emit('afiliacion.loading.end','');
                   console.log(error);
               });
           
@@ -356,6 +358,6 @@ import axios from "axios";
 
 .v-dialog{
     position: absolute;
-    top: 20px!important;
+    top: 40px!important;
 }
 </style>

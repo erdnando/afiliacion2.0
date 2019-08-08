@@ -446,11 +446,11 @@ import UploadRow from '@/components/utils/UploadRow'
         }
       },
       validaMailInDB(){
-
+         bus.$emit('afiliacion.loading.ini','');
          axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/logMailFace',
-                timeout: 2000 * 1, // Wait for 2 seconds
+                timeout: 12000 * 1, // Wait for 2 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -468,12 +468,13 @@ import UploadRow from '@/components/utils/UploadRow'
                     var divMsg = document.getElementById('divMsg');
                     divMsg.style.color='black';
                     divMsg.innerText=this.emailAuth;
-                    
+                    bus.$emit('afiliacion.loading.end','');
                     var iframe = document.getElementById('iframex');
                     
                     iframe.contentWindow.location.reload();
                   }
                   else {
+                    bus.$emit('afiliacion.loading.end','');
                     //bus.$emit('afiliacion.notifica','Email not found. Please register before using this application.');
                     this.snackbar = true;
                     this.colorNotificacion="red";
@@ -481,6 +482,7 @@ import UploadRow from '@/components/utils/UploadRow'
                     }
                 })
                 .catch(error => {
+                  bus.$emit('afiliacion.loading.end','');
                   console.log(error);
               });
           
@@ -845,27 +847,12 @@ html{
 	to { transform: scale(1.1); }
 }
 
-.v-dialog__content {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    height: 100%;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    left: 0;
-    pointer-events: none;
-    position: fixed;
-    -webkit-transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    width: 100%;
-    z-index: 6;
-    outline: none;
-    top: -50px;
+.v-dialog{
+    position: absolute;
+    top: 40px!important;
 }
+
+
 
 
 </style>
