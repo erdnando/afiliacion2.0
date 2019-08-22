@@ -12,22 +12,22 @@
                 <v-card-title primary-title style="padding:0px;width:100%">
                   
                   <v-flex xs12 sm3 md4 lg5  xl5 style="margin-left: 6px;">
-                    <div class="subheading black--text font-weight-medium" style="">Nombre:{{solicitud.nombre}}</div>
-                    <div style="color:darkslategrey">Cuenta:{{solicitud.account}}</div> 
+                    <div class="subheading black--text font-weight-medium" style="">Step:{{solicitud.nombre}}</div>
+                    <div style="color:darkslategrey">Application:{{solicitud.account}}</div> 
                   </v-flex>
 
                   <v-flex xs12 sm3 md3 lg2 xl2 style="margin-left: 6px;">
-                     <div style="color:darkslategrey">Estatus:{{solicitud.estatus}}</div>
-                     <div>Fecha: (2019)</div>
+                     <div style="color:darkslategrey;font-size:10px!important;">{{solicitud.processInstanceId}}</div>
+                     <div>Date: {{solicitud.fechaIni}}</div>
                   </v-flex>
 
                   <v-flex xs12 sm3 md3 lg2 xl2 style="margin-left: 6px;">
-                      Expediente: <span class="font-weight-medium black--text"> {{solicitud.expediente}}</span>
+                      Promotor: <span class="font-weight-medium black--text"> {{solicitud.promotorId}}</span>
                   </v-flex>
 
                   <v-flex xs12 sm3 md2 lg2 xl2 style="margin-left: 6px;text-align: right;">
                       <v-btn icon>
-                          <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
+                          <!-- <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon> -->
                         </v-btn>
                         <v-btn icon>
                           <v-icon>folder_shared</v-icon>

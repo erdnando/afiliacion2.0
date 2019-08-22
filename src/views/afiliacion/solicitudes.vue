@@ -1,6 +1,6 @@
 <template >
   <div class="solicitudes">
-    <!-- <h1 class="subheading grey--text">Mis solicitudes</h1> -->
+   
     <bandeja-searcher v-bind:solicitudesLength="solicitudes.length" v-bind:pageType="pageType" v-bind:solicitudes="solicitudes"></bandeja-searcher>
     <bandeja-list v-bind:solicitudes="solicitudes" v-bind:pageType="pageType"></bandeja-list>
   </div>
@@ -10,7 +10,7 @@
 import {bus} from '../../main.js'
 import BandejaList from '@/components/afiliacion/BandejaList'
 import BandejaSearcher from '@/components/afiliacion/BandejaSearcher'
-
+import axios from "axios";
 
    export default {
     components: {
@@ -19,332 +19,216 @@ import BandejaSearcher from '@/components/afiliacion/BandejaSearcher'
     computed:{
       
     },
+    mounted () {
+
+     this.getBandejas();
+    },
     data () {
     return {
-          solicitudes: [
-            {
-                account:100001,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Aprobado',
-                expediente:'F0000432',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100002,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Andrea Jimenez Mendez',
-                estatus:'Aprobado',
-                expediente:'F0000401',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100003,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Israel Torres Fernandez',
-                estatus:'Rechazado',
-                expediente:'F0000411',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100004,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Joaquin Jimenez Flores',
-                estatus:'Aprobado',
-                expediente:'F0000400',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100005,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Javier Hernandez gomez',
-                estatus:'Aprobado',
-                expediente:'F0000226',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100006,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Mirella Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000417',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100007,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Laura Sanchez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000418',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100008,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Rechazado',
-                expediente:'F0000419',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100009,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Sandra Perez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000420',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100010,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Jesus Lopez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000421',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100011,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Daniel Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000422',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100012,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000123',
-                collectionViewUrl:'url'
-               }
-        ],
+          solicitudes: [],
         pageType:'CARD'
     }
   },
   methods:{
    
+     getBandejas(){
+       this.solicitudes = [];
+       bus.$emit('afiliacion.loading.ini','');
+
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/bandejaBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  proceso: "afiliacion.process"
+                }
+              })
+                .then(response => {
+
+                  var sol={};
+                  var arrInstancias = response.data;//4 arrays
+
+                  for(var i=0;i< arrInstancias.length;i++){//recorre 4
+
+                      var instancia = arrInstancias[i]; // un arr de variables
+                      var ProcessInstanceId='';
+                      var Nombre='';
+                      var FechaIni = '';
+                      var idTramite='';
+                      var promotorId='';
+                      var imagen='';
+
+                      for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
+
+                         var parValue = instancia[j];
+                         //console.log(parValue);
+
+                          if(parValue.VariableName == 'idTramite') idTramite='100000'+parValue.Value;
+                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
+                          if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
+                          if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
+                          if(parValue.VariableName == 'Name') {
+                              Nombre=parValue.Value;
+                              switch (Nombre) {
+                                case "Task.Identificacion":imagen= '/images/cardid.jpg'; break;
+                                case "Task.Personales":imagen= '/images/personal.jpg'; break;
+                                case "Task.Autorizo":imagen= '/images/firma1.jpg'; break;
+                                case "Task.Referencias":imagen= '/images/phone.jpg'; break;
+                                case "Task.Docs":imagen= '/images/documentos.jpg'; break;
+                                case "Task.Resultados":imagen= '/images/finish.jpg'; break;
+                                default: imagen='http://lorempixel.com/130/140/';break;
+                              }
+                            }
+
+                          //
+
+                      }//end 2do loop
+
+                       sol = {
+                          resourcename: '',
+                          account:idTramite,
+                          foto:imagen,
+                          nombre:Nombre,
+                          fechaIni:FechaIni,
+                          promotorId:promotorId,
+                          collectionViewUrl:'',
+                          processInstanceId: 'BPM'+ProcessInstanceId
+                        };
+                   this.solicitudes.push(sol);
+                  }
+
+
+                  bus.$emit('afiliacion.loading.end','');
+                })
+                .catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+     }
+
   },
   created(){
       bus.$on('changeMode',(modo)=>{
             this.pageType= modo
         }),
       bus.$on('search',(consulta)=>{
-        //console.log("consulta:"+consulta);
-        
+      
+        console.log('-->'+consulta+'<--');
         if(consulta.trim()==''){
           //  start
-         this.solicitudes = 
-        [{
-                account:100001,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Aprobado',
-                expediente:'F0000432',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100002,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Andrea Jimenez Mendez',
-                estatus:'Aprobado',
-                expediente:'F0000401',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100003,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Israel Torres Fernandez',
-                estatus:'Rechazado',
-                expediente:'F0000411',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100004,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Joaquin Jimenez Flores',
-                estatus:'Aprobado',
-                expediente:'F0000400',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100005,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Javier Hernandez gomez',
-                estatus:'Aprobado',
-                expediente:'F0000226',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100006,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Mirella Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000417',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100007,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Laura Sanchez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000418',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100008,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Rechazado',
-                expediente:'F0000419',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100009,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Sandra Perez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000420',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100010,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Jesus Lopez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000421',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100011,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Daniel Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000422',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100012,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000123',
-                collectionViewUrl:'url'
-               }
-        ];
-        //  end
+          this.getBandejas();
+       
         }
         else{
- //  start
-         this.solicitudes = 
-        [{
-                account:100001,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Erdnando Rodriguez Vargas',
-                estatus:'Aprobado',
-                expediente:'F0000432',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100002,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Andrea Jimenez Mendez',
-                estatus:'Aprobado',
-                expediente:'F0000401',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100003,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Israel Torres Fernandez',
-                estatus:'Rechazado',
-                expediente:'F0000411',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100004,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Joaquin Jimenez Flores',
-                estatus:'Aprobado',
-                expediente:'F0000400',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100005,
-                foto:'http://lorempixel.com/130/140/',
-                nombre:'Javier Hernandez gomez',
-                estatus:'Aprobado',
-                expediente:'F0000226',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100006,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Mirella Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000417',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100007,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Laura Sanchez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000418',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100008,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Isabel Rodriguez Hernandez',
-                estatus:'Rechazado',
-                expediente:'F0000419',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100009,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Sandra Perez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000420',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100010,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Jesus Lopez Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000421',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100011,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Daniel Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000422',
-                collectionViewUrl:'url'
-               },
-               {
-                account:100012,
-                foto:'http://lorempixel.com/130/130/',
-                nombre:'Lourdes Sandoval Hernandez',
-                estatus:'Aprobado',
-                expediente:'F0000123',
-                collectionViewUrl:'url'
-               }
-        ];
-        //  end
-          consulta=consulta.toUpperCase();
-          this.solicitudes = this.solicitudes.filter(function (solicitud) {
-            return solicitud.expediente.toUpperCase().includes(consulta) || solicitud.nombre.toUpperCase().includes(consulta) ||  solicitud.estatus.toUpperCase().includes(consulta) ||  solicitud.account.toString().includes(consulta)
-          });
+           this.solicitudes = [];
+       bus.$emit('afiliacion.loading.ini','');
+
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/bandejaBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  proceso: "afiliacion.process"
+                }
+              })
+                .then(response => {
+
+                  var sol={};
+                  var arrInstancias = response.data;//4 arrays
+
+                  for(var i=0;i< arrInstancias.length;i++){//recorre 4
+
+                      var instancia = arrInstancias[i]; // un arr de variables
+                      var ProcessInstanceId='';
+                      var Nombre='';
+                      var FechaIni = '';
+                      var idTramite='';
+                      var promotorId='';
+                      var imagen='';
+
+                      for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
+
+                         var parValue = instancia[j];
+
+                          if(parValue.VariableName == 'idTramite') idTramite='100000'+parValue.Value;
+                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
+                          if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
+                          if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
+                          if(parValue.VariableName == 'Name') {
+                              Nombre=parValue.Value;
+                              switch (Nombre) {
+                                case "Task.Identificacion":imagen= '/images/cardid.jpg'; break;
+                                case "Task.Personales":imagen= '/images/personal.jpg'; break;
+                                case "Task.Autorizo":imagen= '/images/firma1.jpg'; break;
+                                case "Task.Referencias":imagen= '/images/phone.jpg'; break;
+                                case "Task.Docs":imagen= '/images/documentos.jpg'; break;
+                                case "Task.Resultados":imagen= '/images/finish.jpg'; break;
+                                default: imagen='http://lorempixel.com/130/140/';break;
+                              }
+                            }
+
+                      }//end 2do loop
+
+                       sol = {
+                          resourcename: '',
+                          account:idTramite,
+                          foto:imagen,
+                          nombre:Nombre,
+                          fechaIni:FechaIni,
+                          promotorId:promotorId,
+                          collectionViewUrl:'',
+                          processInstanceId: 'BPM'+ProcessInstanceId
+                        };
+                   this.solicitudes.push(sol);
+                   //----------------------------
+                    consulta=consulta.toUpperCase();
+                    this.solicitudes = this.solicitudes.filter(function (solicitud) {
+                     // console.log(solicitudes);
+                      //return solicitud.expediente.toUpperCase().includes(consulta) || solicitud.nombre.toUpperCase().includes(consulta) ||  solicitud.estatus.toUpperCase().includes(consulta) ||  solicitud.account.toString().includes(consulta)
+                      return solicitud.nombre.toUpperCase().includes(consulta) || solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
+                    
+                    });
+
+
+                  }
+
+
+                  bus.$emit('afiliacion.loading.end','');
+                })
+                .catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+
+
+
+
+
+
+
+
+
+     
+       
+          // consulta=consulta.toUpperCase();
+          // this.solicitudes = this.solicitudes.filter(function (solicitud) {
+          //   console.log(solicitudes);
+          //   //return solicitud.expediente.toUpperCase().includes(consulta) || solicitud.nombre.toUpperCase().includes(consulta) ||  solicitud.estatus.toUpperCase().includes(consulta) ||  solicitud.account.toString().includes(consulta)
+          //   return solicitud.nombre.toUpperCase().includes(consulta) || solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
+          
+          // });
         }
         
       });
   }
     
-  }
+   }  
 </script>
 
 <style>

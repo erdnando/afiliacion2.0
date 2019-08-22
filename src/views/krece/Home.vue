@@ -20,7 +20,7 @@
                   :rules="[rules.required, rules.email]"
                   :error-messages="errorMessages"
                   required
-                  counter maxlength="25"  label="Email*" hint="" >
+                  counter maxlength="55"  label="Email*" hint="" >
                 </v-text-field>
             
           </v-layout>

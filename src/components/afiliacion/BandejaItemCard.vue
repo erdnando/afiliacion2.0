@@ -26,10 +26,10 @@
                          <span class="caption black--text" v-text="solicitud.account"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text font-weight-medium" v-text="solicitud.expediente"></span>
+                         <span class="caption black--text font-weight-medium" v-text="solicitud.promotorId"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text" v-text="solicitud.estatus"></span>
+                         <span class="caption black--text" v-text="solicitud.fechaIni"></span>
                       </v-flex>
 
                     </v-layout>
@@ -43,10 +43,10 @@
                 
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
-                  
-                  <v-btn icon>
+                    <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.processInstanceId"></span>
+                  <!-- <v-btn icon>
                     <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                   <v-btn icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
@@ -76,8 +76,9 @@
     props:['solicitudes'],
     methods:{
       cutName(nombre){
+        nombre = nombre.replace('Task.','Step ');
         if(nombre.trim().length>18)
-         return nombre.substring(0,19)+"...";
+         return nombre.substring(0,16)+"...";
          else return nombre;
       },
       setIcon(estatus){
