@@ -56,9 +56,6 @@
             this.folioGenerado = this.$store.state.folioGenerado;
             console.log(this.folioGenerado);
 
-//this.folioGenerado
-            //var msg =
-
            axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/startBPM',

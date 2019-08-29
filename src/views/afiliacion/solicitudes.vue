@@ -63,6 +63,7 @@ import axios from "axios";
                       var promotorId='';
                       var imagen='';
                       var folioExpediente='';
+                      var idTarea = '';
 
                       for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
 
@@ -74,6 +75,7 @@ import axios from "axios";
                           if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
                           if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
                            if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
+                           if(parValue.VariableName == 'Id') idTarea = parValue.Value;
 
                           if(parValue.VariableName == 'Name') {
                               Nombre=parValue.Value;
@@ -101,7 +103,8 @@ import axios from "axios";
                           promotorId:promotorId,
                           collectionViewUrl:'',
                           processInstanceId: 'BPM: '+ProcessInstanceId,
-                          folioExpediente:folioExpediente
+                          folioExpediente:folioExpediente,
+                          idTarea: 'BPM: '+idTarea
                         };
                    this.solicitudes.push(sol);
                   }
@@ -146,7 +149,8 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-
+                  console.log('=============bandejas================');
+                  console.log(response.data);
                   var sol={};
                   var arrInstancias = response.data;//4 arrays
 
@@ -160,16 +164,18 @@ import axios from "axios";
                       var promotorId='';
                       var imagen='';
                       var folioExpediente='';
+                      var idTarea='';
 
                       for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
 
                          var parValue = instancia[j];
 
-                          if(parValue.VariableName == 'idTramite') idTramite='100000'+parValue.Value;
-                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
-                          if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
-                          if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
-                          if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
+                          if(parValue.VariableName == 'idTramite') idTramite = '100000'+parValue.Value;
+                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId = parValue.Value;
+                          if(parValue.VariableName == 'fechaIni') FechaIni = parValue.Value;
+                          if(parValue.VariableName == 'promotorId') promotorId = parValue.Value;
+                          if(parValue.VariableName == 'FolioExpediente') folioExpediente = parValue.Value;
+                          if(parValue.VariableName == 'Id') idTarea = parValue.Value;
 
                           if(parValue.VariableName == 'Name') {
                               Nombre=parValue.Value;
@@ -195,7 +201,8 @@ import axios from "axios";
                           promotorId:promotorId,
                           collectionViewUrl:'',
                           processInstanceId: 'BPM: '+ProcessInstanceId,
-                          folioExpediente:folioExpediente
+                          folioExpediente:folioExpediente,
+                          idTarea: 'BPM: '+ idTarea
                         };
                    this.solicitudes.push(sol);
                    //----------------------------

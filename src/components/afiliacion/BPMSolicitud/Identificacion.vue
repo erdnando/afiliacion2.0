@@ -72,7 +72,7 @@
           <v-btn v-show="vistaUploader" :disabled="!canProcess" color="blue darken-1" flat @click="cambiaVista">View</v-btn>
           <div v-show="!vistaUploader">
              <v-btn color="blue darken-1" flat @click="retryVista">Retry</v-btn>
-             <v-btn color="blue darken-1" flat @click="save(1)">Continue</v-btn>
+             <v-btn color="blue darken-1" flat @click="save()">Continue</v-btn>
           </div>
           
         </v-card-actions>
@@ -84,14 +84,15 @@
 </template>
 
 <script>
-import {bus} from '../../../main.js'
- import Uploader from '@/components/afiliacion/BPMSolicitud/Upload'
+import {bus} from '../../../main.js';
+import axios from "axios";
+import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
 
    export default {
        components: {
         Uploader
     },
-     props:['open','folio'],
+     props:['open','folio','processInstanceId'],
      data(){
        return{
           objForm:{
@@ -148,7 +149,7 @@ import {bus} from '../../../main.js'
          this.vistaUploader=false;
          this.subtitulo='Verify the data and continue or retry'
       },
-      save(idWin){
+      save(){
        
         //this.objForm.avance=this.porcentaje;
         // if(this.porcentaje>=100) this.objForm.color='green';
@@ -161,7 +162,54 @@ import {bus} from '../../../main.js'
         // var objx={"idWin":idWin,"objForm":this.objForm};
         // this.$store.commit('setForm',objx);
 
+
         //TODO: call bpm to continue
+        //
+         bus.$emit('afiliacion.loading.ini','');
+            //this.folioGenerado = this.$store.state.folioGenerado;
+            //console.log(this.folioGenerado);
+            //var variables ="variables:{'OCRProcesado': { 'value':true, 'type':'boolean'} }";
+            const variables = {
+                 variables:{
+                    OCRProcesado: {
+                      value : true,
+                      type : 'boolean'
+                    }
+                 }
+                 
+                };
+            const myObjStr = JSON.stringify(variables);
+            console.log(myObjStr);
+            console.log(this.processInstanceId);
+
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                      instanceId : this.processInstanceId.replace('BPM: ',''),
+                      variables : myObjStr
+                }
+              })
+                .then(response => {
+
+                  var bpmResp = response.data;//4 arra
+                  console.log("=========BPM Response===========");
+                  console.log(bpmResp);
+
+                 //reload
+                 bus.$emit('search', '');
+                 bus.$emit('afiliacion.loading.end','');
+                  
+                }).catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+
+
         this.$store.state.bIdentificacion = false;
 
 
@@ -240,9 +288,6 @@ import {bus} from '../../../main.js'
     
     
     }
-
-
-
    }
 </script>
 
