@@ -3,15 +3,15 @@
         <v-layout row style="height:58px">
             <v-flex grow>
                     <v-text-field  
-                                    v-model="inputSearch"
-                                    required
-                                    ref="inputSearch"
-                                    name="inputSearch"
-                                    label="Buscar"
-                                    @keydown.enter="realizarConsulta" >
-                                    <template bottom slot="append">
-                                        <v-icon @click="realizarConsulta">search</v-icon>
-                                    </template>
+                      v-model="inputSearch"
+                      required
+                      ref="inputSearch"
+                      name="inputSearch"
+                      label="Buscar"
+                      @keydown.enter="realizarConsulta" >
+                      <template bottom slot="append">
+                          <v-icon @click="realizarConsulta">search</v-icon>
+                      </template>
                     </v-text-field>
             </v-flex>
             <v-flex shrink pa-4></v-flex>
@@ -29,13 +29,16 @@
 </template>
 
 <script>
-    import {bus} from '../../main.js'
+    import {bus} from '../../main.js';
+    import axios from "axios";
+
     export default {
     props:['solicitudesLength','pageType','solicitudes'],
     data () {
         return {
            inputSearch:'',
-           solicitudesAux:[]
+           solicitudesAux:[],
+           folioGenerado:''
         }
   },
    methods: {
@@ -43,10 +46,48 @@
           bus.$emit('changeMode', modo)
        },
        realizarConsulta(){
-        bus.$emit('search', this.inputSearch)
+        bus.$emit('search', this.inputSearch);
        },
        newSolicitud(){
-         
+         this.$store.commit('generaFolio');
+          // this.solicitudes = [];
+
+           bus.$emit('afiliacion.loading.ini','');
+            this.folioGenerado = this.$store.state.folioGenerado;
+            console.log(this.folioGenerado);
+
+//this.folioGenerado
+            //var msg =
+
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/startBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                      proceso : 'afiliacion.process',
+                      promotorId : 'P00001',
+                      tiendaId : '99',
+                      folioExpediente : this.folioGenerado
+                }
+              })
+                .then(response => {
+
+                  var bpmResp = response.data;//4 arra
+                  console.log("=========BPM Response===========");
+                  console.log(bpmResp);
+
+                 //reload
+                 bus.$emit('search', '');
+                 bus.$emit('afiliacion.loading.end','');
+                  
+                }).catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+              
        }
    }, 
    computed:{

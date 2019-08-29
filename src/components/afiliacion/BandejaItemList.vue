@@ -22,7 +22,7 @@
                   </v-flex>
 
                   <v-flex xs12 sm3 md3 lg2 xl2 style="margin-left: 6px;">
-                      Promotor: <span class="font-weight-medium black--text"> {{solicitud.promotorId}}</span>
+                      Expediente: <span class="font-weight-medium black--text"> {{solicitud.folioExpediente}}</span>
                   </v-flex>
 
                   <v-flex xs12 sm3 md2 lg2 xl2 style="margin-left: 6px;text-align: right;">

@@ -39,7 +39,14 @@ export  default new Vuex.Store({
         folioGeneradoCategoria:0,
         etapaFin:false,
         mensajeFinalAfiliacion:'',
-        filesAdded : ['vbvbvvb']
+        filesAdded : ['vbvbvvb'],
+        bIdentificacion:false,
+        bPersonales:false,
+        bAutorizo:false,
+        bDocumentos:false,
+        bRefTelefonicas:false,
+        bComplementarios:false,
+        bEtapaFin:false,
     },
     mutations:{
         generaFolio(state){

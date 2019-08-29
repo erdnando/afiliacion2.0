@@ -50,16 +50,19 @@ import axios from "axios";
 
                   var sol={};
                   var arrInstancias = response.data;//4 arrays
+                  console.log(response.data);
 
                   for(var i=0;i< arrInstancias.length;i++){//recorre 4
 
                       var instancia = arrInstancias[i]; // un arr de variables
+
                       var ProcessInstanceId='';
                       var Nombre='';
                       var FechaIni = '';
                       var idTramite='';
                       var promotorId='';
                       var imagen='';
+                      var folioExpediente='';
 
                       for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
 
@@ -70,6 +73,8 @@ import axios from "axios";
                           if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
                           if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
                           if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
+                           if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
+
                           if(parValue.VariableName == 'Name') {
                               Nombre=parValue.Value;
                               switch (Nombre) {
@@ -95,7 +100,8 @@ import axios from "axios";
                           fechaIni:FechaIni,
                           promotorId:promotorId,
                           collectionViewUrl:'',
-                          processInstanceId: 'BPM'+ProcessInstanceId
+                          processInstanceId: 'BPM: '+ProcessInstanceId,
+                          folioExpediente:folioExpediente
                         };
                    this.solicitudes.push(sol);
                   }
@@ -114,6 +120,7 @@ import axios from "axios";
       bus.$on('changeMode',(modo)=>{
             this.pageType= modo
         }),
+      
       bus.$on('search',(consulta)=>{
       
         console.log('-->'+consulta+'<--');
@@ -123,8 +130,9 @@ import axios from "axios";
        
         }
         else{
+
            this.solicitudes = [];
-       bus.$emit('afiliacion.loading.ini','');
+           bus.$emit('afiliacion.loading.ini','');
 
            axios({
                 method: "post",
@@ -151,6 +159,7 @@ import axios from "axios";
                       var idTramite='';
                       var promotorId='';
                       var imagen='';
+                      var folioExpediente='';
 
                       for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
 
@@ -160,6 +169,8 @@ import axios from "axios";
                           if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
                           if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
                           if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
+                          if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
+
                           if(parValue.VariableName == 'Name') {
                               Nombre=parValue.Value;
                               switch (Nombre) {
@@ -183,7 +194,8 @@ import axios from "axios";
                           fechaIni:FechaIni,
                           promotorId:promotorId,
                           collectionViewUrl:'',
-                          processInstanceId: 'BPM'+ProcessInstanceId
+                          processInstanceId: 'BPM: '+ProcessInstanceId,
+                          folioExpediente:folioExpediente
                         };
                    this.solicitudes.push(sol);
                    //----------------------------
@@ -205,23 +217,11 @@ import axios from "axios";
                   console.log(error);
                    bus.$emit('afiliacion.loading.end','');
               });
-
-
-
-
-
-
-
-
-
-     
-       
           // consulta=consulta.toUpperCase();
           // this.solicitudes = this.solicitudes.filter(function (solicitud) {
           //   console.log(solicitudes);
           //   //return solicitud.expediente.toUpperCase().includes(consulta) || solicitud.nombre.toUpperCase().includes(consulta) ||  solicitud.estatus.toUpperCase().includes(consulta) ||  solicitud.account.toString().includes(consulta)
           //   return solicitud.nombre.toUpperCase().includes(consulta) || solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
-          
           // });
         }
         

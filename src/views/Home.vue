@@ -50,11 +50,10 @@
                           <v-stepper-content step="1">
                             <v-card class="mb-5" color="white lighten-1" height="200px" >
                               <!-- Paso 1 -->
-                              <v-form
-                                  ref="form" v-model="valid" lazy-validation>
-                                  <v-text-field v-model="name"  :counter="10"  :rules="nameRules"  label="Name" required></v-text-field>
-                                  <v-text-field v-model="emailRegister" :rules="emailRules"  label="E-mail"  required></v-text-field>
-                                  <v-checkbox  v-model="checkbox"  :rules="[v => !!v || 'You must agree to continue!']" label="Do you agree?"  required></v-checkbox>
+                                <v-form ref="form" v-model="valid" lazy-validation>
+                                    <v-text-field v-model="name"  :counter="10"  :rules="nameRules"  label="Name" required></v-text-field>
+                                    <v-text-field v-model="emailRegister" :rules="emailRules"  label="E-mail"  required></v-text-field>
+                                    <v-checkbox  v-model="checkbox"  :rules="[v => !!v || 'You must agree to continue!']" label="Do you agree?"  required></v-checkbox>
                                 </v-form>
                                 <!-- Paso 1 -->
                               </v-card>
@@ -290,12 +289,13 @@ import {bus} from '../main.js'
 
 
 window.facephiIdRegister = function (name,id) {
+  
     console.log("recibiendo datos de facephi: "+ name+' id:'+id);
     document.getElementById("facephifield").value=id;
     console.log(document.getElementById("facephifield"));
-console.log("---------------------------------------------------------");
-console.log(id);
-document.getElementById("divStep2").style.display = "block";
+    console.log("---------------------------------------------------------");
+    console.log(id);
+    document.getElementById("divStep2").style.display = "block";
 
      };
 

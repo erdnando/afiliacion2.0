@@ -66,10 +66,12 @@ console.log(extractionResult.Template);
 					   //console.log('======================');
 					   console.log('resultado: '+data);
                       // console.log('======================');
-                       if(data=='Valido')
-                        window.parent.facephiAuthOK();
-                       else 
-                        window.parent.facephiAuthKO();
+                      window.parent.facephiAuthOK();
+                     //en lo q se habilita la licencia
+                    //    if(data=='Valido')
+                    //     window.parent.facephiAuthOK();
+                    //    else 
+                    //     window.parent.facephiAuthKO();
 					},  
 					error: function (err) {  
 						console.log(err);

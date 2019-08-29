@@ -26,7 +26,7 @@
                          <span class="caption black--text" v-text="solicitud.account"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text font-weight-medium" v-text="solicitud.promotorId"></span>
+                         <span class="caption black--text font-weight-medium" v-text="solicitud.folioExpediente"></span>
                       </v-flex>
                       <v-flex d-flex>
                          <span class="caption black--text" v-text="solicitud.fechaIni"></span>
@@ -47,7 +47,7 @@
                   <!-- <v-btn icon>
                     <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
                   </v-btn> -->
-                  <v-btn icon>
+                  <v-btn @click="openForm(solicitud.processInstanceId , solicitud.nombre,solicitud.folioExpediente)" icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
                 </v-card-actions>
@@ -57,24 +57,52 @@
     </v-flex>
   </v-layout>
   
+
+<identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:folio="this.expediente" ></identificacion>
+<personales v-bind:open="this.$store.state.bPersonales"   v-bind:folio="this.expediente"></personales>
+<autorizo v-bind:open="this.$store.state.bAutorizo"  v-bind:folio="this.expediente"></autorizo>
+<documentos v-bind:open="this.$store.state.bDocumentos"  v-bind:folio="this.expediente"></documentos>
+<ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas"  v-bind:folio="this.expediente"></ref-telefonicas>
+ <!-- <complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:folio="this.expediente"></complementarios>  -->
+<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:folio="this.expediente"></etapa-Fin>
+
+
   </div>
 </template>
 
 <script>
 
-
+import Identificacion from '@/components/afiliacion/BPMSolicitud/Identificacion'
+import Personales from '@/components/afiliacion/BPMSolicitud/Personales'
+import Autorizo from '@/components/afiliacion/BPMSolicitud/Autorizo'
+import Documentos from '@/components/afiliacion/BPMSolicitud/Documentos'
+import RefTelefonicas from '@/components/afiliacion/BPMSolicitud/RefTelefonicas'
+import Complementarios from '@/components/afiliacion/BPMSolicitud/Complementarios'
+import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
 
    export default {
     components: {
-    
+    Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,Complementarios,EtapaFin
     },
     data(){
         return{
-            
+           expediente:''
         }
     },
     props:['solicitudes'],
     methods:{
+      openForm(_processInstanceId , _step, _expediente){
+        console.log(_step);
+        switch (_step) {
+          case 'Task.Identificacion':
+            this.$store.state.bIdentificacion=true;
+            this.expediente=_expediente;
+            break
+          default:
+            break;
+        }
+
+      },
       cutName(nombre){
         nombre = nombre.replace('Task.','Step ');
         if(nombre.trim().length>18)
