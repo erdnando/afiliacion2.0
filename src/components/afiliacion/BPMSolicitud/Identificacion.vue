@@ -166,7 +166,29 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
             //     };
             // const myObjStr = JSON.stringify(variables);
             // console.log(myObjStr);
+
+            // Materno: "VARGAS"
+            // Nombre: "ERDNANDO"
+            // Paterno: "RODRIGUEZ"
+            // calle: "O PALOMA NEGRA"
+            // claveElector: null
+            // codigoPostal: "57000"
+            // colonia: "BENITO JUAREZ "
+            // fechaDeNacimiento: "21/01/73"
+            // fechaDeNacimientoANIO: "73"
+            // fechaDeNacimientoDIA: "21"
+            // fechaDeNacimientoMES: "01"
+            // numeroExt: "277"
+            // sexo: "H"
+            // vigencia: null
+
+
+            
             console.log(this.processInstanceId);
+            var d =this.$store.state.ocrData;
+            var variablesXML="{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}},{'Nombre':{'value':"+d.Nombre+",'type':String}},{'Materno':{'value':"+d.Materno+",'type':String}},{'Paterno':{'value':"+d.Paterno+",'type':String}},{'sexo':{'value':"+d.Sexo+",'type':String}},{'calle':{'value':"+d.calle+",'type':String}},{'numeroExt':{'value':"+d.numeroExt+",'type':String}},{'codigoPostal':{'value':"+d.codigoPostal+",'type':String}},{'colonia':{'value':"+d.colonia+",'type':String}},{'claveElector':{'value':"+d.claveElector+",'type':String}},{'vigencia':{'value':"+d.vigencia+",'type':String}},{'fechaDeNacimiento':{'value':"+d.fechaDeNacimiento+",'type':String}} }";
+            //this.$store.state.ocrData
+            //xml: "{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}}}"
 
            axios({
                 method: "post",
@@ -177,7 +199,7 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                 },
                 data: {
                       instanceId : this.processInstanceId.replace('BPM: ',''),
-                      xml: "{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}}}"
+                      xml: variablesXML
                 }
               })
                 .then(response => {

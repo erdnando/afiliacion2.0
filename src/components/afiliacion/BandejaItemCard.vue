@@ -93,10 +93,19 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
     props:['solicitudes'],
     methods:{
       openForm(_processInstanceId , _step, _expediente){
+        
+        this.$store.state.bIdentificacion=false;
+        this.$store.state.bPersonales=false;
         console.log(_step);
+        
         switch (_step) {
           case 'Task.Identificacion':
             this.$store.state.bIdentificacion=true;
+            this.expediente=_expediente;
+            this.processInstanceId=_processInstanceId;
+            break;
+          case 'Task.Personales':
+            this.$store.state.bPersonales=true;
             this.expediente=_expediente;
             this.processInstanceId=_processInstanceId;
             break

@@ -165,52 +165,72 @@
        }
      },
      updated(){
-       //console.log("cargando formulario...");
+       console.log("cargando formulario...");
         if(this.asignados)return;
         
-        var arrResultados = [];//this.etapasSolicitud.objForm.ocrEstructurados;
-
-        if(arrResultados==undefined)return;
+      //   var arrResultados = [];//this.etapasSolicitud.objForm.ocrEstructurados;
+      
         
-        var paterno='';
-        var materno='';
-        var direccion='';
-        for(var i=0;i<arrResultados.length;i++){
-          if(arrResultados[i].nombre == "Nombre") this.objForm.nombre = arrResultados[i].valor;
-          if(arrResultados[i].nombre == "Paterno") paterno = arrResultados[i].valor;
-          if(arrResultados[i].nombre == "Materno") materno = arrResultados[i].valor;
-          if(arrResultados[i].nombre == "fechaDeNacimiento") this.objForm.fechaDeNacimiento = arrResultados[i].valor;
-          if(arrResultados[i].nombre == "sexo") this.objForm.sexo = arrResultados[i].valor;
-          if(arrResultados[i].nombre == "tipo") this.objForm.nacionalidad = arrResultados[i].valor;
-           if(arrResultados[i].nombre == "calle") direccion += arrResultados[i].valor;
-           if(arrResultados[i].nombre == "codigoPostal") direccion += arrResultados[i].valor;
-           if(arrResultados[i].nombre == "colonia") direccion += arrResultados[i].valor;
-           if(arrResultados[i].nombre == "numeroExt") direccion += arrResultados[i].valor;
-        }
-        this.objForm.apellidos = paterno+' '+materno;
-        this.objForm.direccion = direccion;
-        //valida fecha nac
+      //   if(arrResultados==undefined)return;
+        
+      //   var paterno='';
+      //   var materno='';
+      //   var direccion='';
+      //   for(var i=0;i<arrResultados.length;i++){
+      //     if(arrResultados[i].nombre == "Nombre") this.objForm.nombre =  arrResultados[i].valor;
+      //     if(arrResultados[i].nombre == "Paterno") paterno = arrResultados[i].valor;
+      //     if(arrResultados[i].nombre == "Materno") materno = arrResultados[i].valor;
+      //     if(arrResultados[i].nombre == "fechaDeNacimiento") this.objForm.fechaDeNacimiento = arrResultados[i].valor;
+      //     if(arrResultados[i].nombre == "sexo") this.objForm.sexo = arrResultados[i].valor;
+      //     if(arrResultados[i].nombre == "tipo") this.objForm.nacionalidad = arrResultados[i].valor;
+      //      if(arrResultados[i].nombre == "calle") direccion += arrResultados[i].valor;
+      //      if(arrResultados[i].nombre == "codigoPostal") direccion += arrResultados[i].valor;
+      //      if(arrResultados[i].nombre == "colonia") direccion += arrResultados[i].valor;
+      //      if(arrResultados[i].nombre == "numeroExt") direccion += arrResultados[i].valor;
+      //   }
+      //   this.objForm.apellidos = paterno+' '+materno;
+      //   this.objForm.direccion = direccion;
+      //   //valida fecha nac
        
-       try{
-         //console.log(this.fechaNac);
-        var fechaObtenida = new Date(this.fechaNac+"T12:00:00-06:00");
+      //  try{
+      //    //console.log(this.fechaNac);
+      //   var fechaObtenida = new Date(this.fechaNac+"T12:00:00-06:00");
         
-        //console.log(fechaObtenida);
-        var year = fechaObtenida.getFullYear();
-        var month = fechaObtenida.getMonth()+1;
-        var day = fechaObtenida.getDate();
+      //   //console.log(fechaObtenida);
+      //   var year = fechaObtenida.getFullYear();
+      //   var month = fechaObtenida.getMonth()+1;
+      //   var day = fechaObtenida.getDate();
 
-        if (day < 10) day = '0' + day;
-        if (month < 10) month = '0' + month;
+      //   if (day < 10) day = '0' + day;
+      //   if (month < 10) month = '0' + month;
 
-        this.objForm.fechaDeNacimiento = day + '/' + month + '/'+year;
-        }
-        catch(e){
-            console.log("fecha invalida:" + this.fechaNac);
-        }
-
+      //   this.objForm.fechaDeNacimiento = day + '/' + month + '/'+year;
+      //   }
+      //   catch(e){
+      //       console.log("fecha invalida:" + this.fechaNac);
+      //   }
         this.asignados=true;
+
+
+
+
+
+         var objOCR = this.$store.state.ocrData; 
+         console.log('obj');
+         
+          console.log(objOCR.Nombre);
+          this.objForm.nombre =  objOCR.Nombre;
+          this.objForm.apellidos='rodriguez vargas';
+
+
+
+
+
      },
+      beforeMount() {
+         
+         
+    },
      computed:{
       
       form () {
@@ -275,9 +295,10 @@
        // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
       close(idWin){
-        this.updatestatus();
+        //this.updatestatus();
         //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
-        this.$store.commit('closeForm',idWin);
+        //this.$store.commit('closeForm',idWin);
+        this.$store.state.bPersonales=false;
       },
       updatestatus(){
         this.objForm.avance=0;

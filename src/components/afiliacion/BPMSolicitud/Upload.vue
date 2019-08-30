@@ -118,13 +118,14 @@
                 }
               })
                 .then(response => {
-                  //console.log(response.data);
+                  console.log(response.data);
 
                   var my_time2 = new Date(); // date object 
                   my_time2=my_time2.getTime(); // second time variable
                   var diff = ( my_time2-my_time1); // difference in time 
                   console.log("Procesado en:"+  parseFloat(diff/1000));
                   bus.$emit('afiliacion.upload.documento',response.data,this.categoria,blobUrl);
+                  this.$store.state.ocrData = response.data;
                   //avoid to load trash to cm in test mode
                   this.cmProcess(string64,my_time1,response.data.nombre,response.data.paterno);
 

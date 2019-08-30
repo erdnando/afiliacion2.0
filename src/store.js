@@ -47,6 +47,7 @@ export  default new Vuex.Store({
         bRefTelefonicas:false,
         bComplementarios:false,
         bEtapaFin:false,
+        ocrData:{}
     },
     mutations:{
         generaFolio(state){
