@@ -151,35 +151,21 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
       },
       save(){
        
-        //this.objForm.avance=this.porcentaje;
-        // if(this.porcentaje>=100) this.objForm.color='green';
-        // else this.objForm.color='orange';
-
-        // this.vistaUploader=true;
-        // this.subtitulo='Load the images and then process them'
-        
-        // //bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
-        // var objx={"idWin":idWin,"objForm":this.objForm};
-        // this.$store.commit('setForm',objx);
-
-
-        //TODO: call bpm to continue
-        //
          bus.$emit('afiliacion.loading.ini','');
             //this.folioGenerado = this.$store.state.folioGenerado;
             //console.log(this.folioGenerado);
             //var variables ="variables:{'OCRProcesado': { 'value':true, 'type':'boolean'} }";
-            const variables = {
-                 variables:{
-                    OCRProcesado: {
-                      value : true,
-                      type : 'boolean'
-                    }
-                 }
+            // const variables = {
+            //      variables:{
+            //         OCRProcesado: {
+            //           value : true,
+            //           type : 'boolean'
+            //         }
+            //      }
                  
-                };
-            const myObjStr = JSON.stringify(variables);
-            console.log(myObjStr);
+            //     };
+            // const myObjStr = JSON.stringify(variables);
+            // console.log(myObjStr);
             console.log(this.processInstanceId);
 
            axios({
@@ -191,14 +177,26 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                 },
                 data: {
                       instanceId : this.processInstanceId.replace('BPM: ',''),
-                      variables : myObjStr
+                      xml: "{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}}}"
                 }
               })
                 .then(response => {
 
                   var bpmResp = response.data;//4 arra
                   console.log("=========BPM Response===========");
-                  console.log(bpmResp);
+                  console.log("-->"+bpmResp+"<--");
+
+                  //reset
+                  this.componentKey1 += 1;  
+                  this.componentKey2 += 1;  
+                  this.vistaUploader=true;
+                  this.resultadoOCR='loading...',
+                  this.subtitulo='Load the images and then process them'
+                  this.$store.state.bIdentificacion = false;
+                  this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}];
+                  this.fondoAnverso='https://placehold.it/400x300';
+                  this.fondoReverso='https://placehold.it/400x300';
+                  
 
                  //reload
                  bus.$emit('search', '');
@@ -210,7 +208,9 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
               });
 
 
-        this.$store.state.bIdentificacion = false;
+        // this.$store.state.bIdentificacion = false;
+        // this.fondoAnverso='https://placehold.it/400x300';
+        // this.fondoReverso='https://placehold.it/400x300';
 
 
       },

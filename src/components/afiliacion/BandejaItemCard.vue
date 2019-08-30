@@ -26,7 +26,7 @@
                          <span class="caption black--text" v-text="solicitud.account"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text font-weight-medium" v-text="solicitud.folioExpediente"></span>
+                         <span class="caption black--text font-weight-medium" v-text="addLabel(solicitud.folioExpediente,'File:')"></span>
                       </v-flex>
                       <v-flex d-flex>
                          <span class="caption black--text" v-text="solicitud.fechaIni"></span>
@@ -43,7 +43,7 @@
                 
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
-                    <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.idTarea"></span>
+                    <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.processInstanceId"></span>
                   <!-- <v-btn icon>
                     <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
                   </v-btn> -->
@@ -58,13 +58,13 @@
   </v-layout>
   
 
-<identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea" ></identificacion>
-<personales v-bind:open="this.$store.state.bPersonales"   v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea"></personales>
-<autorizo v-bind:open="this.$store.state.bAutorizo"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea"></autorizo>
-<documentos v-bind:open="this.$store.state.bDocumentos"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea"></documentos>
-<ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea"></ref-telefonicas>
+<identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId" ></identificacion>
+<personales v-bind:open="this.$store.state.bPersonales"   v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></personales>
+<autorizo v-bind:open="this.$store.state.bAutorizo"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></autorizo>
+<documentos v-bind:open="this.$store.state.bDocumentos"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></documentos>
+<ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></ref-telefonicas>
  <!-- <complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></complementarios>  -->
-<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.idTarea"></etapa-Fin>
+<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></etapa-Fin>
 
 
   </div>
@@ -82,23 +82,23 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
 
    export default {
     components: {
-    Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,Complementarios,EtapaFin
+    Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,EtapaFin
     },
     data(){
         return{
            expediente:'',
-           idTarea:''
+           processInstanceId:''
         }
     },
     props:['solicitudes'],
     methods:{
-      openForm(_idTarea , _step, _expediente){
+      openForm(_processInstanceId , _step, _expediente){
         console.log(_step);
         switch (_step) {
           case 'Task.Identificacion':
             this.$store.state.bIdentificacion=true;
             this.expediente=_expediente;
-            this.idTarea=_idTarea;
+            this.processInstanceId=_processInstanceId;
             break
           default:
             break;
@@ -124,6 +124,9 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
         }else{
           return 'red lighten-1';
         }
+      },
+      addLabel(valor, label){
+           return label+' '+valor;
       }
     }
     
