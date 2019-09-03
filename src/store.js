@@ -70,7 +70,7 @@ export  default new Vuex.Store({
         closeMessageFinal(state, id){
           state.etapaFin = false;
          
-      },
+       },
         setForm(state,payload){
             var objForm= payload.objForm;
             var idWin= payload.idWin;
@@ -118,6 +118,10 @@ export  default new Vuex.Store({
                 var refTelefonicas = state.etapasSolicitud[5].objForm;
                 var personales = state.etapasSolicitud[2].objForm;
                 var curpx = (refTelefonicas.rfc+Math.random().toString(36).substring(7).toUpperCase());
+                console.log(refTelefonicas);
+                console.log(personales);
+                console.log(curpx);
+                
             
                 axios({
                   method: "post",

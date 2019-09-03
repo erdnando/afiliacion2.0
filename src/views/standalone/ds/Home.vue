@@ -209,7 +209,7 @@
                                   <v-img
                                     class="white--text"
                                     height="200px"
-                                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                                    src="https://5wbts45dnuj11q6172p5dkzf-wpengine.netdna-ssl.com/wp-content/uploads/Sensitive-Data-780x405.jpg"
                                   >
                                     <v-container fill-height fluid>
                                       <v-layout fill-height>

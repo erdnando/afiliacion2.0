@@ -8,7 +8,7 @@
           <span class="headline white--text">Card ID</span>
           <span class="subtitle " style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp;{{subtitulo}}</span>
           <v-spacer></v-spacer>
-          <span class="body-2 white--text">{{folio}}</span>
+          <span class="body-2 white--text">{{variablesBPM.FolioExpediente}}</span>
         </v-card-title>
         <v-card-text>
           <v-container fluid style="margin-top: -40px;">
@@ -16,10 +16,10 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md6 lg6 xl6 style="margin-left: -8px;margin-right: 35px;" >
-                <uploader categoria="1" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader>
+                <uploader categoria="1" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader>
               </v-flex>
               <v-flex  md6 lg6 xl6>
-                <uploader categoria="2" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader>
+                <uploader categoria="2" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader>
               </v-flex>
             </v-layout>
             <!-- resultados -->
@@ -92,7 +92,7 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
        components: {
         Uploader
     },
-     props:['open','folio','processInstanceId'],
+     props:['open','variablesBPM'],
      data(){
        return{
           objForm:{
@@ -183,13 +183,37 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
             // vigencia: null
 
 
+           
             
-            console.log(this.processInstanceId);
+            console.log(this.variablesBPM);
             var d =this.$store.state.ocrData;
-            var variablesXML="{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}},{'Nombre':{'value':"+d.Nombre+",'type':String}},{'Materno':{'value':"+d.Materno+",'type':String}},{'Paterno':{'value':"+d.Paterno+",'type':String}},{'sexo':{'value':"+d.Sexo+",'type':String}},{'calle':{'value':"+d.calle+",'type':String}},{'numeroExt':{'value':"+d.numeroExt+",'type':String}},{'codigoPostal':{'value':"+d.codigoPostal+",'type':String}},{'colonia':{'value':"+d.colonia+",'type':String}},{'claveElector':{'value':"+d.claveElector+",'type':String}},{'vigencia':{'value':"+d.vigencia+",'type':String}},{'fechaDeNacimiento':{'value':"+d.fechaDeNacimiento+",'type':String}} }";
-            //this.$store.state.ocrData
-            //xml: "{'variables': {'OCRProcesado': {'value': true,'type': 'boolean'}}}"
+           
+            console.log('=========fecha 1=========');
+            console.log(d.fechaDeNacimiento);
+            console.log(d.fechaDeNacimientoDIA);
+            console.log(d.fechaDeNacimientoMES);
+            console.log(d.fechaDeNacimientoANIO);
+            
+            try{
+                d.fechaDeNacimiento = d.fechaDeNacimientoANIO + '-'+ d.fechaDeNacimientoMES + '-'+ d.fechaDeNacimientoDIA;
 
+                var fechaN = new Date(d.fechaDeNacimiento);
+                console.log('fecha ok');
+                console.log(fechaN);
+            }
+            catch(error){
+              console.log('error');
+              
+              console.log(error);
+              
+              d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
+            }
+            console.log('=========fecha 2=========');
+
+
+
+            var variablesXML="{'variables': { 'OCRProcesado': {'value': true,'type': 'boolean'},'Nombre':{'value':'"+d.Nombre+"','type':'String'},'Materno':{'value':'"+d.Materno+"','type':'String'},'Paterno':{'value':'"+d.Paterno+"','type':'String'},'Sexo':{'value':'"+d.sexo+"','type':'String'},'Calle':{'value':'"+d.calle+"','type':'String'},'NumExt':{'value':'"+d.numeroExt+"','type':'String'},'CP':{'value':'"+d.codigoPostal+"','type':'String'},'Colonia':{'value':'"+d.colonia+"','type':'String'},'ClaveElector':{'value':'"+d.claveElector+"','type':'String'},'Vigencia':{'value':'"+d.vigencia+"','type':'String'},'FechaNac':{'value':'"+d.fechaDeNacimiento+"','type':'String'} } }";
+           
            axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
@@ -198,15 +222,13 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                   "Content-Type": "application/json"
                 },
                 data: {
-                      instanceId : this.processInstanceId.replace('BPM: ',''),
+                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
                       xml: variablesXML
                 }
               })
                 .then(response => {
 
                   var bpmResp = response.data;//4 arra
-                  console.log("=========BPM Response===========");
-                  console.log("-->"+bpmResp+"<--");
 
                   //reset
                   this.componentKey1 += 1;  

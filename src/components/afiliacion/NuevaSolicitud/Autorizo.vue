@@ -84,6 +84,7 @@ import VueSignature from 'vue-signature-pad'
       },
       close(idWin){
         this.$store.commit('closeForm',idWin);
+        
         this.resizeCanvas();
       },
       undo() {
@@ -129,16 +130,16 @@ import VueSignature from 'vue-signature-pad'
     resizeCanvas() {
       //try{
        
-        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-         var canvas = this.$refs.signaturePad.getCanvasRef();
-          console.log("inside resizeCanvas");
-         console.log(canvas);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.width=450;
-      canvas.height=140;
-        canvas.getContext("2d").scale(ratio, ratio);
-        // }catch(error){
+      //   var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      //    var canvas = this.$refs.signaturePad.getCanvasRef();
+      //     console.log("inside resizeCanvas");
+      //    console.log(canvas);
+      //   canvas.width = canvas.offsetWidth * ratio;
+      //   canvas.height = canvas.offsetHeight * ratio;
+      //   canvas.width=450;
+      // canvas.height=140;
+      //   canvas.getContext("2d").scale(ratio, ratio);
+      //   // }catch(error){
         //   console.log("onResize");
         // }
     }
@@ -146,20 +147,28 @@ import VueSignature from 'vue-signature-pad'
     created(){
        
     },
+     updated(){
+         console.log('on updated....');
+      this.$nextTick(() => {
+        console.log('actualizado....');
+        
+        this.$refs.signaturePad.resizeCanvas();
+      });
+     },
    mounted() {
-    window.addEventListener("resize", this.resizeCanvas);
+  //   window.addEventListener("resize", this.resizeCanvas);
 
-   // this.resizeCanvas();
-     //console.log("on resize canvas");
-     var canvas = this.$refs.signaturePad.getCanvasRef(); // <---- view NOTA
-     console.log(canvas);
-        canvas.width = 400;
-        canvas.height = 180;
-        // this.resizeCanvas();
-        canvas.width = 450;
-        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-        canvas.getContext("2d").scale(ratio, ratio);
-        //console.log("despues del get context");
+  //  // this.resizeCanvas();
+  //    //console.log("on resize canvas");
+  //    var canvas = this.$refs.signaturePad.getCanvasRef(); // <---- view NOTA
+  //    console.log(canvas);
+  //       canvas.width = 400;
+  //       canvas.height = 180;
+  //       // this.resizeCanvas();
+  //       canvas.width = 450;
+  //       var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+  //       canvas.getContext("2d").scale(ratio, ratio);
+  //       //console.log("despues del get context");
     //NOTA NOTA NOTA
     //se añadio esta funcion al componente node en vue-signature-pad,esm y pad.commons
     // getCanvasRef: function getCanvasRef(){

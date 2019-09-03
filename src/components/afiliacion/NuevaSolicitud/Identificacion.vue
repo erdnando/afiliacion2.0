@@ -171,6 +171,7 @@ import {bus} from '../../../main.js'
         this.$store.commit('closeForm',idWin);
       }
     },
+    
     created(){
         bus.$on('afiliacion.upload.categoria',(categoria)=>{
               this.categoriasCargadas.push(categoria);

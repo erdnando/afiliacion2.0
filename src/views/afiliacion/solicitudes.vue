@@ -49,37 +49,37 @@ import axios from "axios";
                 .then(response => {
 
                   var sol={};
-                  var arrInstancias = response.data;//4 arrays
+                  var arrTramites = response.data;//4 arrays
                   console.log(response.data);
-
-                  for(var i=0;i< arrInstancias.length;i++){//recorre 4
-
-                      var instancia = arrInstancias[i]; // un arr de variables
-
-                      var ProcessInstanceId='';
-                      var Nombre='';
-                      var FechaIni = '';
-                      var idTramite='';
-                      var promotorId='';
+                  for(var i=0;i< arrTramites.length;i++){//recorre 4
+                      var tramite = arrTramites[i]; // un arr de variables
+                      // var ProcessInstanceId='';
+                      // var Nombre='';
+                      // var FechaIni = '';
+                      // var idTramite='';
+                      // var promotorId='';
                       var imagen='';
-                      var folioExpediente='';
-                      var idTarea = '';
+                      // var folioExpediente='';
+                      // var idTarea = '';
+                      
+                      var variablesBPM ={};
+                      for(var j=0;j< tramite.length;j++){//recorre la n cantidad de variables
+                        
+                         //var parValue = instancia[j];
+                         var nombre= tramite[j].VariableName;
+                         var valor= tramite[j].Value;
+                         variablesBPM[nombre]=valor; //   .push( {[nombre] :  valor} );
 
-                      for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
+                          // if(parValue.VariableName == 'idTramite') idTramite='100000'+parValue.Value;
+                          // if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
+                          // if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
+                          // if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
+                          //  if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
+                          //  if(parValue.VariableName == 'Id') idTarea = parValue.Value;
 
-                         var parValue = instancia[j];
-                         //console.log(parValue);
-
-                          if(parValue.VariableName == 'idTramite') idTramite='100000'+parValue.Value;
-                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId=parValue.Value;
-                          if(parValue.VariableName == 'fechaIni') FechaIni=parValue.Value;
-                          if(parValue.VariableName == 'promotorId') promotorId=parValue.Value;
-                           if(parValue.VariableName == 'FolioExpediente') folioExpediente=parValue.Value;
-                           if(parValue.VariableName == 'Id') idTarea = parValue.Value;
-
-                          if(parValue.VariableName == 'Name') {
-                              Nombre=parValue.Value;
-                              switch (Nombre) {
+                          // if(parValue.VariableName == 'Name') {
+                          //     Nombre=parValue.Value;
+                              switch (variablesBPM.Name) {
                                 case "Task.Identificacion":imagen= '/images/cardid.jpg'; break;
                                 case "Task.Personales":imagen= '/images/personal.jpg'; break;
                                 case "Task.Autorizo":imagen= '/images/firma1.jpg'; break;
@@ -88,25 +88,32 @@ import axios from "axios";
                                 case "Task.Resultados":imagen= '/images/finish.jpg'; break;
                                 default: imagen='http://lorempixel.com/130/140/';break;
                               }
-                            }
+
+                              variablesBPM['imagen']=imagen; 
+                            //}
 
                           //
 
                       }//end 2do loop
 
-                       sol = {
-                          resourcename: '',
-                          account:idTramite,
-                          foto:imagen,
-                          nombre:Nombre,
-                          fechaIni:FechaIni,
-                          promotorId:promotorId,
-                          collectionViewUrl:'',
-                          processInstanceId: 'BPM: '+ProcessInstanceId,
-                          folioExpediente:folioExpediente,
-                          idTarea: 'BPM: '+idTarea
-                        };
-                   this.solicitudes.push(sol);
+                      // console.log('============Variables BPM==========');
+                      // console.log(variablesBPM);
+                      // console.log('============Variables BPM==========');
+
+                      //  sol = {
+                      //     resourcename: '',
+                      //     account:variablesBPM.idTramite,
+                      //     foto:imagen,
+                      //     nombre:variablesBPM.Name,
+                      //     fechaIni:variablesBPM.fechaIni,
+                      //     promotorId:variablesBPM.promotorId,
+                      //     collectionViewUrl:'',
+                      //     processInstanceId: 'BPM: '+variablesBPM.ProcessInstanceId,
+                      //     folioExpediente:variablesBPM.FolioExpediente,
+                      //     idTarea: 'BPM: '+variablesBPM.Id,
+                      //     variables: variablesBPM
+                      //   };
+                   this.solicitudes.push(variablesBPM);
                   }
 
 
@@ -152,34 +159,38 @@ import axios from "axios";
                   console.log('=============bandejas================');
                   console.log(response.data);
                   var sol={};
-                  var arrInstancias = response.data;//4 arrays
+                  var arrTramites = response.data;//4 arrays
+                 //TODO: aqui llegan todas las variables
+                  for(var i=0;i< arrTramites.length;i++){//recorre 4
 
-                  for(var i=0;i< arrInstancias.length;i++){//recorre 4
-
-                      var instancia = arrInstancias[i]; // un arr de variables
-                      var ProcessInstanceId='';
-                      var Nombre='';
-                      var FechaIni = '';
-                      var idTramite='';
-                      var promotorId='';
+                       var tramite = arrTramites[i]; // un arr de variables
+                      // var ProcessInstanceId='';
+                      // var Nombre='';
+                      // var FechaIni = '';
+                      // var idTramite='';
+                      // var promotorId='';
                       var imagen='';
-                      var folioExpediente='';
-                      var idTarea='';
+                      // var folioExpediente='';
+                      // var idTarea='';
 
-                      for(var j=0;j< instancia.length;j++){//recorre la n cantidad de variables
+                      var variablesBPM ={};
 
-                         var parValue = instancia[j];
+                      for(var j=0;j< tramite.length;j++){//recorre la n cantidad de variables
 
-                          if(parValue.VariableName == 'idTramite') idTramite = '100000'+parValue.Value;
-                          if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId = parValue.Value;
-                          if(parValue.VariableName == 'fechaIni') FechaIni = parValue.Value;
-                          if(parValue.VariableName == 'promotorId') promotorId = parValue.Value;
-                          if(parValue.VariableName == 'FolioExpediente') folioExpediente = parValue.Value;
-                          if(parValue.VariableName == 'Id') idTarea = parValue.Value;
+                         var nombre= tramite[j].VariableName;
+                         var valor= tramite[j].Value;
+                         variablesBPM[nombre]=valor; 
 
-                          if(parValue.VariableName == 'Name') {
-                              Nombre=parValue.Value;
-                              switch (Nombre) {
+                          // if(parValue.VariableName == 'idTramite') idTramite = '100000'+parValue.Value;
+                          // if(parValue.VariableName == 'ProcessInstanceId') ProcessInstanceId = parValue.Value;
+                          // if(parValue.VariableName == 'fechaIni') FechaIni = parValue.Value;
+                          // if(parValue.VariableName == 'promotorId') promotorId = parValue.Value;
+                          // if(parValue.VariableName == 'FolioExpediente') folioExpediente = parValue.Value;
+                          // if(parValue.VariableName == 'Id') idTarea = parValue.Value;
+
+                          //if(parValue.VariableName == 'Name') {
+                            //  Nombre=parValue.Value;
+                              switch (variablesBPM.Name) {
                                 case "Task.Identificacion":imagen= '/images/cardid.jpg'; break;
                                 case "Task.Personales":imagen= '/images/personal.jpg'; break;
                                 case "Task.Autorizo":imagen= '/images/firma1.jpg'; break;
@@ -188,36 +199,38 @@ import axios from "axios";
                                 case "Task.Resultados":imagen= '/images/finish.jpg'; break;
                                 default: imagen='http://lorempixel.com/130/140/';break;
                               }
-                            }
-
+                           // }
+                              variablesBPM['imagen']=imagen; 
                       }//end 2do loop
-
-                       sol = {
-                          resourcename: '',
-                          account:idTramite,
-                          foto:imagen,
-                          nombre:Nombre,
-                          fechaIni:FechaIni,
-                          promotorId:promotorId,
-                          collectionViewUrl:'',
-                          processInstanceId: 'BPM: '+ProcessInstanceId,
-                          folioExpediente:folioExpediente,
-                          idTarea: 'BPM: '+ idTarea
-                        };
-                   this.solicitudes.push(sol);
+  
+                      console.log('============Variables BPM==========');
+                      console.log(variablesBPM);
+                      console.log('============Variables BPM==========');
+                      //  sol = {
+                      //     resourcename: '',
+                      //     account:idTramite,
+                      //     foto:imagen,
+                      //     nombre:Nombre,
+                      //     fechaIni:FechaIni,
+                      //     promotorId:promotorId,
+                      //     collectionViewUrl:'',
+                      //     processInstanceId: 'BPM: '+ProcessInstanceId,
+                      //     folioExpediente:folioExpediente,
+                      //     idTarea: 'BPM: '+ idTarea
+                      //   };
+                   this.solicitudes.push(variablesBPM);
                    //----------------------------
                     consulta=consulta.toUpperCase();
                     this.solicitudes = this.solicitudes.filter(function (solicitud) {
                      // console.log(solicitudes);
                       //return solicitud.expediente.toUpperCase().includes(consulta) || solicitud.nombre.toUpperCase().includes(consulta) ||  solicitud.estatus.toUpperCase().includes(consulta) ||  solicitud.account.toString().includes(consulta)
-                      return solicitud.nombre.toUpperCase().includes(consulta) || solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
+                      if(solicitud.Nombre == undefined)
+                      return  solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
+                      else
+                      return solicitud.Nombre.toUpperCase().includes(consulta) || solicitud.processInstanceId.toUpperCase().includes(consulta) || solicitud.promotorId.toUpperCase().includes(consulta) ;
                     
                     });
-
-
                   }
-
-
                   bus.$emit('afiliacion.loading.end','');
                 })
                 .catch(error => {

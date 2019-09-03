@@ -3,13 +3,13 @@
      <v-layout justify-center>
     <v-flex xs12 sm12>
            <v-layout row wrap> 
-            <v-flex  v-for="solicitud in solicitudes" :key="solicitud.account" xs6 md4 lg3 xl2 class="card" style="">
+            <v-flex  v-for="solicitud in solicitudes" :key="solicitud.idTramite" xs6 md4 lg3 xl2 class="card" style="">
                <v-card  style="margin:4px;  -webkit-box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;box-shadow: 0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important;">  
                <div v-ripple>
                <v-container fluid grid-list-md style="padding:8px">
                 <v-layout row wrap>
                   <v-flex d-flex xs12 sm6 md4>
-                     <v-img  :src="solicitud.foto" height="80px" width="auto"></v-img>
+                     <v-img  :src="solicitud.imagen" height="80px" width="auto"></v-img>
                   </v-flex>
 
                   <v-flex d-flex xs12 sm6 md8>
@@ -17,19 +17,21 @@
                       <v-flex d-flex >
                          <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                                  <span  v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.nombre)"></span>
+                                  <span  v-on="on" class="body-1 black--text font-weight-medium" v-text="cutName(solicitud.Name)"></span>
                           </template>
-                            <span>{{solicitud.nombre}}</span>
+                            <span>{{solicitud.Name}}</span>
                         </v-tooltip>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text" v-text="solicitud.account"></span>
+                         <span class="caption black--text" v-text= "'100000'+solicitud.idTramite"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text font-weight-medium" v-text="addLabel(solicitud.folioExpediente,'File:')"></span>
+                         <span class="caption black--text font-weight-medium" v-text="addLabel(solicitud.FolioExpediente,'File:')"></span>
+                          <span class="caption black--text" v-text="formatFecha(solicitud.fechaIni)"></span>
                       </v-flex>
                       <v-flex d-flex>
-                         <span class="caption black--text" v-text="solicitud.fechaIni"></span>
+                        
+                          <span style="font-size:10px!important;margin-left: 0px;" class="caption black--text" v-text="armaNombre(solicitud.Nombre, solicitud.Paterno, solicitud.Materno)"></span>
                       </v-flex>
 
                     </v-layout>
@@ -43,11 +45,11 @@
                 
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
-                    <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.processInstanceId"></span>
+                    <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.ProcessInstanceId"></span>
                   <!-- <v-btn icon>
                     <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
                   </v-btn> -->
-                  <v-btn @click="openForm(solicitud.processInstanceId , solicitud.nombre,solicitud.folioExpediente)" icon>
+                  <v-btn @click="openForm(solicitud.ProcessInstanceId , solicitud.Name,solicitud.FolioExpediente, solicitud)" icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
                 </v-card-actions>
@@ -58,13 +60,13 @@
   </v-layout>
   
 
-<identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId" ></identificacion>
-<personales v-bind:open="this.$store.state.bPersonales"   v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></personales>
-<autorizo v-bind:open="this.$store.state.bAutorizo"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></autorizo>
-<documentos v-bind:open="this.$store.state.bDocumentos"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></documentos>
-<ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></ref-telefonicas>
- <!-- <complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></complementarios>  -->
-<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:folio="this.expediente" v-bind:processInstanceId="this.processInstanceId"></etapa-Fin>
+<identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:variablesBPM="this.variablesBPM"></identificacion>
+<personales v-bind:open="this.$store.state.bPersonales" v-bind:variablesBPM="this.variablesBPM"></personales>
+<autorizo v-bind:open="this.$store.state.bAutorizo" v-bind:variablesBPM="this.variablesBPM"></autorizo>
+<documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM"></documentos>
+<ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
+ <!-- <complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:variablesBPM="this.variablesBPM"></complementarios>  -->
+<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:variablesBPM="this.variablesBPM"></etapa-Fin>
 
 
   </div>
@@ -87,16 +89,44 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
     data(){
         return{
            expediente:'',
-           processInstanceId:''
+           processInstanceId:'',
+           variablesBPM : {}
         }
     },
     props:['solicitudes'],
     methods:{
-      openForm(_processInstanceId , _step, _expediente){
+      formatFecha(fecha){
+        var d = new Date(fecha);
+        return d.getFullYear()+'/'+ this.addZero(d.getMonth())+'/'+ this.addZero(d.getDay());
+      },
+      armaNombre(nombre, paterno, materno){
+        if(nombre == undefined ) nombre = '';
+        if(paterno == undefined) paterno = '';
+        if(materno == undefined) materno = '';
+
+        if(nombre == 'null' || paterno == 'null' || materno == 'null') return 'OCR ...';
+
+
+        if(nombre+paterno+materno == '')
+         return 'New application';
+        else
+         return nombre+' '+paterno+' '+materno;
+         //nombre.substring(0,14)+"...";
+      },
+      addZero(valor){
+        if(valor < 10) return '0'+valor;
+        else return valor;
+      },
+      openForm(_processInstanceId , _step, _expediente, _variables){
         
         this.$store.state.bIdentificacion=false;
         this.$store.state.bPersonales=false;
+        this.variablesBPM = _variables;
         console.log(_step);
+        console.log(_variables);
+        
+       // console.log(this.variablesBPM);
+        
         
         switch (_step) {
           case 'Task.Identificacion':
@@ -108,6 +138,11 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
             this.$store.state.bPersonales=true;
             this.expediente=_expediente;
             this.processInstanceId=_processInstanceId;
+            break;
+           case 'Task.Autorizo':
+            this.$store.state.bAutorizo=true;
+            this.expediente=_expediente;
+            this.processInstanceId=_processInstanceId;
             break
           default:
             break;
@@ -116,8 +151,9 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
       },
       cutName(nombre){
         nombre = nombre.replace('Task.','Step ');
-        if(nombre.trim().length>18)
-         return nombre.substring(0,16)+"...";
+        console.log(nombre);
+        if(nombre.trim().length>15)
+         return nombre.substring(0,10)+"...";
          else return nombre;
       },
       setIcon(estatus){

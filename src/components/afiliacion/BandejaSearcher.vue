@@ -73,8 +73,8 @@
                 .then(response => {
 
                   var bpmResp = response.data;//4 arra
-                  console.log("=========BPM Response===========");
-                  console.log(bpmResp);
+                  // console.log("=========BPM Response===========");
+                  // console.log(bpmResp);
 
                  //reload
                  bus.$emit('search', '');

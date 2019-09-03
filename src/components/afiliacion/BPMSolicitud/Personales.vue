@@ -8,7 +8,7 @@
           <span class="headline white--text">Personal data</span>
            <span class="subtitle "  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Verify the data, save and continue with other sections</span>
             <v-spacer></v-spacer>
-          <span class="body-2 white--text">{{folio}}</span>
+          <span class="body-2 white--text">{{variablesBPM.FolioExpediente}}</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -35,7 +35,7 @@
                  <v-dialog
                   ref="dialog"
                   v-model="modalFecha"
-                  :return-value.sync="fechaNac"
+                  :return-value.sync="variablesBPM.FechaNac"
                   persistent
                   lazy
                   full-width
@@ -43,17 +43,17 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="fechaNac"
+                      v-model="variablesBPM.FechaNac"
                       label="Picker in dialog"
                       prepend-icon="event"
                       readonly
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="fechaNac" scrollable>
+                  <v-date-picker v-model="variablesBPM.FechaNac" scrollable>
                     <v-spacer></v-spacer>
                     <v-btn flat color="primary" @click="modalFecha = false">Cancel</v-btn>
-                    <v-btn flat color="primary" @click="$refs.dialog.save(fechaNac)">OK</v-btn>
+                    <v-btn flat color="primary" @click="$refs.dialog.save(variablesBPM.FechaNac)">OK</v-btn>
                   </v-date-picker>
                 </v-dialog>
               </v-flex>
@@ -129,10 +129,12 @@
 </template>
 
 <script>
-//import {bus} from '../../../main.js'
+
+import {bus} from '../../../main.js';
+import axios from "axios";
 
    export default {
-     props:['open','folio'],   //'etapasSolicitud',
+     props:['open','variablesBPM'],   //'etapasSolicitud',
      data(){
        return{
           objForm:{
@@ -147,7 +149,15 @@
             direccion:'',
             producto:'Simple credit',
             email:'',
-            color:'orange'
+            color:'orange',
+            rfc:'',
+            materno:'',
+            NumExt:'',
+            CP:'',
+            Colonia:'',
+            Municipio:'',
+            Ciudad:'',
+            claveElector:''
           },
           asignados:false,
           errorMessages: '',
@@ -165,70 +175,29 @@
        }
      },
      updated(){
-       console.log("cargando formulario...");
-        if(this.asignados)return;
-        
-      //   var arrResultados = [];//this.etapasSolicitud.objForm.ocrEstructurados;
+       console.log("inicializa formulario...");
       
-        
-      //   if(arrResultados==undefined)return;
-        
-      //   var paterno='';
-      //   var materno='';
-      //   var direccion='';
-      //   for(var i=0;i<arrResultados.length;i++){
-      //     if(arrResultados[i].nombre == "Nombre") this.objForm.nombre =  arrResultados[i].valor;
-      //     if(arrResultados[i].nombre == "Paterno") paterno = arrResultados[i].valor;
-      //     if(arrResultados[i].nombre == "Materno") materno = arrResultados[i].valor;
-      //     if(arrResultados[i].nombre == "fechaDeNacimiento") this.objForm.fechaDeNacimiento = arrResultados[i].valor;
-      //     if(arrResultados[i].nombre == "sexo") this.objForm.sexo = arrResultados[i].valor;
-      //     if(arrResultados[i].nombre == "tipo") this.objForm.nacionalidad = arrResultados[i].valor;
-      //      if(arrResultados[i].nombre == "calle") direccion += arrResultados[i].valor;
-      //      if(arrResultados[i].nombre == "codigoPostal") direccion += arrResultados[i].valor;
-      //      if(arrResultados[i].nombre == "colonia") direccion += arrResultados[i].valor;
-      //      if(arrResultados[i].nombre == "numeroExt") direccion += arrResultados[i].valor;
-      //   }
-      //   this.objForm.apellidos = paterno+' '+materno;
-      //   this.objForm.direccion = direccion;
-      //   //valida fecha nac
-       
-      //  try{
-      //    //console.log(this.fechaNac);
-      //   var fechaObtenida = new Date(this.fechaNac+"T12:00:00-06:00");
-        
-      //   //console.log(fechaObtenida);
-      //   var year = fechaObtenida.getFullYear();
-      //   var month = fechaObtenida.getMonth()+1;
-      //   var day = fechaObtenida.getDate();
+      if(this.asignados==true) return;
 
-      //   if (day < 10) day = '0' + day;
-      //   if (month < 10) month = '0' + month;
-
-      //   this.objForm.fechaDeNacimiento = day + '/' + month + '/'+year;
-      //   }
-      //   catch(e){
-      //       console.log("fecha invalida:" + this.fechaNac);
-      //   }
-        this.asignados=true;
-
-
-
-
-
-         var objOCR = this.$store.state.ocrData; 
-         console.log('obj');
+     
+         //var objOCR = this.$store.state.ocrData; 
+         console.log(this.variablesBPM);
          
-          console.log(objOCR.Nombre);
-          this.objForm.nombre =  objOCR.Nombre;
-          this.objForm.apellidos='rodriguez vargas';
+          //console.log(objOCR.Nombre);
+          this.objForm.nombre =  this.variablesBPM.Nombre;
+          this.objForm.apellidos=this.variablesBPM.Paterno +' '+ this.variablesBPM.Materno;
+          this.objForm.sexo = this.variablesBPM.Sexo;
 
+          console.log(this.variablesBPM.FechaNac);
+          this.objForm.fechaDeNacimiento = this.variablesBPM.FechaNac;
+          this.fechaDeNacimiento = this.variablesBPM.FechaNac;
 
-
-
-
+          this.objForm.direccion = this.variablesBPM.Calle+' '+ this.variablesBPM.CP+' '+ this.variablesBPM.Colonia+' '+ this.variablesBPM.NumExt;
+          this.objForm.nacionalidad = 'MEXICAN';
+           this.asignados=true;
+       
      },
       beforeMount() {
-         
          
     },
      computed:{
@@ -271,6 +240,7 @@
     },
     methods:{
       save(idWin){
+
         this.objForm.folio=this.folio;
         this.objForm.fechaDeNacimiento=this.fechaNac;
         this.formHasErrors = false
@@ -288,16 +258,98 @@
         if(isError){
           return;
         }
-         this.updatestatus();
-          var objx={"idWin":idWin,"objForm":this.objForm};
-          console.log(objx);
-         this.$store.commit('setForm',objx);
+
+
+         this.objForm.rfc ='true';
+         this.objForm.materno = this.variablesBPM.Materno;
+         this.objForm.NumExt=this.variablesBPM.NumExt;
+         this.objForm.CP=this.variablesBPM.CP;
+         this.objForm.Colonia=this.variablesBPM.Colonia;
+         this.objForm.Municipio='';
+         this.objForm.Ciudad='';
+         this.objForm.Estado='';
+         this.objForm.claveElector=this.variablesBPM.ClaveElector;
+
+
+
+        //TODO: move bpm
+         bus.$emit('afiliacion.loading.ini','');
+
+          var variablesXML="{'variables': { "+
+          "'Email': {'value': '" + this.objForm.email + "','type':'String'},"+
+          "'RFC':{'value':'" + this.objForm.rfc + "','type':'String'},"+
+          "'Nombre':{'value':'" + this.objForm.nombre + "','type':'String'},"+
+          "'Paterno':{'value':'" + this.objForm.apellidos + "','type':'String'},"+
+          "'Materno':{'value':'" + this.objForm.materno + "','type':'String'},"+
+          "'FechaNac':{'value':'" + this.variablesBPM.FechaNac + "','type':'String'},"+
+          "'Sexo':{'value':'" + this.objForm.sexo + "','type':'String'},"+
+          "'Nacionalidad':{'value':'" + this.objForm.nacionalidad + "','type':'String'},"+
+          "'Calle':{'value':'" + this.objForm.direccion + "','type':'String'},"+
+          "'NumExt':{'value':'" + this.objForm.NumExt + "','type':'String'},"+
+          "'CP':{'value':'" + this.objForm.CP + "','type':'String'},"+
+          "'Colonia':{'value':'" + this.objForm.Colonia + "','type':'String'},"+
+          "'Municipio':{'value':'" + this.objForm.Municipio + "','type':'String'},"+
+          "'Ciudad':{'value':'" + this.objForm.Ciudad + "','type':'String'},"+
+          "'Estado':{'value':'" + this.objForm.Estado + "','type':'String'},"+
+          "'ClaveElector':{'value':'" + this.objForm.claveElector + "','type':'String'}    } }";
+           
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {"Content-Type": "application/json"},
+                data: {
+                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+                      xml: variablesXML
+                }
+              })
+                .then(response => {
+
+                  var bpmResp = response.data;//4 arra
+                  console.log('bpm personales');
+                  
+                  console.log(bpmResp);
+                  
+                  //reset
+                   this.asignados=false;
+                  this.$store.state.bPersonales = false;
+                  this.objForm.nombre =  '';
+                  this.objForm.apellidos='';
+                  this.objForm.sexo = '';
+                  this.objForm.fechaDeNacimiento = '';
+                  this.fechaDeNacimiento = '';
+                  this.objForm.direccion ='';
+                  this.objForm.nacionalidad = 'MEXICAN';
+                  
+
+                 //reload
+                 bus.$emit('search', '');
+                 bus.$emit('afiliacion.loading.end','');
+                  
+                }).catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+         //this.updatestatus();
+        //   var objx={"idWin":idWin,"objForm":this.objForm};
+        //   console.log(objx);
+        //  this.$store.commit('setForm',objx);
        // bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
       },
       close(idWin){
         //this.updatestatus();
         //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
         //this.$store.commit('closeForm',idWin);
+        //reset
+         this.asignados=false;
+        this.$store.state.bPersonales = false;
+        this.objForm.nombre =  '';
+        this.objForm.apellidos='';
+        this.objForm.sexo = '';
+        this.objForm.fechaDeNacimiento = '';
+        this.fechaDeNacimiento = '';
+        this.objForm.direccion ='';
+        this.objForm.nacionalidad = 'MEXICAN';
         this.$store.state.bPersonales=false;
       },
       updatestatus(){
@@ -315,11 +367,9 @@
         if(porcentaje>=100) this.objForm.color='green';
         else this.objForm.color='orange';
       },
-      updateName (valor) {
+    updateName (valor) {
       console.log(valor);
       this.objForm.nombre=valor;
-
-
     },
     updateApellidos(valor){
       this.objForm.apellidos=valor;
