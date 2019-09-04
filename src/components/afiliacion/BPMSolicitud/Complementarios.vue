@@ -8,14 +8,14 @@
           <span class="headline white--text">Your query to buro was successful!</span>
            <span class="subtitle "  style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp; Continue with missing information</span>
             <v-spacer></v-spacer>
-          <span class="body-2 white--text">{{folio}}</span>
+          <span class="body-2 white--text">{{variablesBPM.FolioExpediente}}</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
 
                <v-flex xs12 sm6 md6>
-                <v-text-field readonly="true" background-color="green"  prepend-inner-icon="offline_pin" box  color="white" label="Folio buro*" 
+                <v-text-field readonly background-color="green"  prepend-inner-icon="offline_pin" box  color="white" label="Folio buro*" 
                 hint="Congratulations, your query to buro was successful!" 
                  ref="objForm.folioBuro"  :rules="[() => !!objForm.folioBuro || 'This field is required']"
                 :error-messages="errorMessages" required 
@@ -23,14 +23,14 @@
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field readonly="true" background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Scoring*" hint="It's a great scoring"
+                <v-text-field readonly background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Scoring*" hint="It's a great scoring"
                 ref="objForm.scoring"  :rules="[() => !!objForm.scoring || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.scoring"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field  readonly="true" background-color="green" prepend-inner-icon="business"  box  color="white" label="Case number*" hint="Your credit core code"
+                <v-text-field  readonly background-color="green" prepend-inner-icon="business"  box  color="white" label="Case number*" hint="Your credit core code"
                 ref="objForm.numCaso"  :rules="[() => !!objForm.numCaso || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.numCaso"></v-text-field>
@@ -93,7 +93,7 @@
 import {bus} from '../../../main.js'
 
    export default {
-     props:['open','folio'],  //'etapaTelefonica',
+     props:['open','variablesBPM'],
      data(){
        return{
           objForm:{
@@ -113,20 +113,20 @@ import {bus} from '../../../main.js'
        }
      },
      updated(){
-       
-        var arrPrecalifica = [];//this.etapaTelefonica.objForm;
-       
+       //console.log("cargando formulario...");
+        var arrPrecalifica = {};//this.etapaTelefonica.objForm;
+        //console.log(this.etapaTelefonica);
         
-         this.objForm.rfc = '...';//arrPrecalifica.rfc;
-         this.objForm.folioBuro = '...';//arrPrecalifica.folioBuro;
-         this.objForm.numCaso = '...';//arrPrecalifica.numCaso;
+         this.objForm.rfc = arrPrecalifica.rfc;
+         this.objForm.folioBuro = arrPrecalifica.folioBuro;
+         this.objForm.numCaso = arrPrecalifica.numCaso;
 
          
 
      },
      beforeUpdate(){
-           
-         this.objForm.curp = 'curp...';//this.etapaTelefonica.objForm.rfc + this.generaHomoclave();
+             // console.log("cargando curp...");
+         this.objForm.curp = this.variablesBPM.rfc + this.generaHomoclave();
      },
      computed:{
       

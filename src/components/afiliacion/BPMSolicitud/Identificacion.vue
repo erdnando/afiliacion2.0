@@ -197,9 +197,25 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
             try{
                 d.fechaDeNacimiento = d.fechaDeNacimientoANIO + '-'+ d.fechaDeNacimientoMES + '-'+ d.fechaDeNacimientoDIA;
 
-                var fechaN = new Date(d.fechaDeNacimiento);
-                console.log('fecha ok');
-                console.log(fechaN);
+                // var fechaN = new Date(d.fechaDeNacimiento);
+                // if(!fechaN.isValid()){
+                //    d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
+                // }
+                // console.log('fecha ok');
+                // console.log(d.fechaDeNacimiento);
+
+                var timestamp = Date.parse(d.fechaDeNacimiento);
+
+                if (isNaN(timestamp) == false) {
+                  d.fechaDeNacimiento = new Date(timestamp).toISOString().substr(0, 10);
+                }
+                else{
+                    d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
+                }
+
+
+
+
             }
             catch(error){
               console.log('error');
@@ -213,6 +229,7 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
 
 
             var variablesXML="{'variables': { 'OCRProcesado': {'value': true,'type': 'boolean'},'Nombre':{'value':'"+d.Nombre+"','type':'String'},'Materno':{'value':'"+d.Materno+"','type':'String'},'Paterno':{'value':'"+d.Paterno+"','type':'String'},'Sexo':{'value':'"+d.sexo+"','type':'String'},'Calle':{'value':'"+d.calle+"','type':'String'},'NumExt':{'value':'"+d.numeroExt+"','type':'String'},'CP':{'value':'"+d.codigoPostal+"','type':'String'},'Colonia':{'value':'"+d.colonia+"','type':'String'},'ClaveElector':{'value':'"+d.claveElector+"','type':'String'},'Vigencia':{'value':'"+d.vigencia+"','type':'String'},'FechaNac':{'value':'"+d.fechaDeNacimiento+"','type':'String'} } }";
+           console.log(variablesXML);
            
            axios({
                 method: "post",

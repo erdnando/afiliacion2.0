@@ -327,7 +327,7 @@
 }
 .framePDF {
   width: 100%;
-  height:100%
+  height:100%;
 }
 .vcardEspacio{
   margin-right: 10px;

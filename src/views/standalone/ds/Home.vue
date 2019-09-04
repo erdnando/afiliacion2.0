@@ -233,7 +233,7 @@
                               </div>
                               <v-card v-else :key="selected.id"  flat >
                                 <v-card-text>
-                                 <iframe  style="border-style: hidden;height:380px;width:100;" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
+                                 <iframe  style="border-style: hidden;height:380px;width:100%;" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
                                 </v-card-text>
 
                                 <v-divider></v-divider>
@@ -571,6 +571,10 @@ import UploadRow from '@/components/utils/UploadRow'
             }
           
           //cal ws solr
+          console.log('solr::::::::');
+          
+          console.log(jsonObj);
+          
           this.consultaSolr(jsonObj);
       },
       getUrl(param){
@@ -817,6 +821,7 @@ html{
   border-radius: 5px;
   background-color: rgba(0,0,0,.5);
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+  box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 .uploader-example {
     width: 880px;

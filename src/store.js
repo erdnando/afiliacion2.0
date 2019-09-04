@@ -43,6 +43,7 @@ export  default new Vuex.Store({
         bIdentificacion:false,
         bPersonales:false,
         bAutorizo:false,
+        bMesaControl:false,
         bDocumentos:false,
         bRefTelefonicas:false,
         bComplementarios:false,
@@ -87,7 +88,7 @@ export  default new Vuex.Store({
                 state.etapasSolicitud[idWin].form.avance=objForm.avance;
             } 
 
-            if(objForm.avance==100 && idWin<state.etapasSolicitud.length-1){
+            if( objForm.avance == 100 && idWin < state.etapasSolicitud.length - 1 ){
              try{
                  console.log("Etapa:"+ objForm.etapa + " completada");
                  state.etapasSolicitud[idWin+1].disabled=false;
@@ -105,10 +106,10 @@ export  default new Vuex.Store({
             state.etapasSolicitud[idWin].visible = false;
 
            var countTotal=0;
-           for(var i=0;i<state.etapasSolicitud.length;i++){
+           for(var i=0;i < state.etapasSolicitud.length;i++ ){
              countTotal+= parseInt(state.etapasSolicitud[i].form.avance);
            }
-           if(countTotal>=state.etapasSolicitud.length*100){
+           if(countTotal >= state.etapasSolicitud.length*100 ){
                 console.log("Proceso terminado!");
                 
 

@@ -46,9 +46,6 @@
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
                     <span style="font-size:10px!important;margin-left: 10px;position: absolute;" class="caption black--text" v-text="solicitud.ProcessInstanceId"></span>
-                  <!-- <v-btn icon>
-                    <v-icon v-bind:color="getColor(solicitud.estatus)">{{setIcon(solicitud.estatus)}}</v-icon>
-                  </v-btn> -->
                   <v-btn @click="openForm(solicitud.ProcessInstanceId , solicitud.Name,solicitud.FolioExpediente, solicitud)" icon>
                     <v-icon>folder_shared</v-icon>
                   </v-btn>
@@ -59,15 +56,14 @@
     </v-flex>
   </v-layout>
   
-
 <identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:variablesBPM="this.variablesBPM"></identificacion>
 <personales v-bind:open="this.$store.state.bPersonales" v-bind:variablesBPM="this.variablesBPM"></personales>
 <autorizo v-bind:open="this.$store.state.bAutorizo" v-bind:variablesBPM="this.variablesBPM"></autorizo>
+<mesa-control v-bind:open="this.$store.state.bMesaControl"  v-bind:variablesBPM="this.variablesBPM"  v-bind:resultadosSOLR="this.resultadosSOLR" v-bind:variablesBPMList="this.variablesBPMList"></mesa-control>
 <documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM"></documentos>
 <ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
- <!-- <complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:variablesBPM="this.variablesBPM"></complementarios>  -->
+<complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:variablesBPM="this.variablesBPM"></complementarios>
 <etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:variablesBPM="this.variablesBPM"></etapa-Fin>
-
 
   </div>
 </template>
@@ -77,20 +73,26 @@
 import Identificacion from '@/components/afiliacion/BPMSolicitud/Identificacion'
 import Personales from '@/components/afiliacion/BPMSolicitud/Personales'
 import Autorizo from '@/components/afiliacion/BPMSolicitud/Autorizo'
+import MesaControl from '@/components/afiliacion/BPMSolicitud/MesaControl'
 import Documentos from '@/components/afiliacion/BPMSolicitud/Documentos'
 import RefTelefonicas from '@/components/afiliacion/BPMSolicitud/RefTelefonicas'
 import Complementarios from '@/components/afiliacion/BPMSolicitud/Complementarios'
 import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
 
+import {bus} from '../../main.js';
+import axios from "axios";
+
    export default {
     components: {
-    Identificacion,Personales,Autorizo,Documentos,RefTelefonicas,EtapaFin
+    Identificacion,Personales,Autorizo,MesaControl,Documentos,RefTelefonicas,Complementarios,EtapaFin
     },
     data(){
         return{
            expediente:'',
            processInstanceId:'',
-           variablesBPM : {}
+           variablesBPM : {},
+           resultadosSOLR:[],
+           variablesBPMList:[]
         }
     },
     props:['solicitudes'],
@@ -131,22 +133,23 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
         switch (_step) {
           case 'Task.Identificacion':
             this.$store.state.bIdentificacion=true;
-            this.expediente=_expediente;
-            this.processInstanceId=_processInstanceId;
             break;
           case 'Task.Personales':
             this.$store.state.bPersonales=true;
-            this.expediente=_expediente;
-            this.processInstanceId=_processInstanceId;
             break;
            case 'Task.Autorizo':
             this.$store.state.bAutorizo=true;
-            this.expediente=_expediente;
-            this.processInstanceId=_processInstanceId;
+            break
+             case 'Task.MesaControl':
+            this.$store.state.bMesaControl=true;
+            this.busqueda();
             break
           default:
             break;
         }
+
+        this.expediente=_expediente;
+            this.processInstanceId=_processInstanceId;
 
       },
       cutName(nombre){
@@ -172,7 +175,85 @@ import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
       },
       addLabel(valor, label){
            return label+' '+valor;
-      }
+      },
+      busqueda(){
+        bus.$emit('afiliacion.loading.ini','');
+        jsonObj =[];
+        this.resultados = [];
+        var jsonObj = [];
+       
+        //arma request
+        console.log('folio expediente....');
+        console.log(this.variablesBPM.FolioExpediente);
+
+            jsonObj.push({'Q':this.variablesBPM.FolioExpediente});
+            jsonObj.push({'Q':''});
+  
+        //cal ws solr
+        this.consultaSolr(jsonObj);
+      },  
+      tieneExtension(valor){
+        var arrPath = valor.split('.');
+        if(arrPath.length==1) return false;
+        
+        var ext=arrPath[arrPath.length-1].toUpperCase();
+        console.log(ext);
+        if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS' || ext =='JPEG'){
+            return true;
+        }
+        else{
+            console.log("extension no soportada");
+            return false;
+        }
+    },
+      async consultaSolr(objConsulta){
+        
+        console.log(objConsulta);
+          axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
+                timeout: 1000 * 20, // Wait for 10 seconds
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                data: {
+                  querys: objConsulta
+                }
+              })
+                .then(response => {
+                   console.log("call solr...");
+                   console.log(response.data.response.docs);
+                   var arrR= response.data.response.docs;
+
+                   //remove records without extension
+                   for(var i = arrR.length - 1; i >= 0; i--) {
+                      if( !this.tieneExtension(arrR[i].id)) {
+                          arrR.splice(i, 1);
+                      }
+                  }
+
+                  this.variablesBPMList=[];
+                  this.resultadosSOLR = arrR;
+                  
+                  Object.entries(this.variablesBPM).forEach(entry => {
+                    let key = entry[0];
+                    let value = entry[1];
+
+                    if(key == 'imagen' || key == 'Name' || key == 'Id'|| key == 'ClaveElector'|| key == 'OCRProcesado'|| key == 'isOK'|| key == 'processInstanceId'|| key == 'Ciudad' || key == 'RFC'|| key == 'Estado'|| key == 'Municipio'|| key == 'fechaIni'|| key == 'Vigencia'|| key == 'Colonia' || key == 'idTramite' || key == 'Score'|| key == 'Buro' || key == 'ProcessInstanceId')
+                    console.log('omitido...'+ key);
+                    else
+                     this.variablesBPMList.push({'variable':key,'valor':value.toUpperCase()});
+
+                  });
+
+                  bus.$emit('afiliacion.loading.end','');
+                })
+                .catch(error => {
+                  console.log(error);
+                  bus.$emit('afiliacion.loading.end','');
+              });
+    },    
+
     }
     
   }
