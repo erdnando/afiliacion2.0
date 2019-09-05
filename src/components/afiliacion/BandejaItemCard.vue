@@ -41,7 +41,7 @@
                 
               </v-container>  
               </div>
-              <v-divider  ></v-divider>
+              <v-divider></v-divider>
                 
                 <v-card-actions class="pa-1 white lighten grey--text" style="height:28px;background-color: silver !important;">
                   <v-spacer></v-spacer>
@@ -127,9 +127,6 @@ import axios from "axios";
         console.log(_step);
         console.log(_variables);
         
-       // console.log(this.variablesBPM);
-        
-        
         switch (_step) {
           case 'Task.Identificacion':
             this.$store.state.bIdentificacion=true;
@@ -137,12 +134,15 @@ import axios from "axios";
           case 'Task.Personales':
             this.$store.state.bPersonales=true;
             break;
-           case 'Task.Autorizo':
+          case 'Task.Autorizo':
             this.$store.state.bAutorizo=true;
             break
-             case 'Task.MesaControl':
+          case 'Task.MesaControl':
             this.$store.state.bMesaControl=true;
-            this.busqueda();
+            this.cargaExpediente();
+            break
+          case 'Task.Referencias':
+            this.$store.state.bRefTelefonicas=true;
             break
           default:
             break;
@@ -176,7 +176,7 @@ import axios from "axios";
       addLabel(valor, label){
            return label+' '+valor;
       },
-      busqueda(){
+      cargaExpediente(){
         bus.$emit('afiliacion.loading.ini','');
         jsonObj =[];
         this.resultados = [];

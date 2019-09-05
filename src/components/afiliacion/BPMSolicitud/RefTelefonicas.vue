@@ -8,7 +8,7 @@
           <span class="headline white--text">Phone references</span>
            <span class="subtitle " style="color:floralwhite;margin-top: 5px;" >&nbsp;&nbsp; Enter phone numbers and wait for your validation</span>
             <v-spacer></v-spacer>
-          <span class="body-2 white--text">{{folio}}</span>
+          <span class="body-2 white--text">{{variablesBPM.FolioExpediente}}</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -20,14 +20,12 @@
  <!-- :error-messages="errorMessagesHomePhone"  -->
               <v-flex xs12 sm7 md7>
                 <v-text-field autofocus mask="phone"  
-                prepend-inner-icon="local_phone"
-                box  color="green" label="Home homePhone*" 
-                 ref="objForm.homePhone"  
-                
-                
-                 
-                v-model="objForm.homePhone"
-                hint="Remember that the number must be 10 digits">
+                  prepend-inner-icon="local_phone"
+                  box  color="green" label="Home homePhone*" 
+                  ref="objForm.homePhone"  :rules="[() => !!objForm.homePhone || 'This field is required with 10 digits']"
+                  v-model="objForm.homePhone"
+                  :error-messages="errorMessagesHomePhone" 
+                  hint="Remember that the number must be 10 digits">
                 </v-text-field>
               </v-flex>
 
@@ -39,13 +37,12 @@
 
               <v-flex xs12 sm7 md7>
                 <v-text-field  mask="phone" 
-                prepend-inner-icon="local_phone"  
-                box  color="green" label="Cell Phone*" 
-                ref="objForm.cellPhone"  :rules="[() => !!objForm.cellPhone || 'This field is required with 10 digits']"
-                 :error-messages="errorMessagesCellPhone" 
-                   
-                v-model="objForm.cellPhone"
-                hint="Remember that the number must be 10 digits">
+                  prepend-inner-icon="local_phone"  
+                  box  color="green" label="Cell Phone*" 
+                  ref="objForm.cellPhone"  :rules="[() => !!objForm.cellPhone || 'This field is required with 10 digits']"
+                  v-model="objForm.cellPhone"
+                  :error-messages="errorMessagesCellPhone" 
+                  hint="Remember that the number must be 10 digits">
                 </v-text-field>
               </v-flex>
 
@@ -84,8 +81,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="blue darken-1"  @click="close(5)">Close</v-btn>
-          <v-btn flat color="blue darken-1" :disabled="!todoOK"  @click="save(5)">Continue</v-btn>
+          <v-btn flat color="blue darken-1"  @click="close()">Close</v-btn>
+          <v-btn flat color="blue darken-1" :disabled="!todoOK"  @click="save()">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -99,7 +96,7 @@ import {bus} from '../../../main.js'
 import axios from "axios";
 
    export default {
-     props:['open','etapaPersonales','folio'],
+    props:['open','variablesBPM'],
      data(){
        return{
           objForm:{
@@ -162,8 +159,7 @@ import axios from "axios";
         this[l] = !this[l]
 
         setTimeout(() => (this[l] = false), 3000)
-
-        this.loader = null
+          this.loader = null
       }
     },
     methods:{
@@ -294,13 +290,6 @@ import axios from "axios";
     },
      async precalifica(idWin){
 
-       //TODO
-       //get data from previous steps
-          // console.log(this.etapaPersonales.objForm.nombre);
-          // console.log(this.etapaPersonales.objForm.apellidos);
-          // console.log(this.etapaPersonales.objForm.fechaDeNacimiento);
-          // console.log(this.folio);
-          // console.log(this.etapaPersonales.objForm.email);
           bus.$emit('afiliacion.loading.ini','');
           axios({
                 method: "post",
@@ -319,10 +308,6 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                  //  console.log("precalifica response...");
-                  //  console.log(response.data.folioBuro);
-                  //  console.log(response.data.numCaso);
-                  //  console.log(response.data.rfc);
                   this.savePrecalifica(idWin,response.data)
                    bus.$emit('afiliacion.loading.end','');
                 })
@@ -331,68 +316,86 @@ import axios from "axios";
                   bus.$emit('afiliacion.loading.end','');
               });
     },
-      save(idWin){
+      save(){
         //console.log("saving ref telefonicas...");
         this.formHasErrors = false
         var isError=false;
 
-        // Object.keys(this.form).forEach(f => {
-        //   if (!this.form[f]) {
-        //       this.formHasErrors = true
-        //       isError=true;
-        //       return;
-        //   }
-        // });
+        Object.keys(this.form).forEach(f => {
+          if (!this.form[f]) {
+              this.formHasErrors = true
+              isError=true;
+              return;
+          }
+        });
 
         if(isError){
           return;
         }
-        // if(this.homePhoneStatus != "valido" ){
-        //     this.errorMessagesHomePhone='The phone must be validated before';
-        //     return;
-        // }
+    
+          bus.$emit('afiliacion.loading.ini','');
 
-        // if(this.cellPhoneStatus != "valido"){
-        //      this.errorMessagesCellPhone='The phone must be validated before';
-        //      return;
-        // }
+          var variablesXML="{'variables': { "+
+          "'Telefono1': {'value': '" + this.objForm.homePhone + "','type':'String'},"+
+          "'Telefono2':{'value':'" + this.objForm.cellPhone + "','type':'String'}    } }";
+           
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {"Content-Type": "application/json"},
+                data: {
+                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+                      xml: variablesXML
+                }
+              })
+                .then(response => {
 
-        
-         this.updatestatus();
-          var objx={"idWin":idWin,"objForm":this.objForm};
-         this.$store.commit('setForm',objx);
+                  var bpmResp = response.data;//4 arra
+                  console.log('bpm ref telefonicas');
+                  
+                  console.log(bpmResp);
+                  
+                  //reset
+                  this.$store.state.bRefTelefonicas = false;
+                 
 
-         this.precalifica(idWin);
+                 //reload
+                 bus.$emit('search', '');
+                 bus.$emit('afiliacion.loading.end','');
+                  
+                }).catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
        
       },
-      savePrecalifica(idWin,data){
-        console.log("saving precalifica...");
-       this.objForm.folioBuro=data.folioBuro;
-       this.objForm.numCaso=data.numCaso;
-       this.objForm.rfc=data.rfc;
+      // savePrecalifica(idWin,data){
+      //   console.log("saving precalifica...");
+      //  this.objForm.folioBuro=data.folioBuro;
+      //  this.objForm.numCaso=data.numCaso;
+      //  this.objForm.rfc=data.rfc;
         
-        var objx={"idWin":idWin,"objForm":this.objForm};
-        this.$store.commit('setForm',objx);
-        bus.$emit('afiliacion.loading.end','');
+      //   var objx={"idWin":idWin,"objForm":this.objForm};
+      //   this.$store.commit('setForm',objx);
+      //   bus.$emit('afiliacion.loading.end','');
+      // },
+      close(){
+       this.$store.state.bRefTelefonicas=false;
       },
-      close(idWin){
-        this.updatestatus();
-        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
-        this.$store.commit('closeForm',idWin);
-      },
-      updatestatus(){
-        this.objForm.avance=0;
-        var porcentaje=0;
-         if(this.objForm.cellPhone.toString().length>0)porcentaje+=25;
-        if(this.objForm.homePhone.toString().length>0)porcentaje+=25;
-        if(this.objForm.fullName.toString().length>0)porcentaje+=25;
-        if(this.objForm.parentesco.toString().length>0)porcentaje+=25;
+      // updatestatus(){
+      //   this.objForm.avance=0;
+      //   var porcentaje=0;
+      //    if(this.objForm.cellPhone.toString().length>0)porcentaje+=25;
+      //   if(this.objForm.homePhone.toString().length>0)porcentaje+=25;
+      //   if(this.objForm.fullName.toString().length>0)porcentaje+=25;
+      //   if(this.objForm.parentesco.toString().length>0)porcentaje+=25;
        
 
-        this.objForm.avance=porcentaje;
-        if(porcentaje>=100) this.objForm.color='green';
-        else this.objForm.color='orange';
-      }
+      //   this.objForm.avance=porcentaje;
+      //   if(porcentaje>=100) this.objForm.color='green';
+      //   else this.objForm.color='orange';
+      // }
     },
   
   }
