@@ -47,6 +47,7 @@ export  default new Vuex.Store({
         bDocumentos:false,
         bRefTelefonicas:false,
         bComplementarios:false,
+        bResultados:false,
         bEtapaFin:false,
         ocrData:{}
     },

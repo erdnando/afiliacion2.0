@@ -78,7 +78,7 @@ import {bus} from '../../../main.js';
         }
         var pImgS64=data;
 
-        this.cmProcess(pImgS64,"Firma","autorizo");
+        this.cmProcess(pImgS64,"Firma.jpg","autorizo");
 
 
         //TODO: move bpm
@@ -156,10 +156,8 @@ import {bus} from '../../../main.js';
                   idTramite: this.variablesBPM.FolioExpediente,
                   categoria: this.objForm.categoria,
                   lang: 'eng',
-                  contraste: '1',
-                  ext: '',
-                  nombre: nombre,
-                  paterno: paterno
+                  contraste: 1,
+                  ext: ''
                 }
               })
                 .then(response => {
@@ -169,6 +167,37 @@ import {bus} from '../../../main.js';
                   console.log("Enviado a CM....timeout");
                   console.log(error);
               });
+
+
+
+
+
+
+          //  var arr64 = string64.split(',');
+          // //console.log("----------CM----------");
+          // axios({
+          //       method: "post",
+          //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
+          //       timeout: 153500 * 1, // Wait for 13.5 seconds
+          //       headers: {
+          //         "Content-Type": "application/json"
+          //       },
+          //       data: {
+          //         pImgS64: arr64[1],
+          //         idTramite: this.variablesBPM.FolioExpediente,
+          //         categoria: this.objForm.categoria,
+          //         nombre: nombre
+          //       }
+          //     })
+          //       .then(response => {
+          //         console.log("CM...."+response);
+          //       })
+          //       .catch(error => {
+          //         console.log("Enviado a CM....Timeout"+error);
+          //         //console.log(error);
+          //     });
+
+
     },
     resizeCanvas() {
       

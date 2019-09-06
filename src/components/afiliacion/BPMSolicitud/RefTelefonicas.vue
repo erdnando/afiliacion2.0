@@ -358,7 +358,8 @@ import axios from "axios";
                   
                   //reset
                   this.$store.state.bRefTelefonicas = false;
-                 
+                 this.objForm.homePhone='';
+                 this.objForm.cellPhone='';
 
                  //reload
                  bus.$emit('search', '');
@@ -366,36 +367,15 @@ import axios from "axios";
                   
                 }).catch(error => {
                   console.log(error);
+                  this.objForm.homePhone='';
+                  this.objForm.cellPhone='';
                    bus.$emit('afiliacion.loading.end','');
               });
        
       },
-      // savePrecalifica(idWin,data){
-      //   console.log("saving precalifica...");
-      //  this.objForm.folioBuro=data.folioBuro;
-      //  this.objForm.numCaso=data.numCaso;
-      //  this.objForm.rfc=data.rfc;
-        
-      //   var objx={"idWin":idWin,"objForm":this.objForm};
-      //   this.$store.commit('setForm',objx);
-      //   bus.$emit('afiliacion.loading.end','');
-      // },
       close(){
        this.$store.state.bRefTelefonicas=false;
       },
-      // updatestatus(){
-      //   this.objForm.avance=0;
-      //   var porcentaje=0;
-      //    if(this.objForm.cellPhone.toString().length>0)porcentaje+=25;
-      //   if(this.objForm.homePhone.toString().length>0)porcentaje+=25;
-      //   if(this.objForm.fullName.toString().length>0)porcentaje+=25;
-      //   if(this.objForm.parentesco.toString().length>0)porcentaje+=25;
-       
-
-      //   this.objForm.avance=porcentaje;
-      //   if(porcentaje>=100) this.objForm.color='green';
-      //   else this.objForm.color='orange';
-      // }
     },
   
   }

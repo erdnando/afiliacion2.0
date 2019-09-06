@@ -62,9 +62,7 @@
 <mesa-control v-bind:open="this.$store.state.bMesaControl"  v-bind:variablesBPM="this.variablesBPM"  v-bind:resultadosSOLR="this.resultadosSOLR" v-bind:variablesBPMList="this.variablesBPMList"></mesa-control>
 <documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM"></documentos>
 <ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
-<complementarios v-bind:open="this.$store.state.bComplementarios"  v-bind:variablesBPM="this.variablesBPM"></complementarios>
-<etapa-Fin v-bind:open="this.$store.state.bEtapaFin"  v-bind:variablesBPM="this.variablesBPM"></etapa-Fin>
-
+<resultados v-bind:open="this.$store.state.bResultados" v-bind:variablesBPM="this.variablesBPM"></resultados>
   </div>
 </template>
 
@@ -76,15 +74,14 @@ import Autorizo from '@/components/afiliacion/BPMSolicitud/Autorizo'
 import MesaControl from '@/components/afiliacion/BPMSolicitud/MesaControl'
 import Documentos from '@/components/afiliacion/BPMSolicitud/Documentos'
 import RefTelefonicas from '@/components/afiliacion/BPMSolicitud/RefTelefonicas'
-import Complementarios from '@/components/afiliacion/BPMSolicitud/Complementarios'
-import EtapaFin from '@/components/afiliacion/BPMSolicitud/EtapaFin'
+import Resultados from '@/components/afiliacion/BPMSolicitud/Resultados'
 
 import {bus} from '../../main.js';
 import axios from "axios";
 
    export default {
     components: {
-    Identificacion,Personales,Autorizo,MesaControl,Documentos,RefTelefonicas,Complementarios,EtapaFin
+    Identificacion,Personales,Autorizo,MesaControl,Documentos,RefTelefonicas,Resultados
     },
     data(){
         return{
@@ -121,8 +118,8 @@ import axios from "axios";
       },
       openForm(_processInstanceId , _step, _expediente, _variables){
         
-        this.$store.state.bIdentificacion=false;
-        this.$store.state.bPersonales=false;
+        // this.$store.state.bIdentificacion=false;
+        // this.$store.state.bPersonales=false;
         this.variablesBPM = _variables;
         console.log(_step);
         console.log(_variables);
@@ -143,6 +140,12 @@ import axios from "axios";
             break
           case 'Task.Referencias':
             this.$store.state.bRefTelefonicas=true;
+            break
+          case 'Task.Docs':
+            this.$store.state.bDocumentos=true;
+            break
+          case 'Task.Resultados':
+            this.$store.state.bResultados=true;
             break
           default:
             break;

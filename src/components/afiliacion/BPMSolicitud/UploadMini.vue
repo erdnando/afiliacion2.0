@@ -100,7 +100,7 @@
         var my_time1 = new Date(); // date object 
         my_time1=my_time1.getTime(); // first time variable
         //TODO emit when the image is loaded
-        bus.$emit('afiliacion.upload.categoria',this.categoria);
+        bus.$emit('afiliacion.upload.categoriaBPM',this.categoria);
         //this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
          this.cmProcess(obj.compressed.base64,my_time1,this.categoria,'');
        

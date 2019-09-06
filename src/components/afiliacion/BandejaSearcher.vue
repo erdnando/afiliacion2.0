@@ -17,7 +17,7 @@
             <v-flex shrink pa-4></v-flex>
             <v-flex shrink pa-2>
                 <v-icon x-large v-if="pageType=='LIST'" class="black--text cardIcon" v-on:click="changeMode('CARD')">view_module</v-icon>
-                <v-icon x-large v-else class="black--text cardIcon"  v-on:click="changeMode('LIST')">view_list</v-icon>
+                <v-icon x-large v-else class="black--text cardIcon"  v-on:click="changeMode('CARD')">view_list</v-icon>
 
                  <v-icon x-large  class="black--text cardIcon"  v-on:click="newSolicitud()">add_box</v-icon>
             </v-flex>

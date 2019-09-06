@@ -50,6 +50,14 @@ import axios from "axios";
 
                   var sol={};
                   var arrTramites = response.data;
+
+
+                  // console.log('return ws');
+                  //  console.log(arrTramites );
+                  //  console.log('sorting...');
+
+                  // arrTramites.sort((a, b) => (a.idTramite > b.idTramite) ? 1 : -1);
+                  
                   for(var i=0;i< arrTramites.length;i++){//recorre los tramites
                       var tramite = arrTramites[i]; // un arr de variables
                       var imagen='';
@@ -84,6 +92,9 @@ import axios from "axios";
 
                    this.solicitudes.push(variablesBPM);
                   }
+
+                  
+                
 
                   bus.$emit('afiliacion.loading.end','');
                 })
@@ -124,7 +135,7 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                  console.log('=============bandejas================');
+                  console.log('=============bandejas========= =======');
                   //console.log(response.data);
                   var sol={};
                   var arrTramites = response.data;// arrays
@@ -175,6 +186,12 @@ import axios from "axios";
                     
                     });
                   }
+
+
+                //  console.log(this.solicitudes );
+
+                //   this.solicitudes  = _.sortBy( this.solicitudes, 'id' );
+
                   bus.$emit('afiliacion.loading.end','');
                 })
                 .catch(error => {
