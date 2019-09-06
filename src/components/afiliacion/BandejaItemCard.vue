@@ -62,7 +62,7 @@
 <mesa-control v-bind:open="this.$store.state.bMesaControl"  v-bind:variablesBPM="this.variablesBPM"  v-bind:resultadosSOLR="this.resultadosSOLR" v-bind:variablesBPMList="this.variablesBPMList"></mesa-control>
 <documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM"></documentos>
 <ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
-<resultados v-bind:open="this.$store.state.bResultados" v-bind:variablesBPM="this.variablesBPM"></resultados>
+<resultados v-bind:open="this.$store.state.bResultados" v-bind:variablesBPM="this.variablesBPM" v-bind:cardNumber="this.cardNumber"></resultados>
   </div>
 </template>
 
@@ -89,7 +89,8 @@ import axios from "axios";
            processInstanceId:'',
            variablesBPM : {},
            resultadosSOLR:[],
-           variablesBPMList:[]
+           variablesBPMList:[],
+           cardNumber:''
         }
     },
     props:['solicitudes'],
@@ -146,6 +147,8 @@ import axios from "axios";
             break
           case 'Task.Resultados':
             this.$store.state.bResultados=true;
+            this.generaCardNumber();
+
             break
           default:
             break;
@@ -178,6 +181,11 @@ import axios from "axios";
       },
       addLabel(valor, label){
            return label+' '+valor;
+      },
+      generaCardNumber(){
+
+        var terminacion = Math.random(100).toString().substring(2,6);
+         this.cardNumber = '4152 3132 9791 '+ terminacion;
       },
       cargaExpediente(){
         bus.$emit('afiliacion.loading.ini','');

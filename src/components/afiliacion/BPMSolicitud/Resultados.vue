@@ -90,7 +90,7 @@
                                                                     </g>
                                                                     <path class="darkcolor reddark" d="M750,431V193.2c-217.6-57.5-556.4-13.5-750,24.9V431c0,22.1,17.9,40,40,40h670C732.1,471,750,453.1,750,431z" />
                                                                 </g>
-                                                                <text transform="matrix(1 0 0 1 60.106 295.0121)" id="svgnumber" class="st2 st3 st4">{{getCardNumber()}}</text>
+                                                                <text transform="matrix(1 0 0 1 60.106 295.0121)" id="svgnumber" class="st2 st3 st4">{{cardNumber}}</text>
                                                                 <text transform="matrix(1 0 0 1 54.1064 428.1723)" id="svgname" class="st2 st5 st6">{{getName}}</text>
                                                                 <text transform="matrix(1 0 0 1 54.1074 389.8793)" class="st7 st5 st8">cardholder name</text>
                                                                 <text transform="matrix(1 0 0 1 479.7754 388.8793)" class="st7 st5 st8">expiration</text>
@@ -184,7 +184,7 @@ import {bus} from '../../../main.js';
 import axios from "axios";
 
    export default {
-     props:['open','variablesBPM'],
+     props:['open','variablesBPM','cardNumber'],
      data(){
        return{
          rate:'17%',
@@ -240,7 +240,7 @@ import axios from "axios";
       getName(){
         if(this.variablesBPM.Nombre==undefined)return "SN";
         else
-         return this.variablesBPM.Nombre.toUpperCase() +' '+ this.variablesBPM.Paterno + ' '+ this.variablesBPM.Materno;
+         return this.variablesBPM.Nombre.toUpperCase() +' '+ this.variablesBPM.Paterno + ' '+ this.variablesBPM.Materno.substring(1,0)+'.';
       },
       countDatos(){
            return this.resultadosSOLR.length;
@@ -272,11 +272,12 @@ import axios from "axios";
     },
     methods:{
      
-      getCardNumber(){
+    //   getCardNumber(){
 
-        var terminacion = Math.random(100).toString().substring(2,6);
-         return '4152 3132 9791 '+ terminacion;
-      },
+    //     var terminacion = Math.random(100).toString().substring(2,6);
+    //      this.cardNumber = '4152 3132 9791 '+ terminacion;
+    //      return this.cardNumber;
+    //   },
         docLoaded(arg){
             //console.log("archivo cargado...");
             if(arg == 'link'){
@@ -345,10 +346,9 @@ import axios from "axios";
                var variablesXML="{'variables': { "+
                                 "'IdProducto': {'value': '01','type':'String'},"+
                                 "'IdTipoProducto':{'value':'12','type':'String'},"+
-                                "'CoreId':{'value':'20000001','type':'String'},"+
-                                "'Cuenta':{'value':'32323333222','type':'String'},"+
-                                "'Password':{'value':'000000','type':'String'},"+
-                                "'isAccepted':{'value':true,'type':'boolean'}    } }";
+                                "'IsAccepted':{'value':true,'type':'boolean'},"+
+                                "'CardNumber':{'value':'"+this.cardNumber+"','type':'String'}    } }";
+
            
            axios({
                 method: "post",
@@ -388,13 +388,11 @@ import axios from "axios";
         bus.$emit('afiliacion.loading.ini','');
 
 
-               var variablesXML="{'variables': { "+
-                                "'IdProducto': {'value': '01','type':'String'},"+
-                                "'IdTipoProducto':{'value':'12','type':'String'},"+
-                                "'CoreId':{'value':'20000001','type':'String'},"+
-                                "'Cuenta':{'value':'32323333222','type':'String'},"+
-                                "'Password':{'value':'***********','type':'String'},"+
-                                "'isAccepted':{'value':false,'type':'boolean'}    } }";
+             var variablesXML="{'variables': { "+
+                                "'IdProducto': {'value': '0','type':'String'},"+
+                                "'IdTipoProducto':{'value':'0','type':'String'},"+
+                                "'IsAccepted':{'value':false,'type':'boolean'},"+
+                                "'CardNumber':{'value':'0','type':'String'}    } }";
            
            axios({
                 method: "post",
