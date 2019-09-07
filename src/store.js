@@ -49,7 +49,17 @@ export  default new Vuex.Store({
         bComplementarios:false,
         bResultados:false,
         bEtapaFin:false,
-        ocrData:{}
+        ocrData:{},
+        nombreBPM:'', 
+        apellidosBPM:'', 
+        maternoBPM:'',
+        fechaDeNacimientoBPM:'', 
+        folioBPM:'', 
+        emailBPM:'',
+        cellPhoneBPM:'', 
+        rfcBPM:'', 
+        curpBPM:'', 
+        numCasoBPM:''
     },
     mutations:{
         generaFolio(state){
@@ -148,10 +158,7 @@ export  default new Vuex.Store({
                   .then(response => {
                      console.log(response);
                      bus.$emit('afiliacion.loading.end','');
-                     //this.$store.commit('setForm',objx);
-                     //show final message
-                     //var msg = response.data;
-                     //msg=msg.replace("<b>","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","")
+                    
                      state.mensajeFinalAfiliacion = "<b>Digital file: "+personales.folio+"</b></br>"+response.data;
                      state.etapaFin = true;
                   })
@@ -162,6 +169,65 @@ export  default new Vuex.Store({
                     state.mensajeFinalAfiliacion = "An error has occurred, please try again";
                 });
         },
+        async capturaCompletaBPM(state){
+          console.log('CAPTURA COMPLETA BPM:::::::');
+          
+          console.log('nombreBPM:'+state.nombreBPM); 
+          console.log('apellidosBPM:' + state.apellidosBPM);
+          console.log('maternoBPM:' + state.maternoBPM);
+          console.log('fechaDeNacimientoBPM:' + state.fechaDeNacimientoBPM);
+          console.log('folioBPM:' + state.folioBPM);
+          console.log('emailBPM:' + state.emailBPM);
+          console.log('cellPhoneBPM:' + state.cellPhoneBPM);
+          console.log('rfcBPM:' + state.rfcBPM);
+          console.log('curpBPM:' + state.curpBPM);
+          console.log('numCasoBPM:' + state.numCasoBPM);
+
+          var _data = {
+                _nombre: state.nombreBPM, 
+                _paterno: state.apellidosBPM,
+                _materno: state.maternoBPM,
+                _fnacimiento: state.fechaDeNacimientoBPM, 
+                _folio: state.folioBPM,
+                _email: state.emailBPM,
+                _telefonoCasa: state.cellPhoneBPM, 
+                _rfc: state.rfcBPM, 
+                _curp: state.curpBPM, 
+                _casenumber: state.numCasoBPM
+              };
+
+              console.log(_data);
+
+          //bus.$emit('afiliacion.loading.ini','');
+          axios({
+            method: "post",
+            url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/capturaCompleta',
+            timeout: 1000 * 40, // Wait for 20 seconds
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data: _data
+          })
+            .then(response => {
+              console.log('Response ws captura completa::::');
+              
+               console.log(response);
+               //bus.$emit('afiliacion.loading.end','');
+               //"<b>Afiliación completa.<b></br></br><b>ID CLIENTE:<b>8700014550<BR/><b>NOMBRE:<b>MARGARITA  VELAZQUEZ MAMOARITA</BR>
+               //Conserve su Id Cliente. <BR/>Ahora el sistema procede a evaluar su afiliación."
+              
+            })
+            .catch(error => {
+              console.log('Error ws captura completa:');
+              
+              console.log(error);
+              //bus.$emit('afiliacion.loading.end','');
+          });
+
+
+
+
+  },
         adddigitalFile(state, msg){
           state.filesAdded.push(msg);
         },

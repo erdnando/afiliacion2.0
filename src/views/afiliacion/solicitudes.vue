@@ -89,6 +89,8 @@ import axios from "axios";
 
                   //omite las rechazadas
                   if(variablesBPM.Name == 'Task.Rechazado.Mesa')continue;
+                  if(variablesBPM.Name == 'Task.Originado')continue;
+                  if(variablesBPM.Name == 'Step.Originado')continue;
 
                    this.solicitudes.push(variablesBPM);
                   }

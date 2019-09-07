@@ -15,23 +15,23 @@
             <v-layout wrap>
 
                 <v-flex xs12 sm3 md3>
-                <v-text-field readonly background-color="green"  prepend-inner-icon="offline_pin" box  color="white" label="Rate*" 
+                <v-text-field readonly background-color="white" error  prepend-inner-icon="offline_pin"   color="green" label="Rate*" 
                  ref="variablesBPM.Buro" 
                 v-model="rate"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm3 md3>
-                <v-text-field readonly background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Product*" hint=""
+                <v-text-field readonly background-color="white" error prepend-inner-icon="playlist_add_check"    color="green" label="Product*" hint=""
                 v-model="producto"></v-text-field>
               </v-flex>
 
                <v-flex xs12 sm3 md3>
-                <v-text-field readonly background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Bonus*" hint=""
+                <v-text-field readonly background-color="white" error prepend-inner-icon="playlist_add_check"    color="green" label="Bonus*" hint=""
                 v-model="bonus"></v-text-field>
               </v-flex>
 
                <v-flex xs12 sm3 md3>
-                <v-text-field readonly background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Priority code*" hint=""
+                <v-text-field readonly background-color="white" error prepend-inner-icon="playlist_add_check"    color="green" label="Your code*" hint=""
                 v-model="code"></v-text-field>
               </v-flex>
 
@@ -56,7 +56,8 @@
                                         <v-data-table
                                           :headers="headers"
                                           :items="beneficios"
-                                          class="elevation-3">
+                                          class="elevation-3"
+                                          hide-actions>
                                           <template v-slot:items="props">
                                               <td>{{ props.item.variable }}</td>
                                               <td class="text-xs-right">{{ props.item.valor }}</td>
@@ -103,7 +104,7 @@
                                                                 </g>
                                                                 <g id="cchip">
                                                                     <g>
-                                                                        <path class="st2" d="M168.1,143.6H82.9c-10.2,0-18.5-8.3-18.5-18.5V74.9c0-10.2,8.3-18.5,18.5-18.5h85.3
+                                                                        <path class="st20" d="M168.1,143.6H82.9c-10.2,0-18.5-8.3-18.5-18.5V74.9c0-10.2,8.3-18.5,18.5-18.5h85.3
                                                                 c10.2,0,18.5,8.3,18.5,18.5v50.2C186.6,135.3,178.3,143.6,168.1,143.6z" />
                                                                     </g>
                                                                     <g>
@@ -191,6 +192,8 @@ import axios from "axios";
          producto:'PEOPLE-2019',
          bonus:'150USD',
          code:'HC0093',
+         rfc:'',
+         curp:'',
            errorMessages: '',
            active:[],
            beneficios:[
@@ -240,7 +243,7 @@ import axios from "axios";
       getName(){
         if(this.variablesBPM.Nombre==undefined)return "SN";
         else
-         return this.variablesBPM.Nombre.toUpperCase() +' '+ this.variablesBPM.Paterno + ' '+ this.variablesBPM.Materno.substring(1,0)+'.';
+         return this.variablesBPM.Nombre.toUpperCase() +' '+ this.variablesBPM.Paterno.toUpperCase() + ' '+ this.variablesBPM.Materno.toUpperCase().substring(1,0)+'.';
       },
       countDatos(){
            return this.resultadosSOLR.length;
@@ -272,12 +275,6 @@ import axios from "axios";
     },
     methods:{
      
-    //   getCardNumber(){
-
-    //     var terminacion = Math.random(100).toString().substring(2,6);
-    //      this.cardNumber = '4152 3132 9791 '+ terminacion;
-    //      return this.cardNumber;
-    //   },
         docLoaded(arg){
             //console.log("archivo cargado...");
             if(arg == 'link'){
@@ -341,9 +338,166 @@ import axios from "axios";
         },
         approve(){
              bus.$emit('afiliacion.loading.ini','');
+            console.log('Ini precalifica...');
+            
+            //===========PRECALIFICA==================================================
+             bus.$emit('afiliacion.loading.ini','');
+                axios({
+                        method: "post",
+                        url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/precalifica',
+                        timeout: 1000 * 10, // Wait for 10 seconds
+                        headers: {
+                        "Content-Type": "application/json"
+                        },
+                        data: {
+                            nombre:     this.variablesBPM.Nombre, 
+                            paterno:    this.variablesBPM.Paterno, 
+                            materno:    this.variablesBPM.Materno, 
+                            fnacimiento:this.variablesBPM.FechaNac, 
+                            folio:      this.variablesBPM.FolioExpediente, 
+                            email:      this.variablesBPM.Email
+                        }
+                    })
+                        .then(response => {
+                            console.log('fin precalifica !!!!!');
+                            console.log(response);
+                            console.log('call captura completa...');
+                            
+                            
+                            
+                            this.capturaCompleta(response.data);
+                        })
+                        .catch(error => {
+                        console.log(error);
+                        bus.$emit('afiliacion.loading.end','');
+                    });
+             //========================================================================
+          
+                     
+                            
+                  
 
 
-               var variablesXML="{'variables': { "+
+        //        var variablesXML="{'variables': { "+
+        //                         "'IdProducto': {'value': '01','type':'String'},"+
+        //                         "'IdTipoProducto':{'value':'12','type':'String'},"+
+        //                         "'IsAccepted':{'value':true,'type':'boolean'},"+
+        //                         "'CardNumber':{'value':'"+this.cardNumber+"','type':'String'}    } }";
+
+           
+        //    axios({
+        //         method: "post",
+        //         url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+        //         timeout: 1000 * 25, // Wait for 45 seconds
+        //         headers: {"Content-Type": "application/json"},
+        //         data: {
+        //               instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+        //               xml: variablesXML
+        //         }
+        //       })
+        //         .then(response => {
+
+        //           var bpmResp = response.data;//4 arra
+        //           console.log('bpm ACEPTO');
+                  
+        //           console.log(bpmResp);
+                  
+        //           this.$store.state.bResultados = false;
+        //         //   //========================================================================
+        //         //   this.$store.state.folioBPM= this.variablesBPM.FolioExpediente;  
+        //         //   this.$store.state.emailBPM= this.variablesBPM.Email; 
+        //         //   this.$store.state.cellPhoneBPM= this.variablesBPM.Telefono1;  
+        //         //   this.$store.state.numCasoBPM= this.variablesBPM.idTramite;  
+
+        //         //   this.$store.state.nombreBPM= this.variablesBPM.Nombre; 
+        //         //   this.$store.state.apellidosBPM= this.variablesBPM.Paterno; 
+        //         //   this.$store.state.maternoBPM= this.variablesBPM.Materno; 
+        //         //   this.$store.state.fechaDeNacimientoBPM= this.variablesBPM.FechaNac; 
+        //         //   //=========================================================================
+                
+        //         //   this.$store.state.rfcBPM= getRFC();  
+        //         //   this.$store.state.curpBPM= this.$store.state.rfcBPM + Math.random().toString(36).substr(3,5).toUpperCase();  
+                     
+                            
+        //         //   this.$store.commit('capturaCompletaBPM');
+                  
+
+        //          //reload
+        //          bus.$emit('search', '');
+        //          bus.$emit('afiliacion.loading.end','');
+                  
+        //         }).catch(error => {
+        //           console.log(error);
+        //            bus.$emit('afiliacion.loading.end','');
+        //       });
+
+    
+        },
+        capturaCompleta(responsePrecalifica){
+         
+                console.log('CAPTURA COMPLETA BPM:::::::');
+          
+                console.log('nombreBPM:'+this.variablesBPM.Nombre); 
+                console.log('apellidosBPM:' + this.variablesBPM.Paterno);
+                console.log('maternoBPM:' + this.variablesBPM.Materno);
+                console.log('fechaDeNacimientoBPM:' + this.variablesBPM.FechaNac);
+                console.log('folioBPM:' + this.variablesBPM.FolioExpediente);
+                console.log('emailBPM:' + this.variablesBPM.Email);
+                console.log('cellPhoneBPM:' + this.variablesBPM.Telefono1);
+                console.log('rfcBPM:' + responsePrecalifica.rfc); // this.getRFC());
+                console.log('curpBPM:' + responsePrecalifica.rfc + Math.random().toString(36).substr(3,5).toUpperCase());
+                console.log('numCasoBPM:' + responsePrecalifica.numCaso);
+
+                var _data = {
+                        _nombre: this.variablesBPM.Nombre, 
+                        _paterno: this.variablesBPM.Paterno,
+                        _materno: this.variablesBPM.Materno,
+                        _fnacimiento: this.variablesBPM.FechaNac, 
+                        _folio: this.variablesBPM.FolioExpediente,
+                        _email: this.variablesBPM.Email,
+                        _telefonoCasa: this.variablesBPM.Telefono1, 
+                        _rfc: responsePrecalifica.rfc, 
+                        _curp: responsePrecalifica.rfc + Math.random().toString(36).substr(3,5).toUpperCase(), 
+                        _casenumber: responsePrecalifica.numCaso
+                    };
+
+                    console.log(_data);
+
+                //bus.$emit('afiliacion.loading.ini','');
+                axios({
+                    method: "post",
+                    url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/capturaCompleta',
+                    timeout: 1000 * 40, // Wait for 20 seconds
+                    headers: {
+                    "Content-Type": "application/json"
+                    },
+                    data: _data
+                })
+                    .then(response => {
+                    console.log('Response ws captura completa::::');
+                    
+                    console.log(response);
+                    //bus.$emit('afiliacion.loading.end','');
+                    //"<b>Afiliación completa.<b></br></br><b>ID CLIENTE:<b>8700014550<BR/><b>NOMBRE:<b>MARGARITA  VELAZQUEZ MAMOARITA</BR>
+                    //Conserve su Id Cliente. <BR/>Ahora el sistema procede a evaluar su afiliación."
+                    console.log('fin captura completa!!!!!!!!');
+                    console.log('ini move BPM');
+                    
+                    this.moveBPM(response);
+                    
+                    //bus.$emit('afiliacion.loading.end','');
+                    })
+                    .catch(error => {
+                    console.log('Error ws captura completa:');
+                    
+                    console.log(error);
+                    bus.$emit('afiliacion.loading.end','');
+                });
+               
+        },
+        moveBPM(response){
+
+                    var variablesXML="{'variables': { "+
                                 "'IdProducto': {'value': '01','type':'String'},"+
                                 "'IdTipoProducto':{'value':'12','type':'String'},"+
                                 "'IsAccepted':{'value':true,'type':'boolean'},"+
@@ -353,7 +507,7 @@ import axios from "axios";
            axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
-                timeout: 1000 * 12, // Wait for 45 seconds
+                timeout: 1000 * 25, // Wait for 45 seconds
                 headers: {"Content-Type": "application/json"},
                 data: {
                       instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
@@ -367,11 +521,8 @@ import axios from "axios";
                   
                   console.log(bpmResp);
                   
-                  //reset
                   this.$store.state.bResultados = false;
-                 
-                  
-
+               
                  //reload
                  bus.$emit('search', '');
                  bus.$emit('afiliacion.loading.end','');
@@ -380,8 +531,36 @@ import axios from "axios";
                   console.log(error);
                    bus.$emit('afiliacion.loading.end','');
               });
+        },
+        getRFC(){
+          
+            try{
+                 var parteNombre = 'ROVE';
+                 var parteFecha= '730121';
 
-    
+                 var rfcPaterno= this.variablesBPM.Paterno.substring(0,2); 
+                 var rfcMaterno= this.variablesBPM.Materno.substring(0,1);
+                 var rfcnombre= this.variablesBPM.Nombre.substring(0,1);
+                 parteNombre = rfcPaterno+rfcMaterno+rfcnombre;
+               
+                
+                var timestamp = Date.parse(this.variablesBPM.FechaNac);
+
+                if (isNaN(timestamp) == false) {
+                    //fecha valida
+                    var strFecha = new Date(timestamp).toISOString().substr(0, 10);
+                    parteFecha= strFecha.substr(2,2)+strFecha.substr(5,2)+strFecha.substr(8,2);
+                }
+            }
+            catch(error){
+              console.log(error);
+            }
+
+             var homoclave = Math.random().toString(36).substr(3,3).toUpperCase();
+
+            this.rfc = parteNombre+parteFecha+ homoclave;
+            return this.rfc;
+            
         },
         reject(){
             
@@ -437,89 +616,8 @@ import axios from "axios";
 .tituloTabla{
   font-size: 20px!important;
 }
-/* body {
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-line-pack: center;
-        align-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    min-height: 100vh;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    font-family: 'Raleway';
-} */
 
-/* .payment-title {
-    width: 100%;
-    text-align: center;
-} */
 
-/* .form-container .field-container:first-of-type {
-    grid-area: name;
-} */
-
-/* .form-container .field-container:nth-of-type(2) {
-    grid-area: number;
-}
-
-.form-container .field-container:nth-of-type(3) {
-    grid-area: expiration;
-} */
-
-/* .form-container .field-container:nth-of-type(4) {
-    grid-area: security;
-} */
-
-/* .field-container input {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-} */
-
-/* .field-container {
-    position: relative;
-} */
-
-/* .form-container {
-    display: grid;
-    grid-column-gap: 10px;
-    grid-template-columns: auto auto;
-    grid-template-rows: 90px 90px 90px;
-    grid-template-areas: "name name""number number""expiration security";
-    max-width: 400px;
-    padding: 20px;
-    color: #707070;
-} */
-
-/* label {
-    padding-bottom: 5px;
-    font-size: 13px;
-} */
-
-/* input {
-    margin-top: 3px;
-    padding: 15px;
-    font-size: 16px;
-    width: 100%;
-    border-radius: 3px;
-    border: 1px solid #dcdcdc;
-} */
-
-/* .ccicon {
-    height: 38px;
-    position: absolute;
-    right: 6px;
-    top: calc(50% - 17px);
-    width: 60px;
-} */
 
 /* CREDIT CARD IMAGE STYLING */
  .preload * {
@@ -537,16 +635,6 @@ import axios from "axios";
     padding: 20px;
 } 
 
-/* #ccsingle {
-    position: absolute;
-    right: 15px;
-    top: 20px;
-} */
-
-/* #ccsingle svg {
-    width: 100px;
-    max-height: 60px;
-} */
 
  .creditcard svg#cardfront,
 .creditcard svg#cardback {
@@ -555,25 +643,6 @@ import axios from "axios";
     box-shadow: 1px 5px 6px 0px rgb(24, 41, 138);
     border-radius: 22px;
 } 
-
- /* #generatecard{
-    cursor: pointer;
-    float: right;
-    font-size: 12px;
-    color: #fff;
-    padding: 2px 4px;
-    background-color: #909090;
-    border-radius: 4px;
-    cursor: pointer;
-    float:right;
-}  */
-
-/* CHANGEABLE CARD ELEMENTS */
-/* .creditcard .lightcolor,
-.creditcard .darkcolor {
-    -webkit-transition: fill .5s;
-    transition: fill .5s;
-} */
 
 .creditcard .lightblue {
     fill: #03A9F4;
@@ -657,6 +726,10 @@ import axios from "axios";
 } */
 
 #cardfront .st2 {
+    fill: black;
+}
+
+#cardfront .st20 {
     fill: #FFFFFF;
 }
 
@@ -671,7 +744,8 @@ import axios from "axios";
 
 #cardfront .st5 {
     font-family: 'Source Code Pro', monospace;
-    font-weight: 400;
+    font-weight: 900;
+    
 }
 
 #cardfront .st6 {

@@ -97,7 +97,7 @@ import {bus} from '../../../main.js'
        components: {
         UploaderMini
     },
-     props:['open','variablesBPM'],
+     props:['open','variablesBPM','fondoAnverso'],
      data(){
        return{
           objForm:{
@@ -110,7 +110,6 @@ import {bus} from '../../../main.js'
           componentKey2:0,
           componentKey3:0,
           componentKey4:0,
-          fondoAnverso:'https://placehold.it/200x150',
           fondoReverso:'https://placehold.it/200x150',
           fondoPDF:'https://www.chaosium.com/product_images/uploaded_images/pdf-cover-2inch-grey.png',
           vistaUploader:true,
@@ -182,6 +181,7 @@ import {bus} from '../../../main.js'
           var variablesXML="{'variables': { "+
           "'documentos': {'value': '4|5|6','type':'String'},"+
           "'FolioExpediente':{'value':'"+ this.variablesBPM.FolioExpediente +"','type':'String'}    } }";
+           console.log(variablesXML);
            
            axios({
                 method: "post",

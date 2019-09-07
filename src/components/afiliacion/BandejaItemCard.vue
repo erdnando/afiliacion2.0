@@ -55,12 +55,15 @@
            </v-layout> 
     </v-flex>
   </v-layout>
+
+
+  
   
 <identificacion v-bind:open="this.$store.state.bIdentificacion" v-bind:variablesBPM="this.variablesBPM"></identificacion>
 <personales v-bind:open="this.$store.state.bPersonales" v-bind:variablesBPM="this.variablesBPM"></personales>
 <autorizo v-bind:open="this.$store.state.bAutorizo" v-bind:variablesBPM="this.variablesBPM"></autorizo>
 <mesa-control v-bind:open="this.$store.state.bMesaControl"  v-bind:variablesBPM="this.variablesBPM"  v-bind:resultadosSOLR="this.resultadosSOLR" v-bind:variablesBPMList="this.variablesBPMList"></mesa-control>
-<documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM"></documentos>
+<documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM" v-bind:fondoAnverso="this.fondoAnverso"></documentos>
 <ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
 <resultados v-bind:open="this.$store.state.bResultados" v-bind:variablesBPM="this.variablesBPM" v-bind:cardNumber="this.cardNumber"></resultados>
   </div>
@@ -90,7 +93,8 @@ import axios from "axios";
            variablesBPM : {},
            resultadosSOLR:[],
            variablesBPMList:[],
-           cardNumber:''
+           cardNumber:'',
+           fondoAnverso:'https://placehold.it/200x150',
         }
     },
     props:['solicitudes'],
@@ -118,12 +122,9 @@ import axios from "axios";
         else return valor;
       },
       openForm(_processInstanceId , _step, _expediente, _variables){
-        
-        // this.$store.state.bIdentificacion=false;
-        // this.$store.state.bPersonales=false;
+       
         this.variablesBPM = _variables;
-        console.log(_step);
-        console.log(_variables);
+       this.fondoReverso='https://placehold.it/200x150';
         
         switch (_step) {
           case 'Task.Identificacion':
@@ -160,7 +161,7 @@ import axios from "axios";
       },
       cutName(nombre){
         nombre = nombre.replace('Task.','Step ');
-        console.log(nombre);
+      
         if(nombre.trim().length>15)
          return nombre.substring(0,10)+"...";
          else return nombre;
@@ -193,10 +194,6 @@ import axios from "axios";
         this.resultados = [];
         var jsonObj = [];
        
-        //arma request
-        console.log('folio expediente....');
-        console.log(this.variablesBPM.FolioExpediente);
-
             jsonObj.push({'Q':this.variablesBPM.FolioExpediente});
             jsonObj.push({'Q':''});
   
@@ -208,7 +205,6 @@ import axios from "axios";
         if(arrPath.length==1) return false;
         
         var ext=arrPath[arrPath.length-1].toUpperCase();
-        console.log(ext);
         if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS' || ext =='JPEG'){
             return true;
         }
@@ -219,7 +215,6 @@ import axios from "axios";
     },
       async consultaSolr(objConsulta){
         
-        console.log(objConsulta);
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
@@ -232,7 +227,7 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                   console.log("call solr...");
+
                    console.log(response.data.response.docs);
                    var arrR= response.data.response.docs;
 

@@ -120,9 +120,6 @@ import {bus} from '../../../main.js'
          this.objForm.rfc = arrPrecalifica.rfc;
          this.objForm.folioBuro = arrPrecalifica.folioBuro;
          this.objForm.numCaso = arrPrecalifica.numCaso;
-
-         
-
      },
      beforeUpdate(){
              // console.log("cargando curp...");

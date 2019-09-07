@@ -152,43 +152,10 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
       save(){
        
          bus.$emit('afiliacion.loading.ini','');
-            //this.folioGenerado = this.$store.state.folioGenerado;
-            //console.log(this.folioGenerado);
-            //var variables ="variables:{'OCRProcesado': { 'value':true, 'type':'boolean'} }";
-            // const variables = {
-            //      variables:{
-            //         OCRProcesado: {
-            //           value : true,
-            //           type : 'boolean'
-            //         }
-            //      }
-                 
-            //     };
-            // const myObjStr = JSON.stringify(variables);
-            // console.log(myObjStr);
-
-            // Materno: "VARGAS"
-            // Nombre: "ERDNANDO"
-            // Paterno: "RODRIGUEZ"
-            // calle: "O PALOMA NEGRA"
-            // claveElector: null
-            // codigoPostal: "57000"
-            // colonia: "BENITO JUAREZ "
-            // fechaDeNacimiento: "21/01/73"
-            // fechaDeNacimientoANIO: "73"
-            // fechaDeNacimientoDIA: "21"
-            // fechaDeNacimientoMES: "01"
-            // numeroExt: "277"
-            // sexo: "H"
-            // vigencia: null
-
-
-           
-            
+      
             console.log(this.variablesBPM);
             var d =this.$store.state.ocrData;
            
-            console.log('=========fecha 1=========');
             console.log(d.fechaDeNacimiento);
             console.log(d.fechaDeNacimientoDIA);
             console.log(d.fechaDeNacimientoMES);
@@ -196,13 +163,6 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
             
             try{
                 d.fechaDeNacimiento = d.fechaDeNacimientoANIO + '-'+ d.fechaDeNacimientoMES + '-'+ d.fechaDeNacimientoDIA;
-
-                // var fechaN = new Date(d.fechaDeNacimiento);
-                // if(!fechaN.isValid()){
-                //    d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
-                // }
-                // console.log('fecha ok');
-                // console.log(d.fechaDeNacimiento);
 
                 var timestamp = Date.parse(d.fechaDeNacimiento);
 
@@ -212,20 +172,13 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                 else{
                     d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
                 }
-
-
-
-
             }
             catch(error){
-              console.log('error');
-              
               console.log(error);
               
               d.fechaDeNacimiento = new Date().toISOString().substr(0, 10);
             }
-            console.log('=========fecha 2=========');
-
+           
 
 
             var variablesXML="{'variables': { 'OCRProcesado': {'value': true,'type': 'boolean'},'Nombre':{'value':'"+d.Nombre+"','type':'String'},'Materno':{'value':'"+d.Materno+"','type':'String'},'Paterno':{'value':'"+d.Paterno+"','type':'String'},'Sexo':{'value':'"+d.sexo+"','type':'String'},'Calle':{'value':'"+d.calle+"','type':'String'},'NumExt':{'value':'"+d.numeroExt+"','type':'String'},'CP':{'value':'"+d.codigoPostal+"','type':'String'},'Colonia':{'value':'"+d.colonia+"','type':'String'},'ClaveElector':{'value':'"+d.claveElector+"','type':'String'},'Vigencia':{'value':'"+d.vigencia+"','type':'String'},'FechaNac':{'value':'"+d.fechaDeNacimiento+"','type':'String'} } }";
@@ -269,17 +222,10 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
               });
 
 
-        // this.$store.state.bIdentificacion = false;
-        // this.fondoAnverso='https://placehold.it/400x300';
-        // this.fondoReverso='https://placehold.it/400x300';
-
-
       },
       close(idWin){
         this.vistaUploader=true;
         this.subtitulo='Load the images and then process them'
-        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
-        //this.$store.commit('closeForm',idWin);
         this.$store.state.bIdentificacion = false;
       }
     },
@@ -315,11 +261,8 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                   }
                   salida=salida.replace("iiic","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","").replace("71s1itljIf","");
 
-                //console.log(salida);
                  this.resultadoOCR = salida+ "...";
                  this.fondoAnverso=blobUrl;
-
-                 //console.log(data);
                  this.objForm.ocrEstructurados=[];
                
                   Object.entries(data).forEach(entry => {
@@ -336,18 +279,13 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
            });
 
             bus.$on('afiliacion.upload.documento.error',(data,categoria,blobUrl)=>{
-              console.log(data);
-              console.log(categoria);
-               console.log(blobUrl);
+             
               
               this.resultadoOCR = "el servicio ha tardado mas de lo esperado. favor de reintentar";
                this.ocrEstructurados=[];
                  bus.$emit('afiliacion.loading.end','');
                 
            });
-    
-    
-    
     }
    }
 </script>

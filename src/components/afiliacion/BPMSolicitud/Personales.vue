@@ -179,15 +179,15 @@ import axios from "axios";
       
      },
      mounted(){
-         console.log("mounted ...");
+        
         
      },
       created(){
-         console.log("created ...");
+      
         
       },
       beforeMount() {
-        console.log('before mounted..');
+       
        
     },
      computed:{
