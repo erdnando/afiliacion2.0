@@ -236,7 +236,7 @@ import axios from "axios";
       gotoHome(){
          this.dialogFacePhi=false
           bus.$emit('afiliacion.goTo','/fintech')
-
+          //ok
       },
       validaSesion(){
         //TODO generar validacion de la sesion
