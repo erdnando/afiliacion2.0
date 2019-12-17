@@ -46,8 +46,6 @@ import {bus} from '../../../main.js';
  import VueSignaturePad from 'vue-signature-pad';
  import axios from "axios";
 
-
-
    export default {
      props:['open','variablesBPM'],
       components: {
@@ -72,9 +70,7 @@ import {bus} from '../../../main.js';
         var porcentaje=0;
        
         const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
-        // console.log("estatus del objeto firma:");
-        // console.log(isEmpty);
-        // console.log(data);
+
         if(isEmpty){
           console.log('sin firma');
           return;
@@ -82,27 +78,15 @@ import {bus} from '../../../main.js';
         }
         var pImgS64=data;
 
-        //pImgS64= pImgS64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", "");
-        this.cmProcess(pImgS64,"Firma","autorizo");
-
-        // if(!isEmpty)porcentaje+=100;
-        // this.objForm.avance=porcentaje;
-        
-        // if(porcentaje>=100) this.objForm.color='green';
-        // else this.objForm.color='orange';
-
-        //  var objx={"idWin":idWin,"objForm":this.objForm};
-        //  this.$store.commit('setForm',objx);
-
-
+        this.cmProcess(pImgS64,"Firma.jpg","autorizo");
 
 
         //TODO: move bpm
         // set => Buro, Score & isOk
          bus.$emit('afiliacion.loading.ini','');
 
-          this.objForm.Buro = '1980322';
-          this.objForm.Score ='97';
+          this.objForm.Buro = Math.random(100).toString().substring(2,9);
+          this.objForm.Score =Math.random(100).toString().substring(2,4);
 
           var variablesXML="{'variables': { "+
           "'Buro': {'value': '" + this.objForm.Buro + "','type':'String'},"+
@@ -127,10 +111,10 @@ import {bus} from '../../../main.js';
                   console.log(bpmResp);
                   
                   //reset
-                  
                   this.$store.state.bAutorizo = false;
                  
-                  
+                   var firma= this.$refs.signaturePad.getCanvasRef();
+                   firma.clear();
 
                  //reload
                  bus.$emit('search', '');
@@ -140,16 +124,11 @@ import {bus} from '../../../main.js';
                   console.log(error);
                    bus.$emit('afiliacion.loading.end','');
               });
-
-
-
-
-
       },
       close(idWin){
-        //this.$store.commit('closeForm',idWin);
         this.$store.state.bAutorizo = false;
-        this.resizeCanvas();
+        var firma= this.$refs.signaturePad.getCanvasRef();
+        firma.clear();
       },
       undo() {
       this.$refs.signaturePad.undoSignature();
@@ -177,10 +156,8 @@ import {bus} from '../../../main.js';
                   idTramite: this.variablesBPM.FolioExpediente,
                   categoria: this.objForm.categoria,
                   lang: 'eng',
-                  contraste: '1',
-                  ext: '',
-                  nombre: nombre,
-                  paterno: paterno
+                  contraste: 1,
+                  ext: ''
                 }
               })
                 .then(response => {
@@ -190,69 +167,54 @@ import {bus} from '../../../main.js';
                   console.log("Enviado a CM....timeout");
                   console.log(error);
               });
+
+
+
+
+
+
+          //  var arr64 = string64.split(',');
+          // //console.log("----------CM----------");
+          // axios({
+          //       method: "post",
+          //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
+          //       timeout: 153500 * 1, // Wait for 13.5 seconds
+          //       headers: {
+          //         "Content-Type": "application/json"
+          //       },
+          //       data: {
+          //         pImgS64: arr64[1],
+          //         idTramite: this.variablesBPM.FolioExpediente,
+          //         categoria: this.objForm.categoria,
+          //         nombre: nombre
+          //       }
+          //     })
+          //       .then(response => {
+          //         console.log("CM...."+response);
+          //       })
+          //       .catch(error => {
+          //         console.log("Enviado a CM....Timeout"+error);
+          //         //console.log(error);
+          //     });
+
+
     },
     resizeCanvas() {
-    
-      //  if(this.$refs.signaturePad == undefined)return;
-
-      //   var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-      //    var canvas = this.$refs.signaturePad.getCanvasRef();
-      //     console.log("inside resizeCanvas");
-      //    console.log(canvas);
-      //   canvas.width = canvas.offsetWidth * ratio;
-      //   canvas.height = canvas.offsetHeight * ratio;
-      //   canvas.width='60%';
-      // canvas.height='180px';
-      //   canvas.getContext("2d").scale(ratio, ratio);
-       
+      
     }
     },
     created(){
-     //window.addEventListener("resize", this.resizeCanvas);
-      
     
     },
      updated(){
-         console.log('on updated....');
       this.$nextTick(() => {
-        console.log('actualizado....');
-        
         this.$refs.signaturePad.resizeCanvas();
       });
      },
    mounted() {
-   // window.addEventListener("resize", this.resizeCanvas);
-//this.$refs.signaturePad.resizeCanvas();
-  
-    // var canvas = this.$refs.signaturePad.getCanvasRef(); // <---- view NOTA
-  console.log('on mounted....');
       this.$nextTick(() => {
-        console.log('actualizado....');
-        
         this.$refs.signaturePad.resizeCanvas();
       });
-
-      //console.log(canvas);
-        //  canvas.width = '61%';
-        //  canvas.height = '180px';
-
-        //   canvas.width = '60%';
-        //  var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-        // canvas.getContext("2d").scale(ratio, ratio);
-
-        //console.log("despues del get context");
-    //NOTA NOTA NOTA
-    //se añadio esta funcion al componente node en vue-signature-pad,esm y pad.commons
-    // getCanvasRef: function getCanvasRef(){
-    //         return this.$refs.signaturePadCanvas;
-    // }
-
-//  width="60%"
-//             height="180px"
-
-
-
-
   }
 
 

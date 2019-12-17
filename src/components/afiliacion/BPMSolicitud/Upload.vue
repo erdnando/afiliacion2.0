@@ -21,6 +21,7 @@
         </v-layout>
 
         <compressor class="compressor" :done="getFiles" :scale="scale" :quality="quality"  ref="compressor"></compressor>
+
         <div class="checkbox" style="visibility:hidden;position:absolute;height: 0px;margin: 0px;">
             <input type="checkbox" v-model="originalSize">
             <span>Responsive Image?</span>
@@ -40,7 +41,7 @@
 <script>
   import axios from "axios";
   import {bus} from '../../../main.js'
-  import Compressor from '@/components/afiliacion/NuevaSolicitud/Compressor'
+  import Compressor from '@/components/afiliacion/BPMSolicitud/Compressor'
 
    export default {
        components: {
@@ -78,9 +79,11 @@
        upload () {
        
         let compressor = this.$refs.compressor.$el
-        compressor.click()
+        compressor.click();
       },
       getFiles(obj){
+       
+        
         if(obj.compressed.width==0){
             if(this.scale==100){
             this.scale=99;
@@ -89,6 +92,9 @@
           }
           return;
           }
+
+          console.log(this.scale);
+          
         this.img = obj.compressed.blob
         this.original = obj.original
         this.compressed = obj.compressed
@@ -101,14 +107,27 @@
         my_time1=my_time1.getTime(); // first time variable
         //TODO emit when the image is loaded
         bus.$emit('afiliacion.upload.categoria',this.categoria);
-        this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
+        console.log('envio al ocr process::::::::::::::');
+        console.log(obj.compressed.base64);
+        console.log(obj.compressed.blob);
+        
+        if(this.categoria==1)
+            this.ocrProcess(obj.compressed.base64,my_time1,obj.compressed.blob);
+        else{
+          console.log('ine reverso');
+          
+            this.cmProcess(obj.compressed.base64,my_time1,'Identificación','Reverso');
+        }
        
       },
       async ocrProcess(string64,my_time1,blobUrl){
+
+
+
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
-                timeout: 1000 * 45, // Wait for 45 seconds
+                timeout: 1000 * 15, // Wait for 45 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
@@ -118,7 +137,17 @@
                 }
               })
                 .then(response => {
+                  console.log('respuesta del ocr process::::::::');
+                  
                   console.log(response.data);
+
+                  
+                  
+                  
+                   if(response.data==null){  console.log('data null ::::::::');return;}
+                   if(response.data.ResultadoOCR==null){  console.log('ocr null::::::::');return;}
+                   console.log('continuo....');
+                
 
                   var my_time2 = new Date(); // date object 
                   my_time2=my_time2.getTime(); // second time variable
@@ -143,7 +172,7 @@
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
-                timeout: 13500 * 1, // Wait for 13.5 seconds
+                timeout: 1000 * 15, // Wait for 13.5 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },

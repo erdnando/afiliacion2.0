@@ -8,7 +8,7 @@
           <span class="headline white--text">Documents</span>
           <span class="subtitle " style="color:floralwhite;margin-top: 5px;">&nbsp;&nbsp;{{subtitulo}}</span>
            <v-spacer></v-spacer>
-          <span class="body-2 white--text">{{folio}}</span>
+          <span class="body-2 white--text">{{variablesBPM.FolioExpediente}}</span>
         </v-card-title>
         <v-card-text>
           <v-container fluid style="margin-top: -40px;">
@@ -16,14 +16,14 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md4 lg4 xl4 style="" >
-                <uploader-mini categoria="4" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader-mini>
+                <uploader-mini categoria="4" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader-mini>
               </v-flex>
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="5" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader-mini>
+                <uploader-mini categoria="5" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader-mini>
               </v-flex>
 
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="6" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey3"></uploader-mini>
+                <uploader-mini categoria="6" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey3"></uploader-mini>
               </v-flex>
 
             </v-layout>
@@ -39,7 +39,7 @@
                       <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
                         <!-- <v-img style="margin-top: 5px;margin-left: 8px;width: 351px;max-width:400px;border-radius: 3px;height:300px;" width="400px" height="300px"
                           v-bind:src="fondoAnverso"  contain></v-img> -->
-                           <uploader-mini categoria="7" v-bind:folio="folio" v-bind:imagenFondo="fondoPDF" :key="componentKey4"></uploader-mini>
+                           <uploader-mini categoria="7" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoPDF" :key="componentKey4"></uploader-mini>
                       </v-flex>
 
                       <v-flex xs6>
@@ -77,7 +77,7 @@
           <!-- <v-btn v-show="vistaUploader" :disabled="!canProcess" color="blue darken-1" flat @click="cambiaVista">Add PDF</v-btn> -->
           <!-- <div v-show="!vistaUploader"> -->
              <!-- <v-btn color="blue darken-1" flat @click="cambiaVistaInicial">Back</v-btn> -->
-             <v-btn color="blue darken-1"  :disabled="!canProcess" flat @click="save(4)">Continue</v-btn>
+             <v-btn color="blue darken-1"  :disabled="!canProcess" flat @click="save()">Continue</v-btn>
           <!-- </div> -->
           
         </v-card-actions>
@@ -91,12 +91,13 @@
 <script>
 import {bus} from '../../../main.js'
  import UploaderMini from '@/components/afiliacion/BPMSolicitud/UploadMini'
+ import axios from "axios";
 
    export default {
        components: {
         UploaderMini
     },
-     props:['open','folio'],
+     props:['open','variablesBPM','fondoAnverso'],
      data(){
        return{
           objForm:{
@@ -109,11 +110,10 @@ import {bus} from '../../../main.js'
           componentKey2:0,
           componentKey3:0,
           componentKey4:0,
-          fondoAnverso:'https://placehold.it/200x150',
           fondoReverso:'https://placehold.it/200x150',
           fondoPDF:'https://www.chaosium.com/product_images/uploaded_images/pdf-cover-2inch-grey.png',
           vistaUploader:true,
-          subtitulo:'Load the images and then process them (jpg,png,bmp)',
+          subtitulo:'Load the images and then process them (jpg,png,bmp) up to 3mb',
           canProcess:false,
           categoriasCargadas:[],
           resultadoOCR:'loading...',
@@ -140,7 +140,7 @@ import {bus} from '../../../main.js'
       },
       retryVista(){
          this.vistaUploader=true;
-         this.subtitulo='Load the images and then process them'
+         this.subtitulo='Load the images and then process them up to 3mb'
          this.canProcess=false;
          this.categoriasCargadas=[];
          this.fondoAnverso='https://placehold.it/400x300',
@@ -165,36 +165,78 @@ import {bus} from '../../../main.js'
       //    this.vistaUploader=true;
       //    this.subtitulo='Load the images and then process them'
       // },
-      save(idWin){
+      save(){
        
-        this.objForm.avance=this.porcentaje;
-        if(this.porcentaje>=100) this.objForm.color='green';
-        else this.objForm.color='orange';
 
         this.vistaUploader=true;
         this.subtitulo='Load the images and then process them'
+     
+
+        //TODO: move bpm
+        // set => Buro, Score & isOk
+         bus.$emit('afiliacion.loading.ini','');
+
         
-        //bus.$emit('afiliacion.newSol.setForm',idWin,this.objForm);
-        var objx={"idWin":idWin,"objForm":this.objForm};
-        this.$store.commit('setForm',objx);
+
+          var variablesXML="{'variables': { "+
+          "'documentos': {'value': '4|5|6','type':'String'},"+
+          "'FolioExpediente':{'value':'"+ this.variablesBPM.FolioExpediente +"','type':'String'}    } }";
+           console.log(variablesXML);
+           
+           axios({
+                method: "post",
+                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+                timeout: 1000 * 12, // Wait for 45 seconds
+                headers: {"Content-Type": "application/json"},
+                data: {
+                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+                      xml: variablesXML
+                }
+              })
+                .then(response => {
+
+                  var bpmResp = response.data;//4 arra
+                  console.log('bpm autorizo');
+                  
+                  console.log(bpmResp);
+                  
+                  //reset
+                 this.$store.state.bDocumentos = false;
+                 this.fondoAnverso='https://placehold.it/200x150';
+                 this.fondoReverso='https://placehold.it/200x150';
+                 
+                 //reload
+                 bus.$emit('search', '');
+                 bus.$emit('afiliacion.loading.end','');
+                  
+                }).catch(error => {
+                  console.log(error);
+                   bus.$emit('afiliacion.loading.end','');
+              });
+
+
+
+
 
 
 
       },
       close(idWin){
         this.vistaUploader=true;
-        this.subtitulo='Load the images and then process them'
-        //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
-        this.$store.commit('closeForm',idWin);
+        this.subtitulo='Load the images and then process them up to 3mb'
+        this.$store.state.bDocumentos = false;
       }
     },
     created(){
-        bus.$on('afiliacion.upload.categoria',(categoria)=>{
+        bus.$on('afiliacion.upload.categoriaBPM',(categoria)=>{
+          console.log('doc añadido....');
+          
               this.categoriasCargadas.push(categoria);
 
               let unique = [...new Set(this.categoriasCargadas)];
+              console.log(unique.length);
 
-              if(unique.length>=5){
+              if(unique.length>=3){
                 this.canProcess=true;
                 this.porcentaje=100;
                 //console.log("Archivos procesados:"+ unique.length);

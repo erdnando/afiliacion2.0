@@ -15,7 +15,7 @@
             <v-layout wrap>
 
                <v-flex xs12 sm6 md6>
-                <v-text-field readonly="true" background-color="green"  prepend-inner-icon="offline_pin" box  color="white" label="Folio buro*" 
+                <v-text-field readonly background-color="green"  prepend-inner-icon="offline_pin" box  color="white" label="Folio buro*" 
                 hint="Congratulations, your query to buro was successful!" 
                  ref="objForm.folioBuro"  :rules="[() => !!objForm.folioBuro || 'This field is required']"
                 :error-messages="errorMessages" required 
@@ -23,14 +23,14 @@
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field readonly="true" background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Scoring*" hint="It's a great scoring"
+                <v-text-field readonly background-color="green" prepend-inner-icon="playlist_add_check"  box  color="white" label="Scoring*" hint="It's a great scoring"
                 ref="objForm.scoring"  :rules="[() => !!objForm.scoring || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.scoring"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm6 md6>
-                <v-text-field  readonly="true" background-color="green" prepend-inner-icon="business"  box  color="white" label="Case number*" hint="Your credit core code"
+                <v-text-field  readonly background-color="green" prepend-inner-icon="business"  box  color="white" label="Case number*" hint="Your credit core code"
                 ref="objForm.numCaso"  :rules="[() => !!objForm.numCaso || 'This field is required']"
                 :error-messages="errorMessages" required  
                 v-model="objForm.numCaso"></v-text-field>
@@ -120,9 +120,6 @@ import {bus} from '../../../main.js'
          this.objForm.rfc = arrPrecalifica.rfc;
          this.objForm.folioBuro = arrPrecalifica.folioBuro;
          this.objForm.numCaso = arrPrecalifica.numCaso;
-
-         
-
      },
      beforeUpdate(){
              // console.log("cargando curp...");

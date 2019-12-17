@@ -18,16 +18,16 @@
                 
 
                 <v-text-field   prepend-inner-icon="how_to_reg" box  color="green" label="Name*" hint="His name, his access" 
-                 ref="objForm.nombre"  :rules="[() => !!objForm.nombre || 'This field is required']"
+                 ref="variablesBPM.Nombre" v-model="variablesBPM.Nombre"  :rules="[() => !!variablesBPM.Nombre || 'This field is required']"
                 :error-messages="errorMessages" required 
-                :value="objForm.nombre" @change="updateName"></v-text-field>
+                :value="variablesBPM.Nombre" @change="updateName"></v-text-field>
               </v-flex>
 
               <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="how_to_reg"  box  label="Last name*" 
-                ref="objForm.apellidos"  :rules="[() => !!objForm.apellidos || 'This field is required']"
+                ref="variablesBPM.Paterno" v-model="variablesBPM.Paterno" :rules="[() => !!variablesBPM.Paterno || 'This field is required']"
                 :error-messages="errorMessages" required  
-                :value="objForm.apellidos" @change="updateApellidos"></v-text-field>
+                :value="variablesBPM.Paterno" @change="updateApellidos"></v-text-field>
               </v-flex>
 
 
@@ -61,9 +61,9 @@
               <v-flex xs12 sm7 md7>
                 <v-text-field 
                  prepend-inner-icon="wc"
-                ref="objForm.sexo" 
-                v-model="objForm.sexo" 
-                :rules="[() => !!objForm.sexo || 'This field is required']"
+                ref="variablesBPM.Sexo" 
+                v-model="variablesBPM.Sexo" 
+                :rules="[() => !!variablesBPM.Sexo || 'This field is required']"
                 :error-messages="errorMessages"
                 required
                 counter maxlength="25" box label="Sex*" hint="" ></v-text-field>
@@ -83,9 +83,9 @@
 
                <v-flex xs12 sm7 md7>
                 <v-text-field prepend-inner-icon="location_on"  box  label="Address*" 
-                ref="objForm.direccion"  :rules="[() => !!objForm.direccion || 'This field is required']"
+                ref="variablesBPM.Calle"  :rules="[() => !!variablesBPM.Calle || 'This field is required']"
                 :error-messages="errorMessages" required 
-                v-model="objForm.direccion"></v-text-field>
+                v-model="variablesBPM.Calle"></v-text-field>
               </v-flex>
 
 
@@ -145,7 +145,7 @@ import axios from "axios";
             apellidos:'',
             fechaDeNacimiento:'',
             sexo:'H',
-            nacionalidad:'',
+            nacionalidad:'MEXICAN',
             direccion:'',
             producto:'Simple credit',
             email:'',
@@ -157,7 +157,8 @@ import axios from "axios";
             Colonia:'',
             Municipio:'',
             Ciudad:'',
-            claveElector:''
+            claveElector:'',
+            domicilioFinal:'',
           },
           asignados:false,
           errorMessages: '',
@@ -175,45 +176,34 @@ import axios from "axios";
        }
      },
      updated(){
-       console.log("inicializa formulario...");
       
-      if(this.asignados==true) return;
-
-     
-         //var objOCR = this.$store.state.ocrData; 
-         console.log(this.variablesBPM);
-         
-          //console.log(objOCR.Nombre);
-          this.objForm.nombre =  this.variablesBPM.Nombre;
-          this.objForm.apellidos=this.variablesBPM.Paterno +' '+ this.variablesBPM.Materno;
-          this.objForm.sexo = this.variablesBPM.Sexo;
-
-          console.log(this.variablesBPM.FechaNac);
-          this.objForm.fechaDeNacimiento = this.variablesBPM.FechaNac;
-          this.fechaDeNacimiento = this.variablesBPM.FechaNac;
-
-          this.objForm.direccion = this.variablesBPM.Calle+' '+ this.variablesBPM.CP+' '+ this.variablesBPM.Colonia+' '+ this.variablesBPM.NumExt;
-          this.objForm.nacionalidad = 'MEXICAN';
-           this.asignados=true;
-       
      },
+     mounted(){
+        
+        
+     },
+      created(){
+      
+        
+      },
       beforeMount() {
-         
+       
+       
     },
      computed:{
       
       form () {
         return {
-          nombre: this.objForm.nombre,
-          apellidos: this.objForm.apellidos,
-          sexo: this.objForm.sexo,
+          nombre: this.variablesBPM.Nombre,
+          apellidos: this.variablesBPM.Paterno,
+          sexo: this.variablesBPM.Sexo,
           nacionalidad: this.objForm.nacionalidad,
-          direccion: this.objForm.direccion,
+          direccion: this.variablesBPM.Calle,
           producto: this.objForm.producto,
           email: this.objForm.email,
-          fechaNac: this.objForm.fechaDeNacimiento
+          fechaNac: this.variablesBPM.FechaNac
         }
-      }
+      },
      },
      watch: {
       nombre () {
@@ -241,8 +231,8 @@ import axios from "axios";
     methods:{
       save(idWin){
 
-        this.objForm.folio=this.folio;
-        this.objForm.fechaDeNacimiento=this.fechaNac;
+        //this.objForm.folio=this.folio;
+        //this.objForm.fechaDeNacimiento=this.fechaNac;
         this.formHasErrors = false
         var isError=false;
          console.log(this.form);
@@ -250,6 +240,8 @@ import axios from "axios";
           if (!this.form[f]) {
               this.formHasErrors = true
               //console.log("-->"+this.formHasErrors);
+              console.log('faltan campos');
+              
               isError=true;
               return;
           }
@@ -259,12 +251,15 @@ import axios from "axios";
           return;
         }
 
+console.log('saving....');
 
-         this.objForm.rfc ='true';
-         this.objForm.materno = this.variablesBPM.Materno;
-         this.objForm.NumExt=this.variablesBPM.NumExt;
-         this.objForm.CP=this.variablesBPM.CP;
-         this.objForm.Colonia=this.variablesBPM.Colonia;
+         this.objForm.rfc ='XXXXXXXXXXXXXXX';
+         //this.objForm.nombre = this.variablesBPM.Nombre;
+         //this.objForm.apellidos = this.variablesBPM.Paterno;
+         //this.objForm.materno = this.variablesBPM.Materno;
+        //  this.objForm.NumExt=this.variablesBPM.NumExt;
+        //  this.objForm.CP=this.variablesBPM.CP;
+        //  this.objForm.Colonia=this.variablesBPM.Colonia;
          this.objForm.Municipio='';
          this.objForm.Ciudad='';
          this.objForm.Estado='';
@@ -278,16 +273,16 @@ import axios from "axios";
           var variablesXML="{'variables': { "+
           "'Email': {'value': '" + this.objForm.email + "','type':'String'},"+
           "'RFC':{'value':'" + this.objForm.rfc + "','type':'String'},"+
-          "'Nombre':{'value':'" + this.objForm.nombre + "','type':'String'},"+
-          "'Paterno':{'value':'" + this.objForm.apellidos + "','type':'String'},"+
-          "'Materno':{'value':'" + this.objForm.materno + "','type':'String'},"+
+          "'Nombre':{'value':'" + this.variablesBPM.Nombre + "','type':'String'},"+
+          "'Paterno':{'value':'" + this.variablesBPM.Paterno + "','type':'String'},"+
+          "'Materno':{'value':'" + this.variablesBPM.Materno + "','type':'String'},"+
           "'FechaNac':{'value':'" + this.variablesBPM.FechaNac + "','type':'String'},"+
-          "'Sexo':{'value':'" + this.objForm.sexo + "','type':'String'},"+
+          "'Sexo':{'value':'" + this.variablesBPM.Sexo + "','type':'String'},"+
           "'Nacionalidad':{'value':'" + this.objForm.nacionalidad + "','type':'String'},"+
-          "'Calle':{'value':'" + this.objForm.direccion + "','type':'String'},"+
-          "'NumExt':{'value':'" + this.objForm.NumExt + "','type':'String'},"+
-          "'CP':{'value':'" + this.objForm.CP + "','type':'String'},"+
-          "'Colonia':{'value':'" + this.objForm.Colonia + "','type':'String'},"+
+          "'Calle':{'value':'" + this.variablesBPM.Calle + "','type':'String'},"+
+          "'NumExt':{'value':'" + this.variablesBPM.NumExt + "','type':'String'},"+
+          "'CP':{'value':'" + this.variablesBPM.CP + "','type':'String'},"+
+          "'Colonia':{'value':'" + this.variablesBPM.Colonia + "','type':'String'},"+
           "'Municipio':{'value':'" + this.objForm.Municipio + "','type':'String'},"+
           "'Ciudad':{'value':'" + this.objForm.Ciudad + "','type':'String'},"+
           "'Estado':{'value':'" + this.objForm.Estado + "','type':'String'},"+
@@ -320,6 +315,9 @@ import axios from "axios";
                   this.fechaDeNacimiento = '';
                   this.objForm.direccion ='';
                   this.objForm.nacionalidad = 'MEXICAN';
+                  this.objForm.email='';
+        
+       
                   
 
                  //reload
@@ -341,16 +339,17 @@ import axios from "axios";
         //bus.$emit('afiliacion.newSol.closeForm',idWin,this.objForm);
         //this.$store.commit('closeForm',idWin);
         //reset
-         this.asignados=false;
+
+         //this.asignados=false;
+         //console.log('asignados false..');
+         
         this.$store.state.bPersonales = false;
-        this.objForm.nombre =  '';
-        this.objForm.apellidos='';
-        this.objForm.sexo = '';
-        this.objForm.fechaDeNacimiento = '';
-        this.fechaDeNacimiento = '';
-        this.objForm.direccion ='';
-        this.objForm.nacionalidad = 'MEXICAN';
-        this.$store.state.bPersonales=false;
+        this.objForm.email='';
+        
+       
+       
+         this.objForm.nacionalidad = 'MEXICAN';
+       
       },
       updatestatus(){
         this.objForm.avance=0;
@@ -368,11 +367,11 @@ import axios from "axios";
         else this.objForm.color='orange';
       },
     updateName (valor) {
-      console.log(valor);
-      this.objForm.nombre=valor;
+      //console.log(valor);
+      this.variablesBPM.Nombre=valor;
     },
     updateApellidos(valor){
-      this.objForm.apellidos=valor;
+      this.variablesBPM.Paterno=valor;
     }
     },
   

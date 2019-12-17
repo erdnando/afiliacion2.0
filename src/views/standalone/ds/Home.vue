@@ -233,7 +233,7 @@
                               </div>
                               <v-card v-else :key="selected.id"  flat >
                                 <v-card-text>
-                                 <iframe  style="border-style: hidden;height:380px;width:100;" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
+                                 <iframe  style="border-style: hidden;height:380px;width:100%;" v-bind:src= "getUrl(selected.id)"  class="framePDF" :onload="docLoaded('link')" ></iframe>
                                 </v-card-text>
 
                                 <v-divider></v-divider>
@@ -571,6 +571,10 @@ import UploadRow from '@/components/utils/UploadRow'
             }
           
           //cal ws solr
+          console.log('solr::::::::');
+          
+          console.log(jsonObj);
+          
           this.consultaSolr(jsonObj);
       },
       getUrl(param){
@@ -589,8 +593,8 @@ import UploadRow from '@/components/utils/UploadRow'
                 word = this.chips[0];
               }
             }
-            console.log("aqui....");
-            console.log(word);
+            //console.log("aqui....");
+            //console.log(word);
             if(word != '' && word != undefined)
               return this.pdfviewermine+this.clean(param)+"&word="+word.trim();
             else
@@ -617,7 +621,7 @@ import UploadRow from '@/components/utils/UploadRow'
          else return metaaux;
       },
       async consultaSolr(objConsulta){
-        console.log(objConsulta);
+        //console.log(objConsulta);
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/selectm',
@@ -630,8 +634,8 @@ import UploadRow from '@/components/utils/UploadRow'
                 }
               })
                 .then(response => {
-                   console.log("call solr...");
-                   console.log(response.data.response.docs);
+                  // console.log("call solr...");
+                   //console.log(response.data.response.docs);
                    var arrR= response.data.response.docs;
 
                    //remove records without extension
@@ -645,13 +649,13 @@ import UploadRow from '@/components/utils/UploadRow'
                   this.resultados = arrR;
 
                   if(arrR.length>0){
-                    console.log("con datos");
+                    //console.log("con datos");
                     this.countDatos=arrR.length;
                     this.hayDatos=true;
                     this.lblResultados= 'Results';
                   }
                   else{
-                    console.log("sin datos");
+                    //console.log("sin datos");
                     this.lblResultados= 'No Results or wait';
                    
                   }
@@ -660,7 +664,7 @@ import UploadRow from '@/components/utils/UploadRow'
 
                 })
                 .catch(error => {
-                  console.log(error);
+                  //console.log(error);
                   bus.$emit('afiliacion.loading.end','');
               });
     },
@@ -669,7 +673,7 @@ import UploadRow from '@/components/utils/UploadRow'
       if(arrPath.length==1) return false;
       
       var ext=arrPath[arrPath.length-1].toUpperCase();
-      console.log(ext);
+      //console.log(ext);
        if(ext =='DOCX' || ext =='XLSX'  || ext =='PDF'  || ext =='TXT'  || ext =='DOC' || ext =='XLS' || ext =='JPEG'){
           return true;
        }
@@ -817,6 +821,7 @@ html{
   border-radius: 5px;
   background-color: rgba(0,0,0,.5);
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+  box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 .uploader-example {
     width: 880px;

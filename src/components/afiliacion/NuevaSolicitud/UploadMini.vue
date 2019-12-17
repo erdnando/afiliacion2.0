@@ -109,7 +109,7 @@
           axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/ProcessOCRImaging',
-                timeout: 1000 * 45, // Wait for 45 seconds
+                timeout: 1000 * 15, // Wait for 45 seconds
                 headers: {
                   "Content-Type": "application/json"
                 },
