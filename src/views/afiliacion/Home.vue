@@ -231,11 +231,11 @@ import axios from "axios";
     },
     methods:{
       gotoNewSol(){
-        bus.$emit('afiliacion.goTo','/fintech/afiliacion/nuevasolicitud');
+        bus.$emit('afiliacion.goTo','/afiliacion/nuevasolicitud');
       },
       gotoHome(){
          this.dialogFacePhi=false
-          bus.$emit('afiliacion.goTo','/fintech')
+          bus.$emit('afiliacion.goTo','/')
           //ok
       },
       validaSesion(){

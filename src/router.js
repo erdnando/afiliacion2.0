@@ -23,72 +23,72 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/fintech',
+      path: '/',
       name: 'home',
       component: Home
     },
     {
-      path: '/fintech/afiliacion',
+      path: '/afiliacion',
       name: 'afiliacion',
       component: Afiliacion
     },
         {
-          path: '/fintech/afiliacion/nuevasolicitud',
+          path: '/afiliacion/nuevasolicitud',
           name: 'afiliacion-nueva',
           component: NuevaSolicitud
         },
         {
-          path: '/fintech/afiliacion/solicitudes',
+          path: '/afiliacion/solicitudes',
           name: 'solicitudes',
           component: MisSolicitudes
         },
         {
-          path: '/fintech/afiliacion/documentos',
+          path: '/afiliacion/documentos',
           name: 'documentos',
           component: Documentos
         },
     {
-      path: '/fintech/self-service',
+      path: '/self-service',
       name: 'self-service',
       component: SelfService
     },
     {
-      path: '/fintech/krece',
+      path: '/krece',
       name: 'krece',
       component: Krece
     },
     {
-      path: '/fintech/maas',
+      path: '/maas',
       name: 'maas',
       component: Maas
     },
     {
-      path: '/fintech/hb',
+      path: '/hb',
       name: 'hb',
       component: Hb
     },
     {
-      path: '/fintech/mobile-banking',
+      path: '/mobile-banking',
       name: 'mobile-banking',
       component: MobileBanking
     },
     {
-      path: '/fintech/wallet',
+      path: '/wallet',
       name: 'wallet',
       component: Wallet
     },
     {
-      path: '/fintech/asistencia',
+      path: '/asistencia',
       name: 'asistencia',
       component: Asistencia
     },
     {
-      path: '/fintech/configuracion',
+      path: '/configuracion',
       name: 'configuracion',
       component: Configuracion
     },
     {
-      path: '/fintech/digital-docs',
+      path: '/digital-docs',
       name: 'digital-docs',
       component: DS
     }

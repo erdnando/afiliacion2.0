@@ -489,7 +489,7 @@ import UploadRow from '@/components/utils/UploadRow'
       },
       gotoHome(){
          this.dialogFacePhi=false
-          bus.$emit('afiliacion.goTo','/fintech')
+          bus.$emit('afiliacion.goTo','/')
 
       },
       back(){

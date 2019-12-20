@@ -156,19 +156,19 @@ import {bus} from '../main.js'
       return{
         publicPath: process.env.BASE_URL,
         solucionesArr: [
-          {id:1 ,deshabilitado:false, logo:'/images/afiliacion.jpg',color:'green', name: 'Afiliación', tag: "Onboarding digital",ruta:'/fintech/afiliacion'},
-          {id:2 ,deshabilitado:true, logo:'/images/selfservice.jpeg',color:'green', name: 'Self-service', tag: "Process it yourself",ruta:'/fintech/self-service'},
-          {id:3 ,deshabilitado:false, logo:'/images/krece1.jpg',color:'green', name: 'Krece B2B', tag: "Crowfounding",ruta:'/fintech/krece'},
-          {id:4 ,deshabilitado:false, logo:'/images/homebanking.jpg',color:'warning', name: 'Home Banking', tag: "Your Online Banking",ruta:'/fintech/hb'},
-          {id:5 ,deshabilitado:true, logo:'/images/mobileBanking.jpg',color:'warning', name: 'Mobile Banking', tag: "Smartphone",ruta:'/fintech/mobile-banking'},
-          {id:6 ,deshabilitado:true, logo:'/images/wallet2.jpg',color:'warning', name: 'Tu Wallet', tag: "Your payments, your services",ruta:'/fintech/wallet'},
+          {id:1 ,deshabilitado:false, logo:'/images/afiliacion.jpg',color:'green', name: 'Afiliación', tag: "Onboarding digital",ruta:'/afiliacion'},
+          {id:2 ,deshabilitado:true, logo:'/images/selfservice.jpeg',color:'green', name: 'Self-service', tag: "Process it yourself",ruta:'/self-service'},
+          {id:3 ,deshabilitado:false, logo:'/images/krece1.jpg',color:'green', name: 'Krece B2B', tag: "Crowfounding",ruta:'/krece'},
+          {id:4 ,deshabilitado:false, logo:'/images/homebanking.jpg',color:'warning', name: 'Home Banking', tag: "Your Online Banking",ruta:'/hb'},
+          {id:5 ,deshabilitado:true, logo:'/images/mobileBanking.jpg',color:'warning', name: 'Mobile Banking', tag: "Smartphone",ruta:'/mobile-banking'},
+          {id:6 ,deshabilitado:true, logo:'/images/wallet2.jpg',color:'warning', name: 'Tu Wallet', tag: "Your payments, your services",ruta:'/wallet'},
         ],
         apisComponentsArr: [
-          {id:1,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'green', name: 'OCR', tag: "Data extraction customed",ruta:'/fintech/ocr'},
-          {id:2,deshabilitado:false, logo:'/images/digital.jpg' ,color:'green', name: 'Digital Docs', tag: "Desing it & use it",ruta:'/fintech/digital-docs'},
-          {id:3,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'warning', name: 'Soft token', tag: "Simple soft token",ruta:'/fintech/soft-token'},
-          {id:4,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'error', name: 'One ring', tag: "Reference phone numbers",ruta:'/fintech/one-ring'},
-          {id:5,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'success', name: 'Cognitive', tag: "Chat & phone",ruta:'/fintech/cognitive'}
+          {id:1,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'green', name: 'OCR', tag: "Data extraction customed",ruta:'/ocr'},
+          {id:2,deshabilitado:false, logo:'/images/digital.jpg' ,color:'green', name: 'Digital Docs', tag: "Desing it & use it",ruta:'/digital-docs'},
+          {id:3,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'warning', name: 'Soft token', tag: "Simple soft token",ruta:'/soft-token'},
+          {id:4,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'error', name: 'One ring', tag: "Reference phone numbers",ruta:'/one-ring'},
+          {id:5,deshabilitado:true, logo:'https://placehold.it/200x200' ,color:'success', name: 'Cognitive', tag: "Chat & phone",ruta:'/cognitive'}
         ],
          fav: true,
          menu: false,

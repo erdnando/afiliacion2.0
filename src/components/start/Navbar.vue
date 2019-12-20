@@ -102,8 +102,8 @@ export default {
             this.solucion='FINTECH';
             this.version='2.0';
             console.log("before move");
-        //bus.$emit('afiliacion.goTo','/fintech')
-         this.$router.push('/fintech');
+        //bus.$emit('afiliacion.goTo','/')
+         this.$router.push('/');
         }
     },
     created(){
@@ -155,13 +155,13 @@ export default {
         //TODO add logic to get modules based in user and app
         //console.log(userAccediendo);
         this.modulos= [
-            { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/fintech/afiliacion' },
-            { clave:'02' , allow:'rw' , modulo: 'My applications', icon: 'library_books',ruta:'/fintech/afiliacion/solicitudes' },
-            { clave:'03' , allow:'rw' , modulo: 'New application', icon: 'library_add',ruta:'/fintech/afiliacion/nuevasolicitud' },
-            { clave:'04' , allow:'rw' , modulo: 'Digital docs', icon: 'how_to_vote',ruta:'/fintech/afiliacion/documentos' },
-            // { clave:'05' , allow:'rw' , modulo: 'Asistencia', icon: 'report_problem',ruta:'/fintech/asistencia' },
-            // { clave:'06' , allow:'rw' , modulo: 'Configuración', icon: 'settings',ruta:'/fintech/configuracion' },
-            { clave:'07' , allow:'rw' , modulo: 'Exit', icon: 'power_settings_new',ruta:'/fintech' }
+            { clave:'01' , allow:'rw' , modulo: 'Home', icon: 'dashboard',ruta:'/afiliacion' },
+            { clave:'02' , allow:'rw' , modulo: 'My applications', icon: 'library_books',ruta:'/afiliacion/solicitudes' },
+            { clave:'03' , allow:'rw' , modulo: 'New application', icon: 'library_add',ruta:'/afiliacion/nuevasolicitud' },
+            { clave:'04' , allow:'rw' , modulo: 'Digital docs', icon: 'how_to_vote',ruta:'/afiliacion/documentos' },
+            // { clave:'05' , allow:'rw' , modulo: 'Asistencia', icon: 'report_problem',ruta:'/asistencia' },
+            // { clave:'06' , allow:'rw' , modulo: 'Configuración', icon: 'settings',ruta:'/configuracion' },
+            { clave:'07' , allow:'rw' , modulo: 'Exit', icon: 'power_settings_new',ruta:'/' }
             ];
             this.solucion='AFILIACION',
             this.version='2.0',

@@ -53,7 +53,7 @@ import {bus} from '../../../main.js'
     methods:{
       close(){
          this.$store.commit('closeMessageFinal');
-         this.$router.push('/fintech');
+         this.$router.push('/');
          bus.$emit('showDrawer',false);
       }
     },

@@ -360,8 +360,8 @@ import axios from "axios";
       gotoHome(){
         console.log("cancelling...");
          this.dialogFacePhi=false
-          //bus.$emit('afiliacion.goTo','/fintech');
-           this.$router.push('/fintech');
+          //bus.$emit('afiliacion.goTo','/');
+           this.$router.push('/');
       },
       back(){
          this.e1 = '1';
