@@ -210,7 +210,7 @@
                       <v-icon class="blue--text text--lighten-2">phone</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                      <v-list-tile-title>+52 55.6732.2981</v-list-tile-title>
+                      <v-list-tile-title>+52 56.1372.4477</v-list-tile-title>
                     </v-list-tile-content>
                   </v-list-tile>
                   <v-list-tile>
