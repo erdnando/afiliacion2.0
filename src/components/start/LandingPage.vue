@@ -202,7 +202,7 @@
                   <div class="headline">contact us</div>
                 </v-card-title>
                 <v-card-text>
-                  Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                  We have a call center to give you answers to any question :).
                 </v-card-text>
                 <v-list class="transparent">
                   <v-list-tile>
