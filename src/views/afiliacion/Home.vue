@@ -240,7 +240,7 @@ import axios from "axios";
       },
       validaSesion(){
         //TODO generar validacion de la sesion
-        console.log("validando sesion");
+        
         return false;
       },
       login(){
@@ -254,7 +254,7 @@ import axios from "axios";
       validateStep1 () {
         
         if (this.$refs.form.validate()) {
-          console.log("antes de llamada ws..");
+          
           
           this.validaMailInDB();
           
@@ -274,7 +274,7 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                  console.log(response.data);
+                  
                   if(response.data == 'OK'){
                       this.e1 = '2';
                       this.urlFacePhiBase='/facephi/auth/index.html?name=';
@@ -293,7 +293,7 @@ import axios from "axios";
                 })
                 .catch(error => {
                   bus.$emit('afiliacion.loading.end','');
-                  console.log(error);
+                  
               });
           
       },
@@ -303,7 +303,7 @@ import axios from "axios";
     },
     created(){
       bus.$on('afiliacion.notifica',(msg, color)=>{
-        console.log("en notifica..");
+        
             this.colorNotificacion=color;
             this.snackbar=true;
             this.mensajeNotifica=msg;
@@ -313,7 +313,7 @@ import axios from "axios";
         })
                 
         bus.$on('afiliacion.goTo',(ruta)=>{
-          console.log("desde home afiliacion:" + ruta);
+          
            this.$router.push(ruta);
 
         })
@@ -337,7 +337,7 @@ import axios from "axios";
 
 
   window.facephiAuthKO = function () {
-    console.log(".......invalid::::::::");
+    
      var divMsg = document.getElementById('divMsg');
     var arrMsg = divMsg.innerText.split(' ');
           divMsg.innerText = arrMsg[0] +" :Failed authentication";

@@ -225,9 +225,6 @@ import {bus} from '../../../main.js'
            });
 
             bus.$on('afiliacion.upload.documento.error',(data,categoria,blobUrl)=>{
-              console.log(data);
-              console.log(categoria);
-               console.log(blobUrl);
               
               this.resultadoOCR = "el servicio ha tardado mas de lo esperado. favor de reintentar";
                this.ocrEstructurados=[];

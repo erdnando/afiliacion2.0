@@ -261,11 +261,11 @@ import axios from "axios";
         //var isError=false;
        
         if(this.email){
-          console.log("calling ws...");
+          
           this.callKreceApi();
           }
           else{
-          console.log("fail calling ws...");
+          
            bus.$emit('afiliacion.loading.end','');
           }
       },
@@ -283,7 +283,7 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                   console.log(response);
+                   
                    //bus.$emit('afiliacion.notifica','Invitación generada. Revise su correo: '+ this.email,'indigo');
                     this.colorNotificacion="green";
                     this.snackbar=true;
@@ -294,13 +294,13 @@ import axios from "axios";
                    
                 })
                 .catch(error => {
-                  console.log(error);
+                  
                     bus.$emit('afiliacion.loading.end','');
                 });
     },
       validaSesion(){
         //TODO generar validacion de la sesion
-        console.log("validando sesion");
+        
         return false;
       },
       login(){
@@ -330,7 +330,7 @@ import axios from "axios";
                 }
               })
                 .then(response => {
-                  console.log(response.data);
+                  
                   if(response.data == 'OK'){
                       
                       this.e1 = '2';
@@ -353,12 +353,12 @@ import axios from "axios";
                 })
                 .catch(error => {
                   bus.$emit('afiliacion.loading.end','');
-                  console.log(error);
+                  
               });
           
       },
       gotoHome(){
-        console.log("cancelling...");
+        
          this.dialogFacePhi=false
           //bus.$emit('afiliacion.goTo','/');
            this.$router.push('/');
@@ -396,7 +396,7 @@ import axios from "axios";
 
 
   window.facephiAuthOK = function() { 
-    console.log("valido:::::::::::.");
+    
      var iframe = document.getElementById('iframex');
      iframe.src="";
     document.getElementById('btnLogin').click();
@@ -404,7 +404,7 @@ import axios from "axios";
 
 
   window.facephiAuthKO = function () {
-    console.log(".......invalid::::::::");
+    
      var divMsg = document.getElementById('divMsg');
     var arrMsg = divMsg.innerText.split(' ');
           divMsg.innerText = arrMsg[0] +" :Failed authentication";

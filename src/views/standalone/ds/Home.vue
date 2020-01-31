@@ -459,7 +459,7 @@ import UploadRow from '@/components/utils/UploadRow'
                 }
               })
                 .then(response => {
-                  console.log(response.data);
+                  
                   if(response.data == 'OK'){
                        //this.snackbar = true
                     this.e1 = '2';
@@ -483,7 +483,7 @@ import UploadRow from '@/components/utils/UploadRow'
                 })
                 .catch(error => {
                   bus.$emit('afiliacion.loading.end','');
-                  console.log(error);
+                  
               });
           
       },
@@ -519,14 +519,14 @@ import UploadRow from '@/components/utils/UploadRow'
             var arrFile = file.split('.');
           return arrFile[1];
           }catch(error){
-             console.log(error);
+             
              return "pdf";
           }
           
       },
       markWord(contenido){
-        console.log("mark word...");
-        console.log(this.chips);
+        
+        
         var word="";
 
         if(contenido == undefined)return;
@@ -571,14 +571,14 @@ import UploadRow from '@/components/utils/UploadRow'
             }
           
           //cal ws solr
-          console.log('solr::::::::');
+          
           
           console.log(jsonObj);
           
           this.consultaSolr(jsonObj);
       },
       getUrl(param){
-        console.log("url a mostrar..."+param);
+        
         //D:\solr\example\exampledocs\F1000920-5.pdf
         //F0101701412-1.pdf&word=erdnando
 
@@ -678,7 +678,7 @@ import UploadRow from '@/components/utils/UploadRow'
           return true;
        }
        else{
-          console.log("extension no soportada");
+          
           return false;
        }
       
@@ -712,7 +712,7 @@ import UploadRow from '@/components/utils/UploadRow'
       //   })
 
         bus.$on('afiliacion.goTo',(ruta)=>{
-           console.log("desde ds:" + ruta);
+           
            this.$router.push(ruta);
 
         })
@@ -767,7 +767,7 @@ import UploadRow from '@/components/utils/UploadRow'
 
 
   window.facephiAuthKO = function () {
-    console.log(".......invalid::::::::");
+    
      var divMsg = document.getElementById('divMsg');
     var arrMsg = divMsg.innerText.split(' ');
           divMsg.innerText = arrMsg[0] +" :Failed authentication";
