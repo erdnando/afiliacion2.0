@@ -202,7 +202,7 @@
                   <div class="headline">contact us</div>
                 </v-card-title>
                 <v-card-text>
-                  We have a call center to give you answers to any question :) XD
+                  We have a call center to give you answers to any question :) XD XD
                 </v-card-text>
                 <v-list class="transparent">
                   <v-list-tile>
