@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "core-js": "^2.6.11",
     "cors": "^2.8.5",
+    "eslint": "^6.8.0",
     "serialize-javascript": "^2.1.2",
     "signature_pad": "^3.0.0-beta.3",
     "vue": "^2.6.11",
