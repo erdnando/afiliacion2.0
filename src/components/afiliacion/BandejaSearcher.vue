@@ -7,7 +7,7 @@
                       required
                       ref="inputSearch"
                       name="inputSearch"
-                      label="Buscar"
+                      label="Buscarxxxx"
                       @keydown.enter="realizarConsulta" >
                       <template bottom slot="append">
                           <v-icon @click="realizarConsulta">search</v-icon>
