@@ -57,7 +57,8 @@ import {bus} from '../../../main.js';
               etapa:'Autorizo',
               Score:'',
               Buro:'',
-              categoria:'3'
+              categoria:'3',
+              Location:''
           }
        }
      },
@@ -88,10 +89,21 @@ import {bus} from '../../../main.js';
           this.objForm.Buro = Math.random(100).toString().substring(2,9);
           this.objForm.Score =Math.random(100).toString().substring(2,4);
 
+
+debugger;
+      
+
+     
+
+
+
           var variablesXML="{'variables': { "+
           "'Buro': {'value': '" + this.objForm.Buro + "','type':'String'},"+
           "'Score':{'value':'" + this.objForm.Score + "','type':'String'},"+
+          "'Coordenadas':{'value':'" + this.objForm.Location + "','type':'String'},"+
           "'isOK':{'value':true,'type':'boolean'}    } }";
+
+          console.log(this.objForm.Location);
            
            axios({
                 method: "post",
@@ -129,88 +141,105 @@ import {bus} from '../../../main.js';
         this.$store.state.bAutorizo = false;
         var firma= this.$refs.signaturePad.getCanvasRef();
         firma.clear();
-      },
+       },
       undo() {
-      this.$refs.signaturePad.undoSignature();
-    },
-     sleep(delay){
-        var start = new Date().getTime();
-        while(new Date().getTime() < start + delay);
-      },
-    async cmProcess(string64,nombre,paterno){
+        this.$refs.signaturePad.undoSignature();
+       },
+      sleep(delay){
+          var start = new Date().getTime();
+          while(new Date().getTime() < start + delay);
+        },
+      async cmProcess(string64,nombre,paterno){
 
 
-      console.log(string64);
-      console.log(this.objForm.categoria);
-      console.log(this.variablesBPM.FolioExpediente);
+        console.log(string64);
+        console.log(this.objForm.categoria);
+        console.log(this.variablesBPM.FolioExpediente);
 
-          axios({
-                method: "post",
-                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
-                timeout: 13000 * 1, // Wait for 1 seconds
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                data: {
-                  pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
-                  idTramite: this.variablesBPM.FolioExpediente,
-                  categoria: this.objForm.categoria,
-                  lang: 'eng',
-                  contraste: 1,
-                  ext: ''
-                }
-              })
-                .then(response => {
-                  console.log(response);
+            axios({
+                  method: "post",
+                  url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadImgStr64ToCM',
+                  timeout: 13000 * 1, // Wait for 1 seconds
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  data: {
+                    pImgS64: string64.replace("data:image/jpeg;base64,", "").replace("data:image/png;base64,", ""),
+                    idTramite: this.variablesBPM.FolioExpediente,
+                    categoria: this.objForm.categoria,
+                    lang: 'eng',
+                    contraste: 1,
+                    ext: ''
+                  }
                 })
-                .catch(error => {
-                  console.log("Enviado a CM....timeout");
-                  console.log(error);
-              });
+                  .then(response => {
+                    console.log(response);
+                  })
+                  .catch(error => {
+                    console.log("Enviado a CM....timeout");
+                    console.log(error);
+                });
 
 
 
 
 
 
-          //  var arr64 = string64.split(',');
-          // //console.log("----------CM----------");
-          // axios({
-          //       method: "post",
-          //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
-          //       timeout: 153500 * 1, // Wait for 13.5 seconds
-          //       headers: {
-          //         "Content-Type": "application/json"
-          //       },
-          //       data: {
-          //         pImgS64: arr64[1],
-          //         idTramite: this.variablesBPM.FolioExpediente,
-          //         categoria: this.objForm.categoria,
-          //         nombre: nombre
-          //       }
-          //     })
-          //       .then(response => {
-          //         console.log("CM...."+response);
-          //       })
-          //       .catch(error => {
-          //         console.log("Enviado a CM....Timeout"+error);
-          //         //console.log(error);
-          //     });
+            //  var arr64 = string64.split(',');
+            // //console.log("----------CM----------");
+            // axios({
+            //       method: "post",
+            //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/loadBase64ToCM',
+            //       timeout: 153500 * 1, // Wait for 13.5 seconds
+            //       headers: {
+            //         "Content-Type": "application/json"
+            //       },
+            //       data: {
+            //         pImgS64: arr64[1],
+            //         idTramite: this.variablesBPM.FolioExpediente,
+            //         categoria: this.objForm.categoria,
+            //         nombre: nombre
+            //       }
+            //     })
+            //       .then(response => {
+            //         console.log("CM...."+response);
+            //       })
+            //       .catch(error => {
+            //         console.log("Enviado a CM....Timeout"+error);
+            //         //console.log(error);
+            //     });
 
 
-    },
+      },
     resizeCanvas() {
       
     }
     },
     created(){
+
+      //do we support geolocation
+      if(!("geolocation" in navigator)) {
+        console.log('Geolocation is not available.');
+       // return;
+      }else{
+           //this.gettingLocation = true;
+      // get position
+      navigator.geolocation.getCurrentPosition(pos => {
+        //this.gettingLocation = false;
+        this.objForm.Location = pos.coords.latitude +','+ pos.coords.longitude;
+      }, err => {
+        //this.gettingLocation = false;
+        //this.errorStr = err.message;
+        console.log(err.message);
+      });
+      }
     
-    },
+     },
      updated(){
       this.$nextTick(() => {
         this.$refs.signaturePad.resizeCanvas();
       });
-     },
+      },
    mounted() {
       this.$nextTick(() => {
         this.$refs.signaturePad.resizeCanvas();
