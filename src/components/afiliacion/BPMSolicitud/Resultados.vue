@@ -493,7 +493,7 @@ import axios from "axios";
                     console.log('Response ws captura completa::::');
                     
                     console.log(response);
-                    console.log("test");
+                    console.log("test 2");
                     //bus.$emit('afiliacion.loading.end','');
                     //"<b>Afiliación completa.<b></br></br><b>ID CLIENTE:<b>8700014550<BR/><b>NOMBRE:<b>MARGARITA  VELAZQUEZ MAMOARITA</BR>
                     //Conserve su Id Cliente. <BR/>Ahora el sistema procede a evaluar su afiliación."
