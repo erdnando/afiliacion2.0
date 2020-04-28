@@ -177,6 +177,18 @@
     </v-dialog>
   </v-layout>
  
+
+
+  <v-snackbar dark v-model="snackbar" :color="colorSnack" :vertical="vertical">
+          {{ msgSanck }}
+  </v-snackbar>
+
+  <!-- <v-btn color:"blue"  @click="snackbar = false">
+        Cerrar
+    </v-btn> -->
+
+
+
   </div>
 </template>
 
@@ -188,6 +200,10 @@ import axios from "axios";
      props:['open','variablesBPM','cardNumber'],
      data(){
        return{
+         vertical: true,
+         msgSanck:'',
+         colorSnack:'green',
+         snackbar:false,
          rate:'17%',
          producto:'PEOPLE-2019',
          bonus:'150USD',
@@ -483,7 +499,20 @@ import axios from "axios";
                     console.log('fin captura completa!!!!!!!!');
                     console.log('ini move BPM');
                     
-                    this.moveBPM(response);
+                    this.snackbar=true;
+                    this.colorSnack='green';
+
+                    var temp = document.createElement("div");
+                    temp.innerHTML = response.data;
+
+                    this.msgSanck=temp.innerText;//temp.textContent || temp.innerText || "";
+                    console.log("solo texto");
+                    console.log(temp.innerText);
+                    //if(! this.msgSanck.includes('error')){
+                      this.moveBPM(response);
+                   // }
+                    
+                    
                     
                     //bus.$emit('afiliacion.loading.end','');
                     })

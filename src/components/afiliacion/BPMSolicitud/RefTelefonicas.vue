@@ -338,7 +338,14 @@ import axios from "axios";
           var variablesXML="{'variables': { "+
           "'Telefono1': {'value': '" + this.objForm.homePhone + "','type':'String'},"+
           "'Telefono2':{'value':'" + this.objForm.cellPhone + "','type':'String'}    } }";
-           
+          try{
+            this.form.resetValidation(); 
+          }
+          catch(error){
+            console.log(error);
+          }
+          
+
            axios({
                 method: "post",
                 url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',

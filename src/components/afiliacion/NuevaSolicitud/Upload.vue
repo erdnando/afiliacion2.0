@@ -58,7 +58,7 @@
        }
      },
      mounted() {
-        this.img=this.imagenFondo;
+        this.img=this.$store.state.fondoAnverso;
 
          
     },

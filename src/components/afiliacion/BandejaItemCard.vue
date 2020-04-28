@@ -63,7 +63,7 @@
 <personales v-bind:open="this.$store.state.bPersonales" v-bind:variablesBPM="this.variablesBPM"></personales>
 <autorizo v-bind:open="this.$store.state.bAutorizo" v-bind:variablesBPM="this.variablesBPM"></autorizo>
 <mesa-control v-bind:open="this.$store.state.bMesaControl"  v-bind:variablesBPM="this.variablesBPM"  v-bind:resultadosSOLR="this.resultadosSOLR" v-bind:variablesBPMList="this.variablesBPMList"></mesa-control>
-<documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM" v-bind:fondoAnverso="this.fondoAnverso"></documentos>
+<documentos v-bind:open="this.$store.state.bDocumentos" v-bind:variablesBPM="this.variablesBPM" v-bind:fondoAnverso="this.$store.state.fondoAnverso"></documentos>
 <ref-telefonicas v-bind:open="this.$store.state.bRefTelefonicas" v-bind:variablesBPM="this.variablesBPM"></ref-telefonicas>
 <resultados v-bind:open="this.$store.state.bResultados" v-bind:variablesBPM="this.variablesBPM" v-bind:cardNumber="this.cardNumber"></resultados>
   </div>
@@ -94,7 +94,7 @@ import axios from "axios";
            resultadosSOLR:[],
            variablesBPMList:[],
            cardNumber:'',
-           fondoAnverso:'https://placehold.it/200x150',
+          //  fondoAnverso:'https://placehold.it/200x150',
         }
     },
     props:['solicitudes'],
@@ -122,9 +122,10 @@ import axios from "axios";
         else return valor;
       },
       openForm(_processInstanceId , _step, _expediente, _variables){
-       
+       //debugger;
         this.variablesBPM = _variables;
-       this.fondoReverso='https://placehold.it/200x150';
+       this.$store.state.fondoReverso='https://placehold.it/200x150';
+       this.$store.state.fondoAnverso='https://placehold.it/200x150';
         
         switch (_step) {
           case 'Task.Identificacion':

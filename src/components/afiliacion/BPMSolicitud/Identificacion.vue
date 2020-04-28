@@ -16,10 +16,10 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md6 lg6 xl6 style="margin-left: -8px;margin-right: 35px;" >
-                <uploader categoria="1" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader>
+                <uploader categoria="1" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="this.$store.state.fondoAnverso" :key="componentKey1"></uploader>
               </v-flex>
               <v-flex  md6 lg6 xl6>
-                <uploader categoria="2" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader>
+                <uploader categoria="2" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="this.$store.state.fondoReverso" :key="componentKey2"></uploader>
               </v-flex>
             </v-layout>
             <!-- resultados -->
@@ -33,7 +33,7 @@
 
                       <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
                         <v-img style="border-radius: 5px;border-style: solid;border-color: darkgray;border-width: 1px;margin-top: 29px;margin-left: 8px;width: 351px;max-width:400px;height:300px;" width="400px" height="300px"
-                          v-bind:src="fondoAnverso"  contain></v-img>
+                          v-bind:src="this.$store.state.fondoAnverso"  contain></v-img>
                       </v-flex>
 
                       <v-flex xs6>
@@ -103,8 +103,8 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
           },
           componentKey1:0,
           componentKey2:0,
-          fondoAnverso:'https://placehold.it/400x300',
-          fondoReverso:'https://placehold.it/400x300',
+          // this.$store.state.fondoAnverso:'https://placehold.it/400x300',
+          // this.$store.state.fondoReverso:'https://placehold.it/400x300',
           vistaUploader:true,
           subtitulo:'Load the images and then process them',
           canProcess:false,
@@ -134,8 +134,8 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
          this.subtitulo='Load the images and then process them'
          this.canProcess=false;
          this.categoriasCargadas=[];
-         this.fondoAnverso='https://placehold.it/400x300',
-         this.fondoReverso='https://placehold.it/400x300',
+         this.$store.state.fondoAnverso='https://placehold.it/400x300',
+         this.$store.state.fondoReverso='https://placehold.it/400x300',
          this.resultadoOCR='loading...',
          this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}]
          this.forceRerender();
@@ -208,8 +208,8 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                   this.subtitulo='Load the images and then process them'
                   this.$store.state.bIdentificacion = false;
                   this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}];
-                  this.fondoAnverso='https://placehold.it/400x300';
-                  this.fondoReverso='https://placehold.it/400x300';
+                  this.$store.state.fondoAnverso='https://placehold.it/400x300';
+                  this.$store.state.fondoReverso='https://placehold.it/400x300';
                   
 
                  //reload
@@ -262,7 +262,7 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                   salida=salida.replace("iiic","").replace("aC ir e a","").replace("aeee","").replace("1ILi","").replace("lre","").replace("71s1itljIf","");
 
                  this.resultadoOCR = salida+ "...";
-                 this.fondoAnverso=blobUrl;
+                 this.$store.state.fondoAnverso=blobUrl;
                  this.objForm.ocrEstructurados=[];
                
                   Object.entries(data).forEach(entry => {
@@ -286,6 +286,22 @@ import Uploader from '@/components/afiliacion/BPMSolicitud/Upload';
                  bus.$emit('afiliacion.loading.end','');
                 
            });
+
+
+
+           //-----------------------------------------------------------
+           //this.$store.state.coordenadas
+            // for (var i = 0; i < this.variablesBPMList.length;i++){
+            //     if(this.variablesBPMList[i].variable == 'Coordenadas'){
+            //       var arrCoordenadas = this.variablesBPMList[i].valor.split(',');
+            //       this.$store.state.coordenadas = [arrCoordenadas[1],arrCoordenadas[0]];
+            //       console.log(this.$store.state.coordenadas);
+            //       break;
+
+            //     }
+            //   }
+
+           //-----------------------------------------------------------
     }
    }
 </script>

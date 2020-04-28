@@ -59,7 +59,10 @@ export  default new Vuex.Store({
         cellPhoneBPM:'', 
         rfcBPM:'', 
         curpBPM:'', 
-        numCasoBPM:''
+        numCasoBPM:'',
+        coordenadas:[30,30],
+        fondoAnverso:'https://placehold.it/400x300',
+        fondoReverso:'https://placehold.it/400x300'
     },
     mutations:{
         generaFolio(state){

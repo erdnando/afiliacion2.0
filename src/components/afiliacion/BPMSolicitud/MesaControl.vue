@@ -52,6 +52,7 @@
                 <v-tabs v-model="tabs" centered color="indigo" dark tabs slider-color="white" >
                     <v-tab >Documents</v-tab>
                     <v-tab>Data</v-tab>
+                    <v-tab>Map</v-tab>
                 </v-tabs>
                 </template>
          
@@ -115,6 +116,7 @@
                                         </v-card>
                                         </v-scroll-y-transition>
                                     </v-flex>
+           
                                     </v-layout>
                                 </v-card>
                                 </template>
@@ -134,6 +136,28 @@
                         </template>
                     </v-data-table>
                     </template>
+                </v-tab-item>
+
+                <v-tab-item >
+                  <template>
+                    <v-card
+                    height="356px"
+                     width="100%"
+                     >
+                       <MglMap 
+                        :accessToken="accessToken" 
+                        :input.sync="defaultInput"
+                        :mapStyle="mapStyle"
+                        :zoom="zoom"
+                        :center="origen"
+                        @load="onMapLoaded"
+                         >
+                         <MglNavigationControl position="top-left"/>
+                         <MglGeolocateControl position="top-left" />
+                        </MglMap>
+                    </v-card> 
+                   
+                  </template>
                 </v-tab-item>
 
             </v-tabs-items>
@@ -158,11 +182,21 @@
 <script>
 import {bus} from '../../../main.js';
 import axios from "axios";
+import Mapbox from "mapbox-gl";
+import { MglMap, MglNavigationControl, MglGeolocateControl } from "vue-mapbox";
 
    export default {
+     components: {
+      MglMap,MglNavigationControl,MglGeolocateControl
+     },
      props:['open','variablesBPM','resultadosSOLR','variablesBPMList'],
      data(){
        return{
+           origen:[30,30],
+           zoom:12,
+           defaultInput: "Bodhgaya",
+           accessToken: 'pk.eyJ1IjoiZXJkbmFuZG8iLCJhIjoiY2s4eDV3YmprMTQzeDNlcDZ3YWprMzlnZyJ9.7c1-R2toC46B8a7zq0NJqQ', // your access token. Needed if you using Mapbox maps
+           mapStyle: 'mapbox://styles/mapbox/streets-v11',  
            errorMessages: '',
            active:[],
            lblResultados:'Results',
@@ -183,17 +217,13 @@ import axios from "axios";
         ],
        }
      },
-     updated(){
-     },
-     beforeUpdate(){
-     },
      created(){
+      this.mapbox = Mapbox;
 
-     },
-     mounted(){ 
+      console.log('created');
      },
      computed:{
-       items () {
+      items () {
         return [
           {
             name: this.lblResultados,
@@ -210,7 +240,7 @@ import axios from "axios";
          if(this.resultadosSOLR.length > 0) return true;
          else return false;
       },
-       selected () {
+      selected () {
         if (!this.active.length) return undefined;
 
         bus.$emit('afiliacion.loading.ini','');
@@ -226,10 +256,29 @@ import axios from "axios";
         return seleccionado;//this.resultados.find(file => file.id === id)
       }
      },
-     watch: {
-   
-    },
     methods:{
+       async onMapLoaded(event) {
+          // in component
+          console.log('on MapLoaded');
+          this.mapbox = event.map;
+          //this.getCoordenadas();
+          // or just to store if you want have access from other components
+          //this.$store.map = event.map;
+          const asyncActions = event.component.actions
+          //this.coordenadas = new mapboxgl.LngLat(19,30);
+
+
+          //var arrResponse=[];
+           
+
+          const newParams = await asyncActions.flyTo({
+            center: this.$store.state.coordenadas,
+            zoom: 14,
+            speed: 1
+          })
+          console.log(newParams);
+
+        }, 
         docLoaded(arg){
             //console.log("archivo cargado...");
             if(arg == 'link'){

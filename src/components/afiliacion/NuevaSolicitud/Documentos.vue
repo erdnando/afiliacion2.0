@@ -16,14 +16,14 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md4 lg4 xl4 style="" >
-                <uploader-mini categoria="4" v-bind:folio="folio" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader-mini>
+                <uploader-mini categoria="4" v-bind:folio="folio" v-bind:imagenFondo="this.$store.state.fondoAnverso" :key="componentKey1"></uploader-mini>
               </v-flex>
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="5" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader-mini>
+                <uploader-mini categoria="5" v-bind:folio="folio" v-bind:imagenFondo="this.$store.state.fondoReverso" :key="componentKey2"></uploader-mini>
               </v-flex>
 
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="6" v-bind:folio="folio" v-bind:imagenFondo="fondoReverso" :key="componentKey3"></uploader-mini>
+                <uploader-mini categoria="6" v-bind:folio="folio" v-bind:imagenFondo="this.$store.state.fondoReverso" :key="componentKey3"></uploader-mini>
               </v-flex>
 
             </v-layout>
@@ -37,8 +37,7 @@
                     <v-layout>
 
                       <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
-                        <!-- <v-img style="margin-top: 5px;margin-left: 8px;width: 351px;max-width:400px;border-radius: 3px;height:300px;" width="400px" height="300px"
-                          v-bind:src="fondoAnverso"  contain></v-img> -->
+                   
                            <uploader-mini categoria="7" v-bind:folio="folio" v-bind:imagenFondo="fondoPDF" :key="componentKey4"></uploader-mini>
                       </v-flex>
 
@@ -109,8 +108,8 @@ import {bus} from '../../../main.js'
           componentKey2:0,
           componentKey3:0,
           componentKey4:0,
-          fondoAnverso:'https://placehold.it/200x150',
-          fondoReverso:'https://placehold.it/200x150',
+          // fondoAnverso:'https://placehold.it/200x150',
+          // fondoReverso:'https://placehold.it/200x150',
           fondoPDF:'https://www.chaosium.com/product_images/uploaded_images/pdf-cover-2inch-grey.png',
           vistaUploader:true,
           subtitulo:'Load the images and then process them (jpg,png,bmp)',
@@ -143,8 +142,8 @@ import {bus} from '../../../main.js'
          this.subtitulo='Load the images and then process them'
          this.canProcess=false;
          this.categoriasCargadas=[];
-         this.fondoAnverso='https://placehold.it/400x300',
-         this.fondoReverso='https://placehold.it/400x300',
+         this.$store.state.fondoAnverso='https://placehold.it/400x300',
+         this.$store.state.fondoReverso='https://placehold.it/400x300',
          this.resultadoOCR='loading...',
          this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}]
          this.forceRerender();
@@ -188,7 +187,11 @@ import {bus} from '../../../main.js'
         this.$store.commit('closeForm',idWin);
       }
     },
+    mounted(){
+      console.log("mounted");
+    },
     created(){
+      console.log("created");
         bus.$on('afiliacion.upload.categoria',(categoria)=>{
               this.categoriasCargadas.push(categoria);
 
@@ -221,7 +224,7 @@ import {bus} from '../../../main.js'
 
                 //console.log(salida);
                  this.resultadoOCR = salida;
-                 this.fondoAnverso=blobUrl;
+                 this.$store.state.fondoAnverso=blobUrl;
 
                  //console.log(data);
                  this.objForm.ocrEstructurados=[];

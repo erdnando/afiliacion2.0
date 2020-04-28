@@ -45,6 +45,7 @@
 import {bus} from '../../../main.js';
  import VueSignaturePad from 'vue-signature-pad';
  import axios from "axios";
+ import operations from '../../../operations'
 
    export default {
      props:['open','variablesBPM'],
@@ -66,36 +67,24 @@ import {bus} from '../../../main.js';
        
      },
     methods:{
-      save(idWin){
+     async save(idWin){
        
         var porcentaje=0;
-       
         const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
 
         if(isEmpty){
           console.log('sin firma');
           return;
-          
         }
         var pImgS64=data;
 
         this.cmProcess(pImgS64,"Firma.jpg","autorizo");
-
-
         //TODO: move bpm
         // set => Buro, Score & isOk
          bus.$emit('afiliacion.loading.ini','');
 
           this.objForm.Buro = Math.random(100).toString().substring(2,9);
           this.objForm.Score =Math.random(100).toString().substring(2,4);
-
-
-debugger;
-      
-
-     
-
-
 
           var variablesXML="{'variables': { "+
           "'Buro': {'value': '" + this.objForm.Buro + "','type':'String'},"+
@@ -104,38 +93,93 @@ debugger;
           "'isOK':{'value':true,'type':'boolean'}    } }";
 
           console.log(this.objForm.Location);
+
+          try{
+            // var firma= this.$refs.signaturePad.getCanvasRef();
+            // firma.clear();
+          }catch(error){
+            console.log("limpiando firma....");
+            console.log(error);
+          }
+         
            
-           axios({
-                method: "post",
-                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
-                timeout: 1000 * 12, // Wait for 45 seconds
-                headers: {"Content-Type": "application/json"},
-                data: {
-                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
-                      xml: variablesXML
-                }
-              })
-                .then(response => {
 
-                  var bpmResp = response.data;//4 arra
-                  console.log('bpm autorizo');
-                  
-                  console.log(bpmResp);
-                  
-                  //reset
-                  this.$store.state.bAutorizo = false;
-                 
-                   var firma= this.$refs.signaturePad.getCanvasRef();
-                   firma.clear();
+           try{ 
+                  const response = await operations.moveBPM({ instanceId: this.variablesBPM.processInstanceId.replace('BPM: ',''),xml:variablesXML});
+                    console.log(response);
+                    var bpmResp = response.data;//4 arra
+                    console.log('bpm autorizo');
+                    console.log(bpmResp);
+                      
+                    //reset
+                    this.$store.state.bAutorizo = false;
+                    
+                    try{
+                      //var firma= this.$refs.signaturePad.getCanvasRef();
+                      //firma.clear();
+                      this.undo();
+                      this.undo();
+                      this.undo();
+                      this.undo();
+                      this.undo();
+                      this.undo();
+                    }catch(error){
+                        console.log(error);
+                    }
+                      
+                    //reload
+                    bus.$emit('search', '');
+                    bus.$emit('afiliacion.loading.end','');
 
-                 //reload
-                 bus.$emit('search', '');
-                 bus.$emit('afiliacion.loading.end','');
+
                   
-                }).catch(error => {
+            }
+            catch(error){
                   console.log(error);
                    bus.$emit('afiliacion.loading.end','');
-              });
+            }
+
+
+
+
+          //  axios({
+          //       method: "post",
+          //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+          //       timeout: 1000 * 12, // Wait for 45 seconds
+          //       headers: {"Content-Type": "application/json"},
+          //       data: {
+          //             instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+          //             xml: variablesXML
+          //       }
+          //     })
+          //       .then(response => {
+
+          //         var bpmResp = response.data;//4 arra
+          //         console.log('bpm autorizo');
+                  
+          //         console.log(bpmResp);
+                  
+          //         //reset
+          //         this.$store.state.bAutorizo = false;
+                 
+          //        try{
+          //          var firma= this.$refs.signaturePad.getCanvasRef();
+          //          firma.clear();
+          //        }catch(error){
+          //           console.log(error);
+          //        }
+                  
+
+          //        //reload
+          //        bus.$emit('search', '');
+          //        bus.$emit('afiliacion.loading.end','');
+                  
+          //       }).catch(error => {
+          //         console.log(error);
+          //          bus.$emit('afiliacion.loading.end','');
+          //     });
+
+               
       },
       close(idWin){
         this.$store.state.bAutorizo = false;
@@ -226,7 +270,9 @@ debugger;
       // get position
       navigator.geolocation.getCurrentPosition(pos => {
         //this.gettingLocation = false;
-        this.objForm.Location = pos.coords.latitude +','+ pos.coords.longitude;
+        this.objForm.Location = pos.coords.longitude +','+ pos.coords.latitude;
+
+        this.$store.state.coordenadas=[pos.coords.longitude,pos.coords.latitude]
       }, err => {
         //this.gettingLocation = false;
         //this.errorStr = err.message;

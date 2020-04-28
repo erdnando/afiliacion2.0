@@ -16,14 +16,14 @@
             <!-- caerga de imagenes-->
             <v-layout row inline v-show="vistaUploader">
               <v-flex  md4 lg4 xl4 style="" >
-                <uploader-mini categoria="4" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoAnverso" :key="componentKey1"></uploader-mini>
+                <uploader-mini categoria="4" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="this.$store.state.fondoAnverso" :key="componentKey1"></uploader-mini>
               </v-flex>
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="5" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey2"></uploader-mini>
+                <uploader-mini categoria="5" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="this.$store.state.fondoReverso" :key="componentKey2"></uploader-mini>
               </v-flex>
 
               <v-flex  md4 lg4 xl4>
-                <uploader-mini categoria="6" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoReverso" :key="componentKey3"></uploader-mini>
+                <uploader-mini categoria="6" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="this.$store.state.fondoReverso" :key="componentKey3"></uploader-mini>
               </v-flex>
 
             </v-layout>
@@ -37,8 +37,7 @@
                     <v-layout>
 
                       <v-flex xs6 style="margin-left: -8px;margin-right: 35px;">
-                        <!-- <v-img style="margin-top: 5px;margin-left: 8px;width: 351px;max-width:400px;border-radius: 3px;height:300px;" width="400px" height="300px"
-                          v-bind:src="fondoAnverso"  contain></v-img> -->
+                
                            <uploader-mini categoria="7" v-bind:folio="variablesBPM.FolioExpediente" v-bind:imagenFondo="fondoPDF" :key="componentKey4"></uploader-mini>
                       </v-flex>
 
@@ -92,6 +91,7 @@
 import {bus} from '../../../main.js'
  import UploaderMini from '@/components/afiliacion/BPMSolicitud/UploadMini'
  import axios from "axios";
+ import operations from '../../../operations'
 
    export default {
        components: {
@@ -143,8 +143,8 @@ import {bus} from '../../../main.js'
          this.subtitulo='Load the images and then process them up to 3mb'
          this.canProcess=false;
          this.categoriasCargadas=[];
-         this.fondoAnverso='https://placehold.it/400x300',
-         this.fondoReverso='https://placehold.it/400x300',
+         this.$store.state.fondoAnverso='https://placehold.it/400x300',
+         this.$store.state.fondoReverso='https://placehold.it/400x300',
          this.resultadoOCR='loading...',
          this.objForm.ocrEstructurados=[{nombre:'...',valor:'loading...'}]
          this.forceRerender();
@@ -165,7 +165,7 @@ import {bus} from '../../../main.js'
       //    this.vistaUploader=true;
       //    this.subtitulo='Load the images and then process them'
       // },
-      save(){
+     async save(){
        
 
         this.vistaUploader=true;
@@ -183,18 +183,9 @@ import {bus} from '../../../main.js'
           "'FolioExpediente':{'value':'"+ this.variablesBPM.FolioExpediente +"','type':'String'}    } }";
            console.log(variablesXML);
            
-           axios({
-                method: "post",
-                url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
-                timeout: 1000 * 12, // Wait for 45 seconds
-                headers: {"Content-Type": "application/json"},
-                data: {
-                      instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
-                      xml: variablesXML
-                }
-              })
-                .then(response => {
-
+            try{ 
+                  const response = await operations.moveBPM({ instanceId: this.variablesBPM.processInstanceId.replace('BPM: ',''),xml:variablesXML});
+                    
                   var bpmResp = response.data;//4 arra
                   console.log('bpm autorizo');
                   
@@ -202,17 +193,50 @@ import {bus} from '../../../main.js'
                   
                   //reset
                  this.$store.state.bDocumentos = false;
-                 this.fondoAnverso='https://placehold.it/200x150';
-                 this.fondoReverso='https://placehold.it/200x150';
+                //  this.fondoAnverso='https://placehold.it/200x150';
+                //  this.fondoReverso='https://placehold.it/200x150';
+                 this.$store.state.fondoAnverso='https://placehold.it/200x150';
+                 this.$store.state.fondoReverso='https://placehold.it/200x150';
                  
                  //reload
                  bus.$emit('search', '');
                  bus.$emit('afiliacion.loading.end','');
-                  
-                }).catch(error => {
-                  console.log(error);
+            }
+            catch(error){
+                   console.log(error);
                    bus.$emit('afiliacion.loading.end','');
-              });
+            }
+
+          //  axios({
+          //       method: "post",
+          //       url: 'https://sminet.com.mx/Digital.Docs.Service/Service1.svc/moveBPM',
+          //       timeout: 1000 * 12, // Wait for 45 seconds
+          //       headers: {"Content-Type": "application/json"},
+          //       data: {
+          //             instanceId : this.variablesBPM.processInstanceId.replace('BPM: ',''),
+          //             xml: variablesXML
+          //       }
+          //     })
+          //       .then(response => {
+
+          //         var bpmResp = response.data;//4 arra
+          //         console.log('bpm autorizo');
+                  
+          //         console.log(bpmResp);
+                  
+          //         //reset
+          //        this.$store.state.bDocumentos = false;
+          //        this.fondoAnverso='https://placehold.it/200x150';
+          //        this.fondoReverso='https://placehold.it/200x150';
+                 
+          //        //reload
+          //        bus.$emit('search', '');
+          //        bus.$emit('afiliacion.loading.end','');
+                  
+          //       }).catch(error => {
+          //         console.log(error);
+          //          bus.$emit('afiliacion.loading.end','');
+          //     });
 
 
 
@@ -263,7 +287,7 @@ import {bus} from '../../../main.js'
 
                 //console.log(salida);
                  this.resultadoOCR = salida;
-                 this.fondoAnverso=blobUrl;
+                 this.$store.state.fondoAnverso=blobUrl;
 
                  //console.log(data);
                  this.objForm.ocrEstructurados=[];
