@@ -13,7 +13,7 @@
     "cors": "^2.8.5",
     "eslint": "^6.8.0",
     "mapbox-gl": "^1.9.1",
-    "serialize-javascript": "^2.1.2",
+    "serialize-javascript": "^3.1.0",
     "signature_pad": "^3.0.0-beta.3",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
