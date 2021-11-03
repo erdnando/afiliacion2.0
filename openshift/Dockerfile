@@ -45,10 +45,10 @@ COPY --from=builder /opt/vue_app/openshift/img /usr/share/nginx/html/img
 #RUN /usr/share/nginx/html/fintech/update-html.sh
 
 
-RUN chmod -R 777 /usr/share/nginx/html/fintech
-RUN chmod -R 777 /usr/share/nginx/html/images
-RUN chmod -R 777 /usr/share/nginx/html/img
-RUN chmod -R 777 /var/cache/nginx
+#RUN chmod -R 777 /usr/share/nginx/html/fintech
+#RUN chmod -R 777 /usr/share/nginx/html/images
+#RUN chmod -R 777 /usr/share/nginx/html/img
+#RUN chmod -R 777 /var/cache/nginx
 
 
 #docker rmi image erdnando/front-fintech
