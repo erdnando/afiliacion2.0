@@ -26,10 +26,11 @@ EXPOSE 8081
 COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 #COPY /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 
-RUN chmod -R 777 /usr/share/nginx/html/fintech
-RUN chmod -R 777 /usr/share/nginx/html/images
-RUN chmod -R 777 /usr/share/nginx/html/img
-RUN chmod -R 777 /var/cache/nginx
+RUN chmod -R g+rwx /usr/share/nginx/html/fintech
+RUN chmod -R g+rwx /usr/share/nginx/html/images
+RUN chmod -R g+rwx /usr/share/nginx/html/img
+RUN chmod -R g+rwx /var/cache/nginx
+
 #Copy images folder to root
 RUN cp -R /usr/share/nginx/html/fintech/images /usr/share/nginx/html/images
 #Copy facephi folder to root
