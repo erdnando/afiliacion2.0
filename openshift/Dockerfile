@@ -50,4 +50,6 @@ EXPOSE 80
 #Copy default nginx configuration
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
+RUN cat /etc/nginx/nginx.conf
+COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/nginx.conf
 COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
