@@ -3,10 +3,18 @@ FROM node:13.7.0 as builder
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN git clone https://github.com/erdnando/afiliacion2.0.git /opt/vue_app
 
+RUN ls -la /opt/vue_app
+RUN ls -la /opt/vue_app/afiliacion2.0
+RUN ls -la /opt/vue_app/afiliacion2.0/openshift
+
 WORKDIR /opt/vue_app
 RUN npm install && npm run build
 
 
+
+RUN ls -la /opt/vue_app
+RUN ls -la /opt/vue_app/afiliacion2.0
+RUN ls -la /opt/vue_app/afiliacion2.0/openshift
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.17.6
 
