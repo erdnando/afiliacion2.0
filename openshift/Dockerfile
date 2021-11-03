@@ -26,8 +26,7 @@ COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/nginx.co
 #Copy ci-dashboard-dist
 COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 
-EXPOSE 8080:8080
-CMD ["nginx", "-g", "daemon off;"]
+
 #COPY /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 
 #RUN chmod -R g+rwx /usr/share/nginx/html/fintech
@@ -70,3 +69,5 @@ COPY --from=builder /opt/vue_app/openshift/img /usr/share/nginx/html/img
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
 #COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
+EXPOSE 8080:8080
+CMD ["nginx", "-g", "daemon off;"]
