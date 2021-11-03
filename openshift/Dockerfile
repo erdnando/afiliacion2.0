@@ -21,7 +21,7 @@ RUN cp -R /usr/share/nginx/html/fintech/images /usr/share/nginx/html/images
 RUN cp -R /usr/share/nginx/html/fintech/facephi /usr/share/nginx/html/facephi
 #Add folder to container
 #ADD /img /usr/share/nginx/html/img
-RUN cp -R /opt/vue_app/afiliacion2.0/openshift/img /usr/share/nginx/html/img
+##########################RUN cp -R /opt/vue_app/afiliacion2.0/openshift/img /usr/share/nginx/html/img
 #COPY shell to update html index
 #COPY update-html.sh /usr/share/nginx/html/fintech/
 #RUN chmod 777 /usr/share/nginx/html/fintech/update-html.sh
@@ -47,4 +47,4 @@ EXPOSE 80
 #Copy default nginx configuration
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
-RUN cp -R /opt/vue_app/afiliacion2.0/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
+########################RUN cp -R /opt/vue_app/afiliacion2.0/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
