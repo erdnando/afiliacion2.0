@@ -15,8 +15,8 @@ RUN npm install && npm run build
 FROM nginx:1.17.6
 
 #Copy ci-dashboard-dist
-COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
-
+###COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
+COPY /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 
 
 #Copy images folder to root
