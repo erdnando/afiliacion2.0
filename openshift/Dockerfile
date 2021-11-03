@@ -21,9 +21,9 @@ RUN cp -R /usr/share/nginx/html/fintech/images /usr/share/nginx/html/images
 RUN cp -R /usr/share/nginx/html/fintech/facephi /usr/share/nginx/html/facephi
 #Add folder to container
 #ADD /img /usr/share/nginx/html/img
-RUN /opt/vue_app/ ls -la
-RUN /opt/vue_app/afiliacion2.0 ls -la
-RUN /opt/vue_app/afiliacion2.0/openshift ls -la
+RUN ls -la /opt/vue_app
+RUN ls -la /opt/vue_app/afiliacion2.0
+RUN ls -la /opt/vue_app/afiliacion2.0/openshift
 ##########################RUN cp -R /opt/vue_app/afiliacion2.0/openshift/img /usr/share/nginx/html/img
 #COPY shell to update html index
 #COPY update-html.sh /usr/share/nginx/html/fintech/
