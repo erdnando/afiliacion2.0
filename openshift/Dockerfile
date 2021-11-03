@@ -4,6 +4,8 @@ ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN git clone https://github.com/erdnando/afiliacion2.0.git /opt/vue_app
 
 RUN ls -la /opt/vue_app
+RUN ls -la /opt/vue_app/openshift
+RUN ls -la /opt/vue_app/openshift/img
 
 WORKDIR /opt/vue_app
 RUN npm install && npm run build
@@ -24,6 +26,9 @@ RUN cp -R /usr/share/nginx/html/fintech/facephi /usr/share/nginx/html/facephi
 #Add folder to container
 #ADD /img /usr/share/nginx/html/img
 
+RUN ls -la /opt/vue_app
+RUN ls -la /opt/vue_app/openshift
+RUN ls -la /opt/vue_app/openshift/img
 RUN cp -R /opt/vue_app/openshift/img /usr/share/nginx/html/img
 #COPY shell to update html index
 #COPY update-html.sh /usr/share/nginx/html/fintech/
