@@ -4,17 +4,11 @@ ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN git clone https://github.com/erdnando/afiliacion2.0.git /opt/vue_app
 
 RUN ls -la /opt/vue_app
-RUN ls -la /opt/vue_app/afiliacion2.0
-RUN ls -la /opt/vue_app/afiliacion2.0/openshift
 
 WORKDIR /opt/vue_app
 RUN npm install && npm run build
 
 
-
-RUN ls -la /opt/vue_app
-RUN ls -la /opt/vue_app/afiliacion2.0
-RUN ls -la /opt/vue_app/afiliacion2.0/openshift
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.17.6
 
@@ -29,10 +23,8 @@ RUN cp -R /usr/share/nginx/html/fintech/images /usr/share/nginx/html/images
 RUN cp -R /usr/share/nginx/html/fintech/facephi /usr/share/nginx/html/facephi
 #Add folder to container
 #ADD /img /usr/share/nginx/html/img
-RUN ls -la /opt/vue_app
-RUN ls -la /opt/vue_app/afiliacion2.0
-RUN ls -la /opt/vue_app/afiliacion2.0/openshift
-##########################RUN cp -R /opt/vue_app/afiliacion2.0/openshift/img /usr/share/nginx/html/img
+
+RUN cp -R /opt/vue_app/openshift/img /usr/share/nginx/html/img
 #COPY shell to update html index
 #COPY update-html.sh /usr/share/nginx/html/fintech/
 #RUN chmod 777 /usr/share/nginx/html/fintech/update-html.sh
@@ -41,7 +33,7 @@ RUN ls -la /opt/vue_app/afiliacion2.0/openshift
 
 RUN chmod -R 777 /usr/share/nginx/html/fintech
 RUN chmod -R 777 /usr/share/nginx/html/images
-########################RUN chmod -R 777 /usr/share/nginx/html/img
+RUN chmod -R 777 /usr/share/nginx/html/img
 RUN chmod -R 777 /var/cache/nginx
 
 
@@ -58,4 +50,4 @@ EXPOSE 80
 #Copy default nginx configuration
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
-########################RUN cp -R /opt/vue_app/afiliacion2.0/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
+RUN cp -R /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
