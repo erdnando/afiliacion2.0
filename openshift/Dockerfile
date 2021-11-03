@@ -61,4 +61,4 @@ RUN chmod -R 777 /var/cache/nginx
 #Copy default nginx configuration
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
+#COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
