@@ -30,7 +30,7 @@ RUN cp -R /usr/share/nginx/html/fintech/facephi /usr/share/nginx/html/facephi
 
 RUN chmod -R 777 /usr/share/nginx/html/fintech
 RUN chmod -R 777 /usr/share/nginx/html/images
-RUN chmod -R 777 /usr/share/nginx/html/img
+########################RUN chmod -R 777 /usr/share/nginx/html/img
 RUN chmod -R 777 /var/cache/nginx
 
 
