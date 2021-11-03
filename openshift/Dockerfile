@@ -9,13 +9,13 @@ RUN npm install && npm run build
 
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM twalter/openshift-nginx:stable
+FROM nginxinc/nginx-unprivileged 
 
 # support running as arbitrary user which belogs to the root group
 #RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
 # users are not allowed to listen on priviliged ports
 #RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
-EXPOSE 8081
+EXPOSE 8080
 # comment user directive as master process is run as user in OpenShift anyhow
 #RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
 
@@ -26,10 +26,10 @@ EXPOSE 8081
 COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 #COPY /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 
-RUN chmod -R g+rwx /usr/share/nginx/html/fintech
-RUN chmod -R g+rwx /usr/share/nginx/html/images
-RUN chmod -R g+rwx /usr/share/nginx/html/img
-RUN chmod -R g+rwx /var/cache/nginx
+#RUN chmod -R g+rwx /usr/share/nginx/html/fintech
+#RUN chmod -R g+rwx /usr/share/nginx/html/images
+#RUN chmod -R g+rwx /usr/share/nginx/html/img
+#RUN chmod -R g+rwx /var/cache/nginx
 
 #Copy images folder to root
 RUN cp -R /usr/share/nginx/html/fintech/images /usr/share/nginx/html/images
