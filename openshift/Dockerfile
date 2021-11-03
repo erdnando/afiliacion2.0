@@ -11,6 +11,17 @@ RUN npm install && npm run build
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.17.6
 
+# support running as arbitrary user which belogs to the root group
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
+# users are not allowed to listen on priviliged ports
+RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
+EXPOSE 8081
+# comment user directive as master process is run as user in OpenShift anyhow
+RUN sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
+
+
+
+
 #Copy ci-dashboard-dist
 COPY --from=builder /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
 #COPY /opt/vue_app/dist/ /usr/share/nginx/html/fintech/
@@ -46,10 +57,8 @@ RUN chmod -R 777 /var/cache/nginx
 #docker push erdnando/front-fintech:latest
 
 
-EXPOSE 80
+#EXPOSE 80
 #Copy default nginx configuration
 #RUN chown -R 1001:0 /etc/nginx/conf.d/default.conf
 #COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
-RUN cat /etc/nginx/nginx.conf
-COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/nginx.conf
 COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
