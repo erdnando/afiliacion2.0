@@ -9,9 +9,9 @@ RUN npm install && npm run build
 
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx:1.17
+FROM nginxinc/nginx-unprivileged 
 
-COPY --from=builder /opt/vue_app/openshift/nginx-custom.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /opt/vue_app/openshift/nginx2.conf /etc/nginx/nginx.conf
 # support running as arbitrary user which belogs to the root group
 #RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
 # users are not allowed to listen on priviliged ports
