@@ -15,7 +15,7 @@
                     </v-flex>
                     <v-flex xs12 md1>
                       <div class="text-xs-center" style="margin-top: 14px;">
-                         <v-btn color="red"   dark @click="openModalFacePhi" >Request access</v-btn>
+                         <v-btn color="red"   dark @click="openModalFacePhi" >Request access now</v-btn>
                          
                         </div>
                     </v-flex>
